@@ -1,0 +1,24 @@
+{
+  "name": "discordlove",
+  "version": "1.0.0",
+  "description": "Purchase your friends",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewdegnan/DiscordLove.git"
+  },
+  "keywords": [
+    "buy",
+    "your",
+    "friends"
+  ],
+  "author": "Wolf#4408",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matthewdegnan/DiscordLove/issues"
+  },
+  "homepage": "https://github.com/matthewdegnan/DiscordLove#readme"
+}
