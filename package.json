@@ -20,5 +20,13 @@
   "bugs": {
     "url": "https://github.com/matthewdegnan/DiscordLove/issues"
   },
-  "homepage": "https://github.com/matthewdegnan/DiscordLove#readme"
+  "homepage": "https://github.com/matthewdegnan/DiscordLove#readme",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "discord.js": "^11.4.2",
+    "fs": "0.0.1-security",
+    "moment": "^2.22.2",
+    "return-deep-diff": "^0.3.0",
+    "sqlite": "^3.0.0"
+  }
 }
