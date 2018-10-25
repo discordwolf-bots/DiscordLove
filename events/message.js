@@ -5,7 +5,14 @@ const fs = require('fs');
 const chalk = require('chalk');
 const ms = require('ms');
 const moment = require('moment');
-const sql = require('sqlite');
+
+const sqlite3 = require('sqlite3').verbose();
+let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) => {
+  if(err){
+    console.error(err.message);
+  }
+  console.log(`Connected to DB - Message`);
+});
 
 module.exports = message => {
   try {
@@ -16,17 +23,29 @@ module.exports = message => {
 
     var command = "";
     var bool = false;
+    var giveExp = true;
 
     if(message.content.startsWith(config.prefix)){
       command = message.content.split(' ')[0].slice(config.prefix.length);
       bool = true;
+      giveExp = false;
     } else if(message.content.startsWith(config.prefixtext)){
       command = message.content.split(' ')[0].slice(config.prefixtext.length);
       bool = true;
+      giveExp = false;
     } else if(message.content.startsWith(config.prefixemoji)){
       command = message.content.split(' ')[0].slice(config.prefixemoji.length);
       bool = true;
+      giveExp = false;
     }
+
+    if(message.channel.id == '481585772718194708') giveExp = false;
+    if(message.channel.id == '481585743534227461') giveExp = false;
+    if(message.channel.id == '481588503612751882') giveExp = false;
+    if(message.channel.id == '487990607088844817') giveExp = false;
+    if(message.channel.id == '501886295136796672') giveExp = false;
+    if(message.channel.id == '481587436657442822') giveExp = false;
+    if(message.channel.id == '481587506664570890') giveExp = false;
 
     if(bool){
       let perms = client.elevation(message);
@@ -46,6 +65,24 @@ module.exports = message => {
         }
         cmd.run(client, message, params, perms);
       }
+    }
+
+    if(giveExp){
+      let sqlCheck = `SELECT * FROM users WHERE id = ${message.author.id}`;
+      db.get(sqlCheck, [], (err, row) => {
+        if(err) return console.error(err.message);
+        if(!row) return;
+        let min = 5;
+        let max = 10;
+        let random = Math.floor(Math.random() * (max-min)) + min;
+
+        let sqlAdd = `UPDATE users SET money = ? WHERE id = ?`;
+        let dataAdd = [row.money + random, message.author.id];
+        db.run(sqlAdd, dataAdd, (err) => {
+          if(err) return console.error(err.message);
+        });
+
+      });
     }
 
   } catch(e) {

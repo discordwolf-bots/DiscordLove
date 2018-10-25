@@ -18,6 +18,7 @@ Number.prototype.format = function(n, x) {
 };
 
 exports.run = function(client, message, args){
+
   let target = message.author.id;
   if(message.mentions.members.first()) target = message.mentions.members.first().user.id;
 
@@ -77,7 +78,7 @@ exports.conf = {
 };
 
 exports.help = {
-  name: "profile",
-  description: "Displays your profile",
-  usage: "profile"
+  name: "property",
+  description: "Displays who you own",
+  usage: "property"
 }

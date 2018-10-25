@@ -14,11 +14,11 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 exports.run = function(client, message, args){
 
   let sql = `CREATE TABLE IF NOT EXISTS users (
-    id STRING,
+    id TEXT,
     userID INTEGER PRIMARY KEY ASC,
-    money INTEGER DEFAULT 5000,
+    money INTEGER DEFAULT 100,
     cost INTEGER DEFAULT 100,
-    owner INTEGER DEFAULT 0
+    owner TEXT DEFAULT 0
   )`;
   db.run(sql, (err) => {
     if(err){
