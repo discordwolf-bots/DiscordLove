@@ -50,7 +50,6 @@ client.reload = function(command){
 
 client.elevation = function(msg){
   let perms = 0;
-  if(msg.member.roles.has(config.leaders)) perms = 3;
   if(msg.author.id == config.botowner) perms = 4;
   return perms;
 }
