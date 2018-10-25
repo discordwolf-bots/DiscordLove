@@ -67,24 +67,17 @@ exports.run = async function(client, message, args){
 
       if(owner == message.author.id) return message.channel.send(`You already own this member`);
       if(buyPrice == 0) buyPrice = parseInt(cost);
-      console.log(typeof buyPrice);
       if(balance < buyPrice) buyPrice = balance;
       if(buyPrice < cost) return message.channel.send(`The minimum bid on this user is **${cost.format(0)}**`);
       if(balance < cost) return message.channel.send(`You do not have enough money to buy this user (require ${cost.format(0)}, have ${balance.format(0)})`);
-      let newBalanceSelf = balance - buyPrice;
-      let newBalanceTarget = tBalance;
-      console.log(newBalanceTarget); // 1012
-      let difference = parseInt(buyPrice) - parseInt(cost);
-      console.log(buyPrice); // 2200
-      console.log(cost); // 2200
-      console.log(difference); // 0
-      console.log(typeof difference);
-      difference *= 0.1;
-      console.log(difference); // 0
-      newBalanceTarget += difference;
-      console.log(newBalanceTarget); // 1012
-      console.log(`Self - Balance: ${balance}, New Balance: ${newBalanceSelf}`);
-      console.log(`Target - Balance: ${tBalance}, New Balance: ${newBalanceTarget}`);
+      let newBalanceSelf = balance - buyPrice; // works
+      let newBalanceTarget = tBalance; // works
+      let difference = parseInt(buyPrice) - parseInt(cost); // ??
+      difference += 100;
+      difference *= 0.1; // ??
+      newBalanceTarget += difference; // ??
+      console.log(`Self - Balance: ${balance}, New Balance: ${newBalanceSelf}`); // works
+      console.log(`Target - Balance: ${tBalance}, New Balance: ${newBalanceTarget}`); // ??
 
       let sqlUpdateSelf = `UPDATE users SET money = ? WHERE id = ?`;
       let dataUpdateSelf = [newBalanceSelf, message.author.id];
