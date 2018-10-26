@@ -20,7 +20,8 @@ exports.run = function(client, message, args){
     cost INTEGER DEFAULT 100,
     owner TEXT DEFAULT 0,
     lastpurchase TEXT DEFAULT 0,
-    lastprofile TEXT DEFAULT 0
+    lastprofile TEXT DEFAULT 0,
+    lastmessage TEXT DEFAULT 0
   )`;
   db.run(sql, (err) => {
     if(err){

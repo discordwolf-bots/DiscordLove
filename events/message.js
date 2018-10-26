@@ -16,6 +16,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 
 module.exports = message => {
   try {
+    let now = moment().format('DDMMYYhhmmss');
     if(message.author.bot) return;
     if(message.channel.type !== "text") return;
     const client = message.client;
@@ -70,10 +71,12 @@ module.exports = message => {
     if(giveExp){
       let sqlCheck = `SELECT * FROM users WHERE id = ${message.author.id}`;
       db.get(sqlCheck, [], (err, row) => {
+
         if(err) return console.error(err.message);
         if(!row) return;
-        let min = 5;
-        let max = 10;
+        if(now - parseInt(row.lastmessage) < 60) return;
+        let min = 20;
+        let max = 40;
         let random = Math.floor(Math.random() * (max-min)) + min;
 
         let sqlAdd = `UPDATE users SET money = ? WHERE id = ?`;
@@ -91,7 +94,11 @@ module.exports = message => {
                 if(err) return console.error(err.message);
                 console.log(`(User) ${message.guild.members.get(row.id).user.username}: ${row.money} -> ${row.money+random}`);
                 console.log(`(Owner) ${message.guild.members.get(rowO.id).user.username}: ${rowO.money} -> ${rowO.money + Math.floor(random/4)}`);
-                console.log(` `);
+                let sqlUpdate = `UPDATE users SET lastmessage = ? WHERE id = ?`;
+                let dataUpdate = [now, row.id];
+                db.run(sqlUpdate, dataUpdate, (err) => {
+                  if(err) return console.error(err.message);
+                });
               });
             });
           }

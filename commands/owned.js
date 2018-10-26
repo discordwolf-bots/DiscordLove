@@ -19,6 +19,8 @@ Number.prototype.format = function(n, x) {
 
 exports.run = function(client, message, args){
 
+  let now = moment().format('DDMMYYhhmmss');
+
   let sqlCheck = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sqlCheck, [], (err,row) => {
     if(err) return console.error(err.message);
@@ -30,19 +32,49 @@ exports.run = function(client, message, args){
       let own_count = 0;
       let own_value = 0;
       let own_names = [];
+      if(!rows) return message.reply(`You dont own anybody yet!`);
       rows.forEach((row) => {
         own_count++;
         own_value += row.cost-100;
-        let rowUser = message.guild.members.get(row.id);
-        if(rowUser){
-          if(rowUser.nickname != null){
-            own_names.push(`**${own_count}.** **${rowUser.nickname}** (${rowUser.user.username}#${rowUser.user.discriminator}) - **\$${row.cost-100}**`);
-          } else {
-            own_names.push(`**${own_count}.** **${rowUser.user.username}** (${rowUser.user.username}#${rowUser.user.discriminator}) - **\$${row.cost-100}**`);
+        if(now - parseInt(row.lastpurchase) < 300){
+          let tFormat = "";
+          let tDiff = 300 - (now - parseInt(row.lastpurchase));
+          let tDiffMins = Math.floor(tDiff / 60);
+          if(tDiffMins >= 2) {
+            tFormat = tDiffMins + " minutes";
+          } else if(tDiffMins == 1) {
+            tFormat = tDiffMins + " minute";
           }
+          let tDiffSecs = tDiff - (tDiffMins * 60);
+          if(tDiffSecs >= 2) {
+            tFormat += " " + tDiffSecs + " seconds";
+          } else if(tDiffSecs == 1){
+            tFormat += " " + tDiffSecs + " second";
+          }
+          let rowUser = message.guild.members.get(row.id);
+          if(rowUser){
+            if(rowUser.nickname != null){
+              own_names.push(`:white_small_square: **${own_count}.** **${rowUser.nickname}** - **\$${row.cost-100}** (${tFormat})`);
+            } else {
+              own_names.push(`:white_small_square: **${own_count}.** **${rowUser.user.username}** - **\$${row.cost-100}** (${tFormat})`);
+            }
+          }
+          if(!rowUser) own_names.push(`:white_small_square: **${own_count}.** <${row.id}> - **\$${row.cost} (${tFormat})`);
+        } else {
+          // Purchasable
+          let rowUser = message.guild.members.get(row.id);
+          if(rowUser){
+            if(rowUser.nickname != null){
+              own_names.push(`:small_orange_diamond: **${own_count}.** **${rowUser.nickname}** - **\$${row.cost-100}**`);
+            } else {
+              own_names.push(`:small_orange_diamond: **${own_count}.** **${rowUser.user.username}** - **\$${row.cost-100}**`);
+            }
+          }
+          if(!rowUser) own_names.push(`:small_orange_diamond: **${own_count}.** <${row.id}> - **\$${row.cost}`);
         }
-        if(!rowUser) own_names.push(`**${own_count}.** <${row.id}> - **\$${row.cost}`);
+
       });
+      if(own_count == 0) return message.reply(`You dont own anybody!`);
       if(own_count <= 20){
         let embed = new Discord.RichEmbed()
           .setColor(`#DA5220`)
