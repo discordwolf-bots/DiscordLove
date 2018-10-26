@@ -17,14 +17,8 @@ Number.prototype.format = function(n, x) {
   return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
 };
 
-const addNewUser = (id) => {
-  let sql = `INSERT INTO users (id) VALUES (${id})`;
-  db.run(sql, [], (err) => {
-    if(err) return console.error(err.message);
-  });
-}
-
 exports.run = async function(client, message, args){
+  let now = moment().format('DDMMYYhhmmss');
   let target = message.mentions.members.first();
   if(!target) return message.channel.send("Please mention the user you want to buy!");
   if(target.user.id == message.author.id) return message.channel.send(`You cannot purchase yourself`);
@@ -39,31 +33,48 @@ exports.run = async function(client, message, args){
   await db.get(sqlCheckSelf, [], (err, row) => {
     if(err) return console.error(err.message);
     if(!row){
-      addNewUser(message.author.id);
+      return message.channel.send(`Please do the command **${config.prefix}start** in ${message.guild.channels.get('505128715202723850').toString()} first!`);
     }
   });
 
   await db.get(sqlCheckTarget, [], (err, row) => {
     if(err) return console.error(err.message);
     if(!row){
-      addNewUser(target.user.id);
+      return message.channel.send(`This user needs to setup their own profile.`);
     }
   });
 
   await db.get(sqlCheckSelf, [], (err, rowS) => {
     if(!rowS) {
-      addNewUser(message.author.id);
-      return message.channel.send("Your profile has just been created! Please try and purchase again.");
+      return message.channel.send(`Please do the command **${config.prefix}start** in ${message.guild.channels.get('505128715202723850').toString()} first!`);
     }
     let balance = rowS.money;
     db.get(sqlCheckTarget, [], (err, rowT) => {
       if(!rowT) {
-        addNewUser(target.user.id);
-        return message.channel.send("Targets profile has just been created! Please try and purchase again.");
+        return message.channel.send(`This user needs to setup their own profile.`);
       }
       let cost = rowT.cost;
       let owner = rowT.owner;
       let tBalance = rowT.money;
+
+      if(now - parseInt(rowT.lastpurchase) < 300){
+        message.delete();
+        let tFormat = "";
+        let tDiff = 300 - (now - parseInt(rowT.lastpurchase)); // 295
+        let tDiffMins = Math.floor(tDiff / 60);
+        if(tDiffMins >= 2) {
+          tFormat = tDiffMins + " minutes";
+        } else if(tDiffMins == 1) {
+          tFormat = tDiffMins + " minute";
+        }
+        let tDiffSecs = tDiff - (tDiffMins * 60);
+        if(tDiffSecs >= 2) {
+          tFormat += " " + tDiffSecs + " seconds";
+        } else if(tDiffSecs == 1){
+          tFormat += " " + tDiffSecs + " second";
+        }
+        return message.reply(`This user has recently been bought! Please wait another **${tFormat}**`);
+      }
 
       if(owner == message.author.id) return message.channel.send(`You already own this member`);
       if(buyPrice == 0) buyPrice = parseInt(cost);
@@ -84,8 +95,8 @@ exports.run = async function(client, message, args){
       db.run(sqlUpdateSelf, dataUpdateSelf, (err) => {
         if(err) return console.error(err.message);
 
-        let sqlUpdateTarget = `UPDATE users SET money = ?, owner = ?, cost = ? WHERE id = ?`;
-        let dataUpdateTarget = [newBalanceTarget, message.author.id.toString(), buyPrice+100, target.user.id];
+        let sqlUpdateTarget = `UPDATE users SET money = ?, owner = ?, cost = ?, lastpurchase = ? WHERE id = ?`;
+        let dataUpdateTarget = [newBalanceTarget, message.author.id.toString(), buyPrice+100, now, target.user.id];
         db.run(sqlUpdateTarget, dataUpdateTarget, (err) => {
           if(err) return console.error(err.message);
 
@@ -146,6 +157,18 @@ exports.run = async function(client, message, args){
       });
 
     });
+  });
+
+  let sql = `SELECT * FROM users`;
+  db.all(sql, [], (err, rows) => {
+    if(err) return console.error(err.message);
+    let value = 0;
+    let counter = 0;
+    rows.forEach((row) => {
+      counter++;
+      value += row.cost - 100;
+    });
+    client.user.setActivity(`${counter} users worth \$${value.format(0)}`);
   });
 
   let embed = new Discord.RichEmbed()

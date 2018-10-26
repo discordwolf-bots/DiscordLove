@@ -19,26 +19,19 @@ Number.prototype.format = function(n, x) {
 
 exports.run = function(client, message, args){
   let target = message.author.id;
+  let now = moment().format('DDMMYYhhmmss');
   if(message.mentions.members.first()) target = message.mentions.members.first().user.id;
-
   let sqlCheck = `SELECT * FROM users WHERE id = ${target}`;
   db.get(sqlCheck, [], (err,row) => {
     if(err) return console.error(err.message);
-    if(!row){ // NEW USER
-      let sqlInsert = `INSERT INTO users (id) VALUES (${target})`;
-      db.run(sqlInsert, [], (err) => {
-        if(err) return console.error(err.message);
-        let profile = new Discord.RichEmbed()
-          .setColor(`#DA5020`)
-          .setTitle(`Profile of ${message.guild.member(target).user.username}`)
-          .setThumbnail(`${message.guild.member(target).user.avatarURL}`)
-          .addField(`Current Bank`, `**\$** 5,000`, true)
-          .addField(`Current Value`, `**\$** 100`, true)
-          .addField(`Current Owner`, `None`);
-        message.channel.send({embed:profile});
-        console.log(`New user added : ${target}`);
-      });
+    if(!row){
+      if(target != message.author.id) return message.channel.send(`This user needs to setup their own profile.`);
+      return message.channel.send(`Please do the command **${config.prefix}start** in ${message.guild.channels.get('505128715202723850').toString()} first!`);
     } else {
+
+      if(now - parseInt(row.lastprofile) < 60){ message.delete(); return message.reply(`Please wait another **${60 - (now - parseInt(row.lastprofile))}** seconds.`); }
+
+      if(message.channel.id != '505133836280266752') { message.delete(); return message.channel.send(`Please only use DiscordLove commands in ${message.guild.channels.get('505133836280266752').toString()}`); }
       let owner = row.owner;
       let ownerName = "None";
       if(owner != 0){
@@ -60,6 +53,10 @@ exports.run = function(client, message, args){
         .addField(`Current Value`, `**\$** ${row.cost.format(0)}`, true)
         .addField(`Current Owner`, `${ownerName}`);
       message.channel.send({embed:profile});
+      let sql = `UPDATE users SET lastprofile = '${now}' WHERE id = ${message.author.id}`;
+      db.run(sql, [], (err) => {
+        if(err) return console.error(err.message);
+      });
     }
   });
 

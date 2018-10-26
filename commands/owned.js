@@ -22,15 +22,36 @@ exports.run = function(client, message, args){
   let sqlCheck = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sqlCheck, [], (err,row) => {
     if(err) return console.error(err.message);
-    if(!row) return message.channel.send(`Please do ${config.prefix}profile first!`);
+    if(!row) return message.channel.send(`Please do the command **${config.prefix}start** in #discord-love-setup first!`);
+    if(message.channel.id != '505133836280266752') { message.delete(); return message.channel.send(`Please only use DiscordLove commands in ${message.guild.channels.get('505133836280266752').toString()}`); }
 
-    let sqlCheckOwner = `SELECT * FROM users WHERE owner = ${message.author.id}`;
+    let sqlCheckOwner = `SELECT * FROM users WHERE owner = ${message.author.id} ORDER BY cost DESC, userID ASC`;
     db.all(sqlCheckOwner, [], (err, rows) => {
-      let rowCount = 0;
+      let own_count = 0;
+      let own_value = 0;
+      let own_names = [];
       rows.forEach((row) => {
-        rowCount++;
+        own_count++;
+        own_value += row.cost-100;
+        let rowUser = message.guild.members.get(row.id);
+        if(rowUser){
+          if(rowUser.nickname != null){
+            own_names.push(`**${own_count}.** **${rowUser.nickname}** (${rowUser.user.username}#${rowUser.user.discriminator}) - **\$${row.cost-100}**`);
+          } else {
+            own_names.push(`**${own_count}.** **${rowUser.user.username}** (${rowUser.user.username}#${rowUser.user.discriminator}) - **\$${row.cost-100}**`);
+          }
+        }
+        if(!rowUser) own_names.push(`**${own_count}.** <${row.id}> - **\$${row.cost}`);
       });
-      message.channel.send(`You currently own **${rowCount}** users.`);
+      if(own_count <= 20){
+        let embed = new Discord.RichEmbed()
+          .setColor(`#DA5220`)
+          .setTitle(`People ${message.author.username}#${message.author.discriminator} owns`)
+          .setThumbnail(`${message.author.avatarURL}`)
+          .addField(`Total Value: **\$${own_value.format(0)}**`, `${own_names.join(`\n`)}`)
+          .setFooter(`Showing 1-${own_count} of ${own_count}`);
+        message.channel.send(embed);
+      }
     });
   });
 

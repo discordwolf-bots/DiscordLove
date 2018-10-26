@@ -80,6 +80,21 @@ module.exports = message => {
         let dataAdd = [row.money + random, message.author.id];
         db.run(sqlAdd, dataAdd, (err) => {
           if(err) return console.error(err.message);
+          if(row.owner != 0){
+            let sqlCheckOwner = `SELECT * FROM users WHERE id = ${row.owner}`;
+            db.get(sqlCheckOwner, [], (err, rowO) => {
+              if(err) return console.error(err.message);
+              if(!rowO) return;
+              let sqlAddOwner = `UPDATE users SET money = ? WHERE id = ?`;
+              let dataAddOwner = [rowO.money + Math.floor(random / 4), rowO.id];
+              db.run(sqlAddOwner, dataAddOwner, (err) => {
+                if(err) return console.error(err.message);
+                console.log(`(User) ${message.guild.members.get(row.id).user.username}: ${row.money} -> ${row.money+random}`);
+                console.log(`(Owner) ${message.guild.members.get(rowO.id).user.username}: ${rowO.money} -> ${rowO.money + Math.floor(random/4)}`);
+                console.log(` `);
+              });
+            });
+          }
         });
 
       });
