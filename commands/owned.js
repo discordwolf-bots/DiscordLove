@@ -54,12 +54,12 @@ exports.run = function(client, message, args){
           let rowUser = message.guild.members.get(row.id);
           if(rowUser){
             if(rowUser.nickname != null){
-              own_names.push(`:white_small_square: **${own_count}.** **${rowUser.nickname}** - **\$${row.cost-100}** (${tFormat})`);
+              own_names.push(`:small_red_triangle_down: **${own_count}.** **${rowUser.nickname}** - **\$${row.cost-100}** (${tFormat})`);
             } else {
-              own_names.push(`:white_small_square: **${own_count}.** **${rowUser.user.username}** - **\$${row.cost-100}** (${tFormat})`);
+              own_names.push(`:small_red_triangle_down: **${own_count}.** **${rowUser.user.username}** - **\$${row.cost-100}** (${tFormat})`);
             }
           }
-          if(!rowUser) own_names.push(`:white_small_square: **${own_count}.** <${row.id}> - **\$${row.cost} (${tFormat})`);
+          if(!rowUser) own_names.push(`:small_red_triangle_down: **${own_count}.** <${row.id}> - **\$${row.cost} (${tFormat})`);
         } else {
           // Purchasable
           let rowUser = message.guild.members.get(row.id);
