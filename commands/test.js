@@ -33,7 +33,7 @@ exports.conf = {
 };
 
 exports.help = {
-  name: "build",
-  description: "Builds Databse",
-  usage: "build"
+  name: "test",
+  description: "Wolfs current test command",
+  usage: "test"
 }
