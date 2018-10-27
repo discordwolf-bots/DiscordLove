@@ -119,7 +119,8 @@ exports.run = function(client, message, args){
         .addField(`Current Bank`, `**\$** ${row.money.format(0)}`, true)
         .addField(`Current Value`, `**\$** ${row.cost.format(0)}`, true)
         .addField(`Current Owner`, `${ownerName}`)
-        .setFooter(`Update coming soon: Achievements`);
+        .addField(`Achievement Points`, `${(row.achieve_your_value + row.achieve_talks_a_lot + row.achieve_owned_value + row.achieve_buy_the_bot).format(0)}`)
+        .setFooter(`More Achievements hopefully coming soon! **Rewards for ideas!**`);
       message.channel.send({embed:profile});
       let sql = `UPDATE users SET lastprofile = '${now}' WHERE id = ${message.author.id}`;
       db.run(sql, [], (err) => {
