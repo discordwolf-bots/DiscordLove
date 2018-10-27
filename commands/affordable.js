@@ -47,7 +47,8 @@ exports.run = function(client, message, args){
       });
       let embed = new Discord.RichEmbed()
         .setColor('#fa1201')
-        .addField(`Top 10 Users you can afford`, `${affordable_users.join('\n')}`);
+        .addField(`Top 10 Users you can afford`, `${affordable_users.join('\n')}`)
+        .setFooter(`You currently have \$${(row.money).format(0)}`);
       message.channel.send(embed);
     });
   });
