@@ -19,6 +19,7 @@ module.exports = message => {
     let now = moment().format('DDMMYYhhmmss');
     if(message.author.bot) return;
     if(message.channel.type !== "text") return;
+    if(message.guild.id != '480906420133429259') return;
     const client = message.client;
     const params = message.content.split(' ').slice(1);
 
