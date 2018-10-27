@@ -75,6 +75,27 @@ const achievement_expensive_taste = (message, value) => {
   });
 }
 
+const achievement_buy_a_bot = (message) => {
+  let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
+  db.get(sql, (err, row) => {
+    if(err) return console.error(err.message);
+    let buy_the_bot_progress = row.achieve_buy_the_bot;
+    if(buy_the_bot_progress == 0){
+      let sqlUpdate = `UPDATE users SET money = ${row.money+2500}, achieve_buy_the_bot = 1 WHERE id = ${message.author.id}`;
+      let embed = new Discord.RichEmbed()
+        .setColor('#4DBF42')
+        .setAuthor(`Achievement Gained! - \$2,500 added!`, message.author.avatarURL)
+        .setFooter(`Completed Hidden achievement`);
+      message.channel.send(embed);
+      db.run(sqlUpdate, (err) => {
+        if(err) return console.error(err.message);
+      });
+    } else {
+      message.channel.send(`Stop trying to buy bots!`);
+    }
+  });
+}
+
 Number.prototype.format = function(n, x) {
   var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
   return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
@@ -85,6 +106,10 @@ exports.run = async function(client, message, args){
   let target = message.mentions.members.first();
   if(!target) return message.channel.send("Please mention the user you want to buy!");
   if(target.user.id == message.author.id) return message.channel.send(`You cannot purchase yourself`);
+  if(target.user.bot && target.user.id == '504720625240113162'){
+    message.delete();
+    return achievement_buy_a_bot(message);
+  }
   if(target.user.bot) return message.channel.send(`Stop trying to buy bots!`);
 
   if(args[1]){
