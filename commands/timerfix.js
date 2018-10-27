@@ -13,20 +13,20 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 
 exports.run = function(client, message, args){
   message.delete();
-  if(!args[1]) return;
-  if(args[1] == "message"){
+  if(!args[0]) return;
+  if(args[0] == "message"){
     let sql = `UPDATE users SET lastmessage = 0`;
     db.run(sql, (err) => {
       if(err) return console.error(err.message);
       message.channel.send(`All message timers reset`);
     });
-  } else if(args[1] == "buy"){
+  } else if(args[0] == "buy"){
     let sql = `UPDATE users SET lastpurchase = 0`;
     db.run(sql, (err) => {
       if(err) return console.error(err.message);
       message.channel.send(`All purchase timers reset`);
     });
-  } else if(args[1] == "profile"){
+  } else if(args[0] == "profile"){
     let sql = `UPDATE users SET lastprofile = 0`;
     db.run(sql, (err) => {
       if(err) return console.error(err.message);
