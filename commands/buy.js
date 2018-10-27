@@ -67,7 +67,7 @@ const achievement_expensive_taste = (message, value) => {
         .setFooter(`Gained ${achieved-expensive_taste_progress} Levels on the Expensive Taste achievement`);
       message.channel.send(embed);
       let newBalance = row.money + rewards;
-      let sqlUpdate = `UPDATE users SET money = ${newBalance}, achieve_your_value = ${achieved} WHERE id = ${message.author.id}`;
+      let sqlUpdate = `UPDATE users SET money = ${newBalance}, achieve_owned_value = ${achieved} WHERE id = ${message.author.id}`;
       db.run(sqlUpdate, (err) => {
         if(err) return console.error(err.message);
       });
@@ -140,7 +140,7 @@ exports.run = async function(client, message, args){
         } else if(tDiffSecs == 1){
           tFormat += " " + tDiffSecs + " second";
         }
-          return message.reply(`This user has recently been bought! Please wait another **${tFormat}**`);
+          //return message.reply(`This user has recently been bought! Please wait another **${tFormat}**`);
       }
 
       if(owner == message.author.id) return message.channel.send(`You already own this member`);
