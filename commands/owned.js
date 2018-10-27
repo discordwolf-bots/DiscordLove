@@ -36,6 +36,12 @@ exports.run = function(client, message, args){
       rows.forEach((row) => {
         own_count++;
         own_value += row.cost-100;
+        let own_emoji = `<:heart_red:505752941932838912>`;
+        if(own_count == 1) own_emoji = `<:heart_diamond:505750302863917056>`;
+        if(own_count == 2) own_emoji = `<:heart_platinum:505750302796939283>`;
+        if(own_count == 3) own_emoji = `<:heart_gold:505750302226645003>`;
+        if(own_count == 4) own_emoji = `<:heart_silver:505750301341515779>`;
+        if(own_count == 5) own_emoji = `<:heart_bronze:505750301614276618>`;
         if(now - parseInt(row.lastpurchase) < 300){
           let tFormat = "";
           let tDiff = 300 - (now - parseInt(row.lastpurchase));
@@ -54,23 +60,23 @@ exports.run = function(client, message, args){
           let rowUser = message.guild.members.get(row.id);
           if(rowUser){
             if(rowUser.nickname != null){
-              own_names.push(`:small_red_triangle_down: **${own_count}.** **${rowUser.nickname}** - **\$${row.cost-100}** (${tFormat})`);
+              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.nickname}** - **\$${row.cost-100}** <:cooldown:505752316649930774>(${tFormat})`);
             } else {
-              own_names.push(`:small_red_triangle_down: **${own_count}.** **${rowUser.user.username}** - **\$${row.cost-100}** (${tFormat})`);
+              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.user.username}** - **\$${row.cost-100}** <:cooldown:505752316649930774>(${tFormat})`);
             }
           }
-          if(!rowUser) own_names.push(`:small_red_triangle_down: **${own_count}.** <${row.id}> - **\$${row.cost} (${tFormat})`);
+          if(!rowUser) own_names.push(`${own_emoji} **${own_count}.** <${row.id}> - **\$${row.cost} <:cooldown:505752316649930774>(${tFormat})`);
         } else {
           // Purchasable
           let rowUser = message.guild.members.get(row.id);
           if(rowUser){
             if(rowUser.nickname != null){
-              own_names.push(`:small_orange_diamond: **${own_count}.** **${rowUser.nickname}** - **\$${row.cost-100}**`);
+              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.nickname}** - **\$${row.cost-100}**`);
             } else {
-              own_names.push(`:small_orange_diamond: **${own_count}.** **${rowUser.user.username}** - **\$${row.cost-100}**`);
+              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.user.username}** - **\$${row.cost-100}**`);
             }
           }
-          if(!rowUser) own_names.push(`:small_orange_diamond: **${own_count}.** <${row.id}> - **\$${row.cost}`);
+          if(!rowUser) own_names.push(`${own_emoji} **${own_count}.** <${row.id}> - **\$${row.cost}`);
         }
 
       });
