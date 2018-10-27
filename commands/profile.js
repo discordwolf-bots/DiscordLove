@@ -30,8 +30,10 @@ exports.run = function(client, message, args){
     } else {
 
       if(now - parseInt(row.lastprofile) < 60){ message.delete(); return message.reply(`Please wait another **${60 - (now - parseInt(row.lastprofile))}** seconds.`); }
-
-      if(message.channel.id != '505133836280266752') { message.delete(); return message.channel.send(`Please only use DiscordLove commands in ${message.guild.channels.get('505133836280266752').toString()}`); }
+/**
+  TODO: Multi guild check. Blocked channels?
+**/
+      //if(message.channel.id != '505133836280266752') { message.delete(); return message.channel.send(`Please only use DiscordLove commands in ${message.guild.channels.get('505133836280266752').toString()}`); }
       let owner = row.owner;
       let ownerName = "None";
       if(owner != 0){
