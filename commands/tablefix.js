@@ -8,12 +8,18 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   if(err){
     console.error(err.message);
   }
-  console.log(`Connected to DB - Build`);
+  console.log(`Connected to DB - Tablefix`);
 });
 
 exports.run = function(client, message, args){
+  let sql = `
+  PRAGMA foreign_keys=off;
 
-  let sql = `CREATE TABLE IF NOT EXISTS users (
+  BEGIN TRANSACTION;
+
+  ALTER TABLE users RENAME TO _users_old;
+
+  CREATE TABLE IF NOT EXISTS users (
     id TEXT,
     userID INTEGER PRIMARY KEY ASC,
     money INTEGER DEFAULT 100,
@@ -24,21 +30,22 @@ exports.run = function(client, message, args){
     lastmessage TEXT DEFAULT 0,
     achieve_your_value INTEGER DEFAULT 0,
     achieve_owned_value INTEGER DEFAULT 0,
-    achieve_buy_the_bot INTEGER DEFAULT 0
-  )`;
-  db.run(sql, (err) => {
-    if(err){
-      return console.error(err.message);
-    }
-    console.log(`Table created`);
-  });
+    achhieve_buy_the_bot INTEGER DEFAULT 0
+  );
 
-  let embed = new Discord.RichEmbed()
-    .setColor(`#6D0A0A`)
-    .setAuthor(`${message.author.username} used command 'ping'`, message.author.avatarURL)
-    .setFooter(`Command Used`)
-    .setTimestamp();
-  //client.channels.get(config.commands).send({embed});
+  INSERT INTO users (id, userID, money, cost, owner, lastpurchase, lastprofile, lastmessage)
+    SELECT id, userID, money, cost, owner, lastpurchase, lastprofile, lastmessage
+    FROM _users_old;
+
+  COMMIT;
+
+  PRAGMA foreign_keys=on;
+  `;
+
+  db.run(sql, [], (err) => {
+    if(err) return console.error(err.message);
+    console.log(`Table altered successfully`);
+  })
 };
 
 exports.conf = {
@@ -47,7 +54,7 @@ exports.conf = {
 };
 
 exports.help = {
-  name: "build",
-  description: "Builds Databse",
-  usage: "build"
+  name: "tablefix",
+  description: "Table fix",
+  usage: "tablefix"
 }
