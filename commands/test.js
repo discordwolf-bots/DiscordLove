@@ -16,7 +16,7 @@ exports.run = function(client, message, args){
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, (err, row) => {
     if(err) return console.error(err.message);
-    if(row) message.channel.send(`${row}`);
+    if(row) message.channel.send(`${row.achieve_your_value}`);
   });
 
   let embed = new Discord.RichEmbed()
