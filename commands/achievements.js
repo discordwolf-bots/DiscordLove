@@ -26,13 +26,14 @@ exports.run = async function(client, message, args){
     let owned_value_icon = `:question:`;
     let buyabot_icon = `:question:`;
 
-    if(hidden_buyabot_progress == 0) achievements_text.push(`${buyabot_icon} **Hidden Achievement**`);
+
 
     if(user_value_progress > 0) user_value_icon = `:bust_in_silhouette:`;
     if(owned_value_progress > 0) owned_value_icon = `:busts_in_silhouette:`;
 
     await achievements_text.push(`${user_value_icon} **Self-Worth** - Level **${user_value_progress}**`);
     await achievements_text.push(`${owned_value_icon} **Expensive Taste** - Level **${owned_value_progress}**`);
+    if(hidden_buyabot_progress == 0) achievements_text.push(`${buyabot_icon} **Hidden Achievement**`);
     if(hidden_buyabot_progress > 0) {
       buyabot_icon = `:robot:`;
       achievements_text.push(`${buyabot_icon} **Hidden Achievement** - Level **Max**`);
