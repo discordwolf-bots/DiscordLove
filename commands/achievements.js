@@ -57,7 +57,7 @@ exports.run = async function(client, message, args){
 
 exports.conf = {
   aliases: ['ach'],
-  permLevel: 4
+  permLevel: 0
 };
 
 exports.help = {

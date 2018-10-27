@@ -11,6 +11,69 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - Buy`);
 });
 
+const achievement_expensive_taste = (message, value) => {
+  let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
+  db.get(sql, (err, row) => {
+    if(err) return console.error(err.message);
+    let expensive_taste_progress = row.achieve_owned_value;
+    let achieved = 0;
+    if(value >= 1000)
+      if(expensive_taste_progress < 1)
+        achieved = 1;
+    if(value >= 2500)
+      if(expensive_taste_progress < 2)
+        achieved = 2;
+    if(value >= 5000)
+      if(expensive_taste_progress < 3)
+        achieved = 3;
+    if(value >= 10000)
+      if(expensive_taste_progress < 4)
+        achieved = 4;
+    if(value >= 20000)
+      if(expensive_taste_progress < 5)
+        achieved = 5;
+    if(value >= 50000)
+      if(expensive_taste_progress < 6)
+        achieved = 6;
+    if(value >= 100000)
+      if(expensive_taste_progress < 7)
+        achieved = 7;
+    if(value >= 250000)
+      if(expensive_taste_progress < 8)
+        achieved = 8;
+    if(value >= 500000)
+      if(expensive_taste_progress < 9)
+        achieved = 9;
+    if(value >= 1000000)
+      if(expensive_taste_progress < 10)
+        achieved = 10;
+    if(achieved > 0){
+      let rewards = 0;
+      for(let i=expensive_taste_progress;i<=achieved;i++){
+        if(i == 1) rewards += 500;
+        if(i == 2) rewards += 1000;
+        if(i == 3) rewards += 1500;
+        if(i == 4) rewards += 2000;
+        if(i == 5) rewards += 2500;
+        if(i == 6) rewards += 5000;
+        if(i == 7) rewards += 7500;
+        if(i == 8) rewards += 10000;
+        if(i == 9) rewards += 15000;
+        if(i == 10) rewards += 25000;
+      }
+      let embed = new Discord.RichEmbed()
+        .setColor('#4DBF42')
+        .setAuthor(`Achievement Gained! - \$${rewards} added!`, message.author.avatarURL)
+        .setFooter(`Gained ${achieved-expensive_taste_progress} Levels on the Expensive Taste achievement`);
+      message.channel.send(embed);
+      let newBalance = row.money + rewards;
+      let sqlUpdate = `UPDATE users SET money = ${newBalance}, achieve_your_value = ${achieved} WHERE id = ${message.author.id}`;
+      db.run(sqlUpdate, (err) => {
+        if(err) return console.error(err.message);
+      });
+    }
+  });
+}
 
 Number.prototype.format = function(n, x) {
   var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
@@ -133,6 +196,7 @@ exports.run = async function(client, message, args){
                   .addField(`New Value`, `**\$** ${(buyPrice+100).format(0)}`, true)
                   .addField(`New Owner`, `${ownerName}`);
                 message.channel.send(embed);
+                expensive_taste_progress(message, buyPrice);
               });
             });
           } else {
@@ -153,6 +217,7 @@ exports.run = async function(client, message, args){
               .addField(`New Value`, `**\$** ${(buyPrice+100).format(0)}`, true)
               .addField(`New Owner`, `${ownerName}`);
             message.channel.send(embed);
+            expensive_taste_progress(message, buyPrice);
           }
         });
 
