@@ -32,13 +32,28 @@ exports.run = async function(client, message, args){
     if(owned_value_progress > 0) owned_value_icon = `:busts_in_silhouette:`;
     if(talks_a_lot_progress > 0) talks_a_lot_icon = `:speaking_head:`;
 
-    await achievements_text.push(`${user_value_icon} **Self-Worth** - Level **${user_value_progress}**`);
-    await achievements_text.push(`${owned_value_icon} **Expensive Taste** - Level **${owned_value_progress}**`);
-    await achievements_text.push(`${talks_a_lot_icon} **Talks a Lot** - Level **${talks_a_lot_progress}**`);
+    if(user_value_progress < 10){
+      await achievements_text.push(`${user_value_icon} **Self-Worth** - Level **${user_value_progress} / 10**`);
+    } else {
+      await achievements_text.push(`${user_value_icon} **Self-Worth** - Level **Maxed**`);
+    }
+
+    if(owned_value_progress < 10){
+      await achievements_text.push(`${owned_value_icon} **Expensive Taste** - Level **${owned_value_progress} / 10**`);
+    } else {
+      await achievements_text.push(`${owned_value_icon} **Expensive Taste** - Level **Maxed**`);
+    }
+
+    if(talks_a_lot_progress < 10){
+      await achievements_text.push(`${talks_a_lot_icon} **Talks a Lot** - Level **${talks_a_lot_progress} / 10**`);
+    } else {
+      await achievements_text.push(`${talks_a_lot_icon} **Talks a Lot** - Level **Maxed**`);
+    }
+    
     if(hidden_buyabot_progress == 0) achievements_text.push(`${buyabot_icon} **Hidden Achievement**`);
     if(hidden_buyabot_progress > 0) {
       buyabot_icon = `:robot:`;
-      achievements_text.push(`${buyabot_icon} **Hidden Achievement** - Level **Max**`);
+      achievements_text.push(`${buyabot_icon} **Hidden Achievement** - Level **Maxed**`);
     }
 
     let embed = new Discord.RichEmbed()
