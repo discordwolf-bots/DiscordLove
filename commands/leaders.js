@@ -58,7 +58,6 @@ exports.run = function(client, message, args){
       let embed = new Discord.RichEmbed()
         .setColor(`#DA5220`)
         .setTitle(`Most expensive users!`)
-        .setThumbnail(`${message.author.avatarURL}`)
         .addField(`Top ${leader_count} Users`, `${leader_names.join(`\n`)}`);
       message.channel.send(embed);
     }
