@@ -196,7 +196,7 @@ exports.run = async function(client, message, args){
                   .addField(`New Value`, `**\$** ${(buyPrice+100).format(0)}`, true)
                   .addField(`New Owner`, `${ownerName}`);
                 message.channel.send(embed);
-                expensive_taste_progress(message, buyPrice);
+                achievement_expensive_taste(message, buyPrice);
               });
             });
           } else {
@@ -217,7 +217,7 @@ exports.run = async function(client, message, args){
               .addField(`New Value`, `**\$** ${(buyPrice+100).format(0)}`, true)
               .addField(`New Owner`, `${ownerName}`);
             message.channel.send(embed);
-            expensive_taste_progress(message, buyPrice);
+            achievement_expensive_taste(message, buyPrice);
           }
         });
 
