@@ -68,7 +68,7 @@ const achievement_self_worth = (message) => {
         .setFooter(`Gained ${achieved-self_worth_progress} Levels on the Self Worth achievement`);
       message.channel.send(embed);
       let newBalance = row.money + rewards;
-      let sqlUpdate = `UPDATE users SET money = ${newBalance} WHERE id = ${message.author.id}`;
+      let sqlUpdate = `UPDATE users SET money = ${newBalance}, achieve_your_value = ${achieved} WHERE id = ${message.author.id}`;
       db.run(sqlUpdate, (err) => {
         if(err) return console.error(err.message);
       });
