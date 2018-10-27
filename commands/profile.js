@@ -51,7 +51,8 @@ exports.run = function(client, message, args){
         .setThumbnail(`${message.guild.member(target).user.avatarURL}`)
         .addField(`Current Bank`, `**\$** ${row.money.format(0)}`, true)
         .addField(`Current Value`, `**\$** ${row.cost.format(0)}`, true)
-        .addField(`Current Owner`, `${ownerName}`);
+        .addField(`Current Owner`, `${ownerName}`)
+        .setFooter(`Update coming soon: Achievements`);
       message.channel.send({embed:profile});
       let sql = `UPDATE users SET lastprofile = '${now}' WHERE id = ${message.author.id}`;
       db.run(sql, [], (err) => {

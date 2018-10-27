@@ -28,7 +28,7 @@ exports.run = async function(client, message, args){
     buyPrice = parseInt(args[1]);
     if(args[1].length < 1) buyPrice = 0;
     if(parseInt(args[1]) != args[1]) buyPrice = 0;
-  } 
+  }
   if(!args[1]) buyPrice = 0;
 
   let sqlCheckSelf = `SELECT * FROM users WHERE id = ${message.author.id}`;
@@ -77,7 +77,7 @@ exports.run = async function(client, message, args){
         } else if(tDiffSecs == 1){
           tFormat += " " + tDiffSecs + " second";
         }
-        return message.reply(`This user has recently been bought! Please wait another **${tFormat}**`);
+          return message.reply(`This user has recently been bought! Please wait another **${tFormat}**`);
       }
 
       if(owner == message.author.id) return message.channel.send(`You already own this member`);
