@@ -17,7 +17,7 @@ exports.run = function(client, message, args){
   db.get(sql1, (err, row) => {
     if(err) return console.error(err.message);
     if(!row) return message.reply(`You need a profile first`);
-    let sql2 = `SELECT * FROM users WHERE cost <= ${row.money} AND owner != ${row.id} ORDER BY cost DESC LIMIT 10`;
+    let sql2 = `SELECT * FROM users WHERE cost <= ${row.money} AND owner != ${row.id} AND id != ${row.id} ORDER BY cost DESC LIMIT 10`;
     db.all(sql2, (err, rows) => {
       if(err) return console.error(err.message);
       let affordable_users = [];
