@@ -125,7 +125,8 @@ exports.run = function(client, message, args){
       db.run(sql, [], (err) => {
         if(err) return console.error(err.message);
       });
-      achievement_self_worth(message);
+      if(target == message.author.id)
+        achievement_self_worth(message);
     }
   });
 
