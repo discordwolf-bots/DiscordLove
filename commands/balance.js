@@ -21,7 +21,7 @@ exports.run = function(client, message, args){
   db.get(sql, [], (err, row) => {
     if(err) return console.error(err.message);
     if(!row) return message.reply(`You do not have a profile yet!`);
-    message.reply(`Your current balance is **\$${row.money.format(0)}`);
+    message.reply(`Your current balance is **\$${row.money.format(0)}**`);
   });
 };
 
