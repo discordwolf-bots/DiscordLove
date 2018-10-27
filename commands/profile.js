@@ -112,6 +112,14 @@ exports.run = function(client, message, args){
         }
         if(!ownerUser) ownerName = "<" + owner + ">";
       }
+      let achievement_points = row.achieve_your_value + row.achieve_talks_a_lot + row.achieve_owned_value + row.achieve_buy_the_bot;
+      let achievement_points_icon = `<:heart_red:505752941932838912>`;
+      if(achievement_points >= 5) achievement_points_icon = `<:heart_bronze:505750301614276618>`;
+      if(achievement_points >= 10) achievement_points_icon = `<:heart_silver:505750301341515779>`;
+      if(achievement_points >= 15) achievement_points_icon = `<:heart_gold:505750302226645003>`;
+      if(achievement_points >= 20) achievement_points_icon = `<:heart_platinum:505750302796939283>`;
+      if(achievement_points == 31) achievement_points_icon = `<:heart_diamond:505750302863917056>`;
+
       let profile = new Discord.RichEmbed()
         .setColor(`#DA5020`)
         .setTitle(`Profile of ${message.guild.member(target).user.username}#${message.guild.members.get(target).user.discriminator}`)
@@ -119,7 +127,7 @@ exports.run = function(client, message, args){
         .addField(`Current Bank`, `**\$** ${row.money.format(0)}`, true)
         .addField(`Current Value`, `**\$** ${row.cost.format(0)}`, true)
         .addField(`Current Owner`, `${ownerName}`)
-        .addField(`Achievement Points`, `${(row.achieve_your_value + row.achieve_talks_a_lot + row.achieve_owned_value + row.achieve_buy_the_bot).format(0)}`)
+        .addField(`Achievement Points`, `${achievement_points_icon} ${achievement_points.format(0)}`)
         .setFooter(`More Achievements hopefully coming soon! **Rewards for ideas!**`);
       message.channel.send({embed:profile});
       let sql = `UPDATE users SET lastprofile = '${now}' WHERE id = ${message.author.id}`;
