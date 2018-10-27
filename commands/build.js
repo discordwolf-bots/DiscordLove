@@ -31,6 +31,7 @@ exports.run = function(client, message, args){
   db.run(sql, (err) => {
     if(err){
       return console.error(err.message);
+      message.channel.send(`New table created - users`);
     }
     console.log(`Table created`);
   });

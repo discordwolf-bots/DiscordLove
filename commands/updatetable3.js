@@ -16,6 +16,7 @@ exports.run = function(client, message, args){
   let sql = `DROP TABLE _users_old;`;
   db.run(sql, (err) => {
     if(err) return console.error(err.message);
+    message.channel.send(`Table deleted - _users_old`);
   });
 
 };

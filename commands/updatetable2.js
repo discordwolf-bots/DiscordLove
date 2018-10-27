@@ -18,6 +18,7 @@ exports.run = function(client, message, args){
     FROM _users_old`;
   db.run(sql, (err) => {
     if(err) return console.error(err.message);
+    message.channel.send(`Old data moved from _users_old to users`);
   });
 
 };

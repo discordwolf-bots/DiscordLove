@@ -16,6 +16,7 @@ exports.run = function(client, message, args){
   let sql = `ALTER TABLE users RENAME TO _users_old;`;
   db.run(sql, (err) => {
     if(err) return console.error(err.message);
+    message.channel.send(`Table renamed to _users_old`);
   });
 
 };
