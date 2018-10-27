@@ -12,7 +12,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 });
 
 const achievement_self_worth = (message) => {
-  let sql = `SELECT * FROM users WHERE id = ${mesasge.author.id}`;
+  let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, (err, row) => {
     if(err) return console.error(err.message);
     let value = row.cost;
