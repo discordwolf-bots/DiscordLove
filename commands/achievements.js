@@ -14,7 +14,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 exports.run = async function(client, message, args){
 
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
-  db.get(sql, (err, row) => {
+  db.get(sql, async (err, row) => {
     if(err) return console.error(err.message);
     if(!row) return message.reply(`You need to create a profile first!`);
     let user_value_progress = row.achieve_your_value;
