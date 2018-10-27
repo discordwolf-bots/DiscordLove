@@ -31,7 +31,7 @@ exports.conf = {
 };
 
 exports.help = {
-  name: "test",
-  description: "Ping/Pong Command",
-  usage: "test"
+  name: "balance",
+  description: "Display your current balance",
+  usage: "balance"
 }
