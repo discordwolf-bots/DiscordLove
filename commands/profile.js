@@ -18,34 +18,34 @@ const achievement_self_worth = (message) => {
     let value = row.cost;
     let self_worth_progress = row.achieve_your_value;
     let achieved = 0;
-    if(value > 1000)
+    if(value >= 1000)
       if(self_worth_progress < 1)
         achieved = 1;
-    if(value > 2500)
+    if(value >= 2500)
       if(self_worth_progress < 2)
         achieved = 2;
-    if(value > 5000)
+    if(value >= 5000)
       if(self_worth_progress < 3)
         achieved = 3;
-    if(value > 10000)
+    if(value >= 10000)
       if(self_worth_progress < 4)
         achieved = 4;
-    if(value > 20000)
+    if(value >= 20000)
       if(self_worth_progress < 5)
         achieved = 5;
-    if(value > 50000)
+    if(value >= 50000)
       if(self_worth_progress < 6)
         achieved = 6;
-    if(value > 100000)
+    if(value >= 100000)
       if(self_worth_progress < 7)
         achieved = 7;
-    if(value > 250000)
+    if(value >= 250000)
       if(self_worth_progress < 8)
         achieved = 8;
-    if(value > 500000)
+    if(value >= 500000)
       if(self_worth_progress < 9)
         achieved = 9;
-    if(value > 1000000)
+    if(value >= 1000000)
       if(self_worth_progress < 10)
         achieved = 10;
     if(achieved > 0){
