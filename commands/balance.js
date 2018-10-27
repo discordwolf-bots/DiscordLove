@@ -17,6 +17,7 @@ Number.prototype.format = function(n, x) {
 };
 
 exports.run = function(client, message, args){
+  message.delete();
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, [], (err, row) => {
     if(err) return console.error(err.message);
