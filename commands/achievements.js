@@ -22,7 +22,7 @@ exports.run = function(client, message, args){
     let hidden_buyabot_progress = row.achieve_buy_the_bot;
 
     let achievements_text = [];
-    let user_value_icon, owned_value_icon, buyabot_icon = `:question`;
+    let user_value_icon, owned_value_icon, buyabot_icon = `:question:`;
 
     if(hidden_buyabot_progress == 0) achievements_text.push(`${buyabot_icon} **Hidden Achievement**`);
 
