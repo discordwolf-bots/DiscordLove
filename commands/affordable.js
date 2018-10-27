@@ -26,9 +26,9 @@ exports.run = function(client, message, args){
           let rowUser = message.guild.members.get(user_info.id);
           if(rowUser){
             if(rowUser.nickname != null){
-              affordable_users.push(`**${rowUser.nickname}** - **\$${user_info.cost-100}** <:cooldown:505752316649930774>`);
+              affordable_users.push(`**${rowUser.nickname}** - **\$${user_info.cost}** <:cooldown:505752316649930774>`);
             } else {
-              affordable_users.push(`**${rowUser.user.username}** - **\$${user_info.cost-100}** <:cooldown:505752316649930774>`);
+              affordable_users.push(`**${rowUser.user.username}** - **\$${user_info.cost}** <:cooldown:505752316649930774>`);
             }
           }
           if(!rowUser) affordable_users.push(`<${user_info.id}> - **\$${user_info.cost} <:cooldown:505752316649930774>`);
@@ -37,9 +37,9 @@ exports.run = function(client, message, args){
           let rowUser = message.guild.members.get(user_info.id);
           if(rowUser){
             if(rowUser.nickname != null){
-              affordable_users.push(`**${rowUser.nickname}** - **\$${user_info.cost-100}**`);
+              affordable_users.push(`**${rowUser.nickname}** - **\$${user_info.cost}**`);
             } else {
-              affordable_users.push(`**${rowUser.user.username}** - **\$${user_info.cost-100}**`);
+              affordable_users.push(`**${rowUser.user.username}** - **\$${user_info.cost}**`);
             }
           }
           if(!rowUser) affordable_users.push(`<${user_info.id}> - **\$${user_info.cost}`);
