@@ -13,10 +13,9 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 
 exports.run = function(client, message, args){
 
-  let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
-  db.get(sql, (err, row) => {
+  let sql = `PRAGMA table_info(users);`;
+  db.run(sql, (err) => {
     if(err) return console.error(err.message);
-    if(row) message.channel.send(`${row.achieve_your_value}`);
   });
 
   let embed = new Discord.RichEmbed()

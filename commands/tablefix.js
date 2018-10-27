@@ -30,7 +30,7 @@ exports.run = function(client, message, args){
     lastmessage TEXT DEFAULT 0,
     achieve_your_value INTEGER DEFAULT 0,
     achieve_owned_value INTEGER DEFAULT 0,
-    achhieve_buy_the_bot INTEGER DEFAULT 0
+    achieve_buy_the_bot INTEGER DEFAULT 0
   );
 
   INSERT INTO users (id, userID, money, cost, owner, lastpurchase, lastprofile, lastmessage)
