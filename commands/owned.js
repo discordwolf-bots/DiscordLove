@@ -60,12 +60,12 @@ exports.run = function(client, message, args){
           let rowUser = message.guild.members.get(row.id);
           if(rowUser){
             if(rowUser.nickname != null){
-              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.nickname}** - **\$${row.cost-100}** <:cooldown:505752316649930774>(${tFormat})`);
+              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.nickname}** - **\$${row.cost-100}** <:cooldown:505752316649930774>`);
             } else {
-              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.user.username}** - **\$${row.cost-100}** <:cooldown:505752316649930774>(${tFormat})`);
+              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.user.username}** - **\$${row.cost-100}** <:cooldown:505752316649930774>`);
             }
           }
-          if(!rowUser) own_names.push(`${own_emoji} **${own_count}.** <${row.id}> - **\$${row.cost} <:cooldown:505752316649930774>(${tFormat})`);
+          if(!rowUser) own_names.push(`${own_emoji} **${own_count}.** <${row.id}> - **\$${row.cost} <:cooldown:505752316649930774>`);
         } else {
           // Purchasable
           let rowUser = message.guild.members.get(row.id);
