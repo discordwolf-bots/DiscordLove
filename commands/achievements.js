@@ -53,12 +53,12 @@ exports.run = function(client, message, args){
 };
 
 exports.conf = {
-  aliases: [],
+  aliases: ['ach'],
   permLevel: 4
 };
 
 exports.help = {
-  name: "build",
-  description: "Builds Databse",
-  usage: "build"
+  name: "achievements",
+  description: "Displays your achievements",
+  usage: "achievements"
 }
