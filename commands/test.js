@@ -13,9 +13,10 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 
 exports.run = function(client, message, args){
 
-  let sql = `PRAGMA table_info(users);`;
-  db.run(sql, (err) => {
-    if(err) return console.error(err.message);
+  db.serialize(function () {
+    db.each("select name from sqlite_master where type='table'", function (err, table) {
+        console.log(table);
+    });
   });
 
   let embed = new Discord.RichEmbed()
