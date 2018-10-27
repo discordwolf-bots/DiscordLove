@@ -13,7 +13,9 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 
 exports.run = function(client, message, args){
 
-  let sql = `ALTER TABLE users RENAME TO _users_old;`;
+  let sql = `INSERT INTO users (id, userID, money, cost, owner, lastpurchase, lastprofile, lastmessage, achieve_your_value, achieve_owned_value, achieve_buy_the_bot)
+    SELECT id, userID, money, cost, owner, lastpurchase, lastprofile, lastmessage, achieve_your_value, achieve_owned_value, achieve_buy_the_bot
+    FROM _users_old`;
   db.run(sql, (err) => {
     if(err) return console.error(err.message);
   });
@@ -26,7 +28,7 @@ exports.conf = {
 };
 
 exports.help = {
-  name: "test",
+  name: "updatetable2",
   description: "Wolfs current test command",
-  usage: "test"
+  usage: "updatetable2"
 }

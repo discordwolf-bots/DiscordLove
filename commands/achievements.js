@@ -19,20 +19,22 @@ exports.run = async function(client, message, args){
     if(!row) return message.reply(`You need to create a profile first!`);
     let user_value_progress = row.achieve_your_value;
     let owned_value_progress = row.achieve_owned_value;
+    let talks_a_lot_progress = row.achieve_talks_a_lot;
     let hidden_buyabot_progress = row.achieve_buy_the_bot;
 
     let achievements_text = [];
     let user_value_icon = `:question:`;
     let owned_value_icon = `:question:`;
+    let talks_a_lot_icon = `:question:`;
     let buyabot_icon = `:question:`;
-
-
 
     if(user_value_progress > 0) user_value_icon = `:bust_in_silhouette:`;
     if(owned_value_progress > 0) owned_value_icon = `:busts_in_silhouette:`;
+    if(talks_a_lot_progress > 0) talks_a_lot_icon = `:speaking_head:`;
 
     await achievements_text.push(`${user_value_icon} **Self-Worth** - Level **${user_value_progress}**`);
     await achievements_text.push(`${owned_value_icon} **Expensive Taste** - Level **${owned_value_progress}**`);
+    await achievements_text.push(`${talks_a_lot_icon} **Talks a Lot** - Level **${talks_a_lot_progress}**`);
     if(hidden_buyabot_progress == 0) achievements_text.push(`${buyabot_icon} **Hidden Achievement**`);
     if(hidden_buyabot_progress > 0) {
       buyabot_icon = `:robot:`;
