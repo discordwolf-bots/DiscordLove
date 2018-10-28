@@ -56,7 +56,7 @@ exports.run = function(client, message, args){
 
 exports.conf = {
   aliases: ['icanbuy'],
-  permLevel: 0
+  permLevel: 4
 };
 
 exports.help = {
