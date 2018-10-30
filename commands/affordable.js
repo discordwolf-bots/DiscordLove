@@ -21,7 +21,9 @@ exports.run = function(client, message, args){
     db.all(sql2, (err, rows) => {
       if(err) return console.error(err.message);
       let affordable_users = [];
+      let affordable_count = 0;
       rows.forEach((user_info) => {
+        affordable_count++;
         if(now - parseInt(user_info.lastpurchase) < 300){
           let rowUser = message.guild.members.get(user_info.id);
           if(rowUser){
@@ -45,6 +47,7 @@ exports.run = function(client, message, args){
           if(!rowUser) affordable_users.push(`<${user_info.id}> - **\$${user_info.cost}`);
         }
       });
+      if(affordable_count == 0) return message.reply(`You cannot afford anybody at the moment`);
       let embed = new Discord.RichEmbed()
         .setColor('#fa1201')
         .addField(`Top 10 Users you can afford`, `${affordable_users.join('\n')}`)
@@ -56,7 +59,7 @@ exports.run = function(client, message, args){
 
 exports.conf = {
   aliases: ['icanbuy'],
-  permLevel: 4
+  permLevel: 0
 };
 
 exports.help = {
