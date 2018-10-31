@@ -78,15 +78,15 @@ exports.run = async function(client, message, args){
     }
 
     if(fishing_caught_progress < 10){
-      await achievements_text.push(`${talks_a_lot_icon} **Gone Fishing** - Level **${fishing_caught_progress} / ${config.thresh_talks_a_lot.split(',').length}**`);
+      await achievements_text.push(`${fishing_caught_icon} **Gone Fishing** - Level **${fishing_caught_progress} / ${config.thresh_talks_a_lot.split(',').length}**`);
     } else {
-      await achievements_text.push(`${talks_a_lot_icon} **Gone Fishing** - Level **Maxed**`);
+      await achievements_text.push(`${fishing_caught_icon} **Gone Fishing** - Level **Maxed**`);
     }
 
     if(fishing_sold_progress < 10){
-      await achievements_text.push(`${talks_a_lot_icon} **Fishmonger** - Level **${fishing_sold_progress} / ${config.thresh_talks_a_lot.split(',').length}**`);
+      await achievements_text.push(`${fishing_sold_icon} **Fishmonger** - Level **${fishing_sold_progress} / ${config.thresh_talks_a_lot.split(',').length}**`);
     } else {
-      await achievements_text.push(`${talks_a_lot_icon} **Fishmonger** - Level **Maxed**`);
+      await achievements_text.push(`${fishing_sold_icon} **Fishmonger** - Level **Maxed**`);
     }
 
 
