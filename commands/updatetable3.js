@@ -22,7 +22,7 @@ exports.run = function(client, message, args){
 };
 
 exports.conf = {
-  aliases: [],
+  aliases: ['4'],
   permLevel: 4
 };
 
