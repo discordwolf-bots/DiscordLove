@@ -152,8 +152,8 @@ exports.run = async function(client, message, args){
       difference *= 0.1;
       newBalanceTarget += difference;
 
-      client.channels.get(config.logging).send(`BUYING SELF PRICE : ${message.author.username}#${message.author.discriminator} - ${balance} -> ${newBalanceSelf}`);
-      client.channels.get(config.logging).send(`BUYING TARGET PRICE : ${target.user.username}#${target.user.discriminator} - ${tBalance} -> ${newBalanceTarget}`);
+      client.channels.get(config.logging).send(`:dollar: BUYING SELF PRICE : ${message.author.username}#${message.author.discriminator} - ${balance} -> ${newBalanceSelf}`);
+      client.channels.get(config.logging).send(`:heavy_dollar_sign: BUYING TARGET PRICE : ${target.user.username}#${target.user.discriminator} - ${tBalance} -> ${newBalanceTarget}`);
       let sqlUpdateSelf = `UPDATE users SET money = ? WHERE id = ?`;
       let dataUpdateSelf = [newBalanceSelf, message.author.id];
       db.run(sqlUpdateSelf, dataUpdateSelf, (err) => {
@@ -181,7 +181,7 @@ exports.run = async function(client, message, args){
               if(err) return console.error(err.message);
               let oBalance = rowO.money;
               let newBalanceOwner = oBalance + cost + ((buyPrice - cost) * 0.8);
-              client.channels.get(config.logging).send(`BUYING OLD OWNER : ${message.guild.member(rowO.id).user.username}#${message.guild.members.get(rowO.id).user.discriminator} - ${rowO.money} -> ${newBalanceOwner}`);
+              client.channels.get(config.logging).send(`:dollar: BUYING OLD OWNER : ${message.guild.member(rowO.id).user.username}#${message.guild.members.get(rowO.id).user.discriminator} - ${rowO.money} -> ${newBalanceOwner}`);
               let sqlUpdateOwner = `UPDATE users SET money = ? WHERE id = ?`;
               let dataUpdateOwner = [newBalanceOwner, owner];
               db.run(sqlUpdateOwner, dataUpdateOwner, (err) => {
