@@ -20,49 +20,19 @@ const achievement_talks_a_lot = (message, value) => {
     if(err) return console.error(err.message);
     let talks_a_lot_progress = row.achieve_talks_a_lot;
     let achieved = 0;
-    if(value >= 1)
-      if(talks_a_lot_progress < 1)
-        achieved = 1;
-    if(value >= 50)
-      if(talks_a_lot_progress < 2)
-        achieved = 2;
-    if(value >= 100)
-      if(talks_a_lot_progress < 3)
-        achieved = 3;
-    if(value >= 250)
-      if(talks_a_lot_progress < 4)
-        achieved = 4;
-    if(value >= 500)
-      if(talks_a_lot_progress < 5)
-        achieved = 5;
-    if(value >= 1000)
-      if(talks_a_lot_progress < 6)
-        achieved = 6;
-    if(value >= 2500)
-      if(talks_a_lot_progress < 7)
-        achieved = 7;
-    if(value >= 5000)
-      if(talks_a_lot_progress < 8)
-        achieved = 8;
-    if(value >= 10000)
-      if(talks_a_lot_progress < 9)
-        achieved = 9;
-    if(value >= 25000)
-      if(talks_a_lot_progress < 10)
-        achieved = 10;
+
+    for(let i=0; i<config.thresh_talks_a_lot.length; i++){
+      if(value >= parseInt(config.thresh_talks_a_lot.split(',')[i]))
+        if(talks_a_lot_progress < i+1)
+          achieved = i+1;
+    }
+
     if(achieved > 0){
       let rewards = 0;
       for(let i=talks_a_lot_progress;i<=achieved;i++){
-        if(i == 1) rewards += 500;
-        if(i == 2) rewards += 1000;
-        if(i == 3) rewards += 1500;
-        if(i == 4) rewards += 2000;
-        if(i == 5) rewards += 2500;
-        if(i == 6) rewards += 5000;
-        if(i == 7) rewards += 7500;
-        if(i == 8) rewards += 10000;
-        if(i == 9) rewards += 15000;
-        if(i == 10) rewards += 25000;
+        for(let j=1; j<=config.thresh_talks_a_lot.length; j++){
+          if(i == j) rewards += config.reward_talks_a_lot.split(',')[j-1];
+        }
       }
       let embed = new Discord.RichEmbed()
         .setColor('#4DBF42')
