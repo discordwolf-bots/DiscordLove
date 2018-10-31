@@ -36,6 +36,10 @@ module.exports = (oldMember, newMember) => {
       timePassed /= 1000;
       let validTime = Math.floor(timePassed / 60); // How many minutes
 
+      console.log(validTime);
+
+      if(validTime == 0) return;
+
       let min = 10;
       let max = 20;
       let toAdd = 0;
@@ -69,9 +73,13 @@ module.exports = (oldMember, newMember) => {
         timePassed /= 1000;
         let validTime = Math.floor(timePassed / 60); // How many minutes
 
+        console.log(validTime);
+
         let min = 10;
         let max = 20;
         let toAdd = 0;
+
+        if(validTime == 0) return;
 
         for(let i=1; i<=validTime; i++){
           let random = Math.floor(Math.random() * (max-min)) + min;
