@@ -19,18 +19,27 @@ exports.run = function(client, message, args){
     money INTEGER DEFAULT 100,
     cost INTEGER DEFAULT 100,
     owner TEXT DEFAULT 0,
+
+    voicejoined TEXT DEFAULT 0,
+    voicetime INTEGER DEFAULT 0,
+
     lastpurchase TEXT DEFAULT 0,
     lastprofile TEXT DEFAULT 0,
     lastmessage TEXT DEFAULT 0,
+    lastfish TEXT DEFAULT 0,
+
     messagesSent INTEGER DEFAULT 0,
+
     goneFishing INTEGER DEFAULT 0,
     soldFish INTEGER DEFAULT 0,
     magikarpCaught INTEGER DEFAULT 0,
+
     achieve_your_value INTEGER DEFAULT 0,
     achieve_owned_value INTEGER DEFAULT 0,
     achieve_buy_the_bot INTEGER DEFAULT 0,
     achieve_talks_a_lot INTEGER DEFAULT 0,
     achieve_go_fishing INTEGER DEFAULT 0,
+    achieve_chats_a_lot INTEGER DEFAULT 0,
     achieve_catch_a_karp INTEGER DEFAULT 0,
     achieve_fishmonger INTEGER DEFAULT 0
   )`;

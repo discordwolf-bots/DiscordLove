@@ -5,4 +5,5 @@ module.exports = client => {
   client.on(`guildMemberAdd`, reqEvent('guildMemberAdd'));
   client.on(`guildMemberRemove`, reqEvent('guildMemberRemove'));
   client.on(`error`, reqEvent(`error`));
+  client.on('voiceStateUpdate', reqEvent(`voiceStateUpdate`));
 }
