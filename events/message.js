@@ -14,7 +14,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - Message`);
 });
 
-const achievement_talks_a_lot = (message, value) => {
+const achievement_talks_a_lot = (message, value, client) => {
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, (err, row) => {
     if(err) return console.error(err.message);
@@ -117,7 +117,7 @@ module.exports = message => {
         let random = Math.floor(Math.random() * (max-min)) + min;
 
         let talks_a_lot_progress = row.messagesSent+1;
-        achievement_talks_a_lot(message, talks_a_lot_progress);
+        achievement_talks_a_lot(message, talks_a_lot_progress, client);
         let sqlAdd = `UPDATE users SET money = ?, messagesSent = ? WHERE id = ?`;
         let dataAdd = [row.money + random, row.messagesSent+1, message.author.id];
         db.run(sqlAdd, dataAdd, (err) => {

@@ -11,7 +11,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - Buy`);
 });
 
-const achievement_expensive_taste = (message, value) => {
+const achievement_expensive_taste = (message, value, client) => {
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, (err, row) => {
     if(err) return console.error(err.message);
@@ -46,7 +46,7 @@ const achievement_expensive_taste = (message, value) => {
   });
 }
 
-const achievement_buy_a_bot = (message) => {
+const achievement_buy_a_bot = (message, client) => {
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, (err, row) => {
     if(err) return console.error(err.message);
@@ -80,7 +80,7 @@ exports.run = async function(client, message, args){
   if(target.user.id == message.author.id) return message.channel.send(`You cannot purchase yourself`);
   if(target.user.bot && target.user.id == '504720625240113162'){
     message.delete();
-    return achievement_buy_a_bot(message);
+    return achievement_buy_a_bot(message, client);
   }
   if(target.user.bot) return message.channel.send(`Stop trying to buy bots!`);
 
@@ -195,7 +195,7 @@ exports.run = async function(client, message, args){
                   .addField(`New Value`, `**\$** ${(buyPrice+100).format(0)}`, true)
                   .addField(`New Owner`, `${ownerName}`);
                 message.channel.send(embed);
-                achievement_expensive_taste(message, buyPrice);
+                achievement_expensive_taste(message, buyPrice, client);
               });
             });
           } else {
@@ -216,7 +216,7 @@ exports.run = async function(client, message, args){
               .addField(`New Value`, `**\$** ${(buyPrice+100).format(0)}`, true)
               .addField(`New Owner`, `${ownerName}`);
             message.channel.send(embed);
-            achievement_expensive_taste(message, buyPrice);
+            achievement_expensive_taste(message, buyPrice, client);
           }
         });
 

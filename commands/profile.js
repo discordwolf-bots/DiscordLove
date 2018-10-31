@@ -11,7 +11,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - Profile`);
 });
 
-const achievement_self_worth = (message) => {
+const achievement_self_worth = (message, client) => {
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, (err, row) => {
     if(err) return console.error(err.message);
@@ -107,7 +107,7 @@ exports.run = function(client, message, args){
         if(err) return console.error(err.message);
       });
       if(target == message.author.id)
-        achievement_self_worth(message);
+        achievement_self_worth(message, client);
     }
   });
 
