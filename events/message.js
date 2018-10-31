@@ -43,6 +43,7 @@ const achievement_talks_a_lot = (message, value) => {
       let sqlUpdate = `UPDATE users SET money = ${newBalance}, achieve_talks_a_lot = ${achieved} WHERE id = ${message.author.id}`;
       db.run(sqlUpdate, (err) => {
         if(err) return console.error(err.message);
+        client.channels.get(config.logging).send(`ACHIEVEMENT TALKS A LOT : ${message.author.username}#${message.author.discriminator} - ${row.money} -> ${newBalance}`);
       });
     }
   });
@@ -121,6 +122,7 @@ module.exports = message => {
         let dataAdd = [row.money + random, row.messagesSent+1, message.author.id];
         db.run(sqlAdd, dataAdd, (err) => {
           if(err) return console.error(err.message);
+          client.channels.get(config.logging).send(`TALKING SELF : ${message.author.username}#${message.author.discriminator} - ${row.money} -> ${row.money + random}`);
           if(row.owner != 0){
             let sqlCheckOwner = `SELECT * FROM users WHERE id = ${row.owner}`;
             db.get(sqlCheckOwner, [], (err, rowO) => {
@@ -130,6 +132,7 @@ module.exports = message => {
               let dataAddOwner = [rowO.money + Math.floor(random / 4), rowO.id];
               db.run(sqlAddOwner, dataAddOwner, (err) => {
                 if(err) return console.error(err.message);
+                client.channels.get(config.logging).send(`TALKING OWNER : ${message.author.username}#${message.author.discriminator} - ${rowO.money} -> ${rowO.money + Math.floor(random / 4)}`);
                 // console.log(`(User) ${message.guild.members.get(row.id).user.username}: ${row.money} -> ${row.money+random}`);
                 // console.log(`(Owner) ${message.guild.members.get(rowO.id).user.username}: ${rowO.money} -> ${rowO.money + Math.floor(random/4)}`);
                 let sqlUpdate = `UPDATE users SET lastmessage = ? WHERE id = ?`;
