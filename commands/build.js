@@ -16,7 +16,7 @@ exports.run = function(client, message, args){
   let sql = `CREATE TABLE IF NOT EXISTS users (
     id TEXT,
     userID INTEGER PRIMARY KEY ASC,
-    money INTEGER DEFAULT 100,
+    money INTEGER DEFAULT 1000,
     cost INTEGER DEFAULT 100,
     owner TEXT DEFAULT 0,
 
