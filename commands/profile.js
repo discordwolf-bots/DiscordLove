@@ -100,6 +100,8 @@ exports.run = function(client, message, args){
         .addField(`Current Value`, `**\$** ${row.cost.format(0)}`, true)
         .addField(`Current Owner`, `${ownerName}`)
         .addField(`Achievement Points`, `${achievement_points_icon} ${achievement_points.format(0)}`)
+        .addField(`Messages Sent`, `${row.messagesSent.format(0)}`, true)
+        .addField(`Time in VC`, `${row.voicetime.format(0)}`, true)
         .setFooter(`More Achievements hopefully coming soon! **Rewards for ideas!**`);
       message.channel.send({embed:profile});
       let sql = `UPDATE users SET lastprofile = '${now}' WHERE id = ${message.author.id}`;
