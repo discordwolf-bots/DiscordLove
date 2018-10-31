@@ -36,7 +36,8 @@ module.exports = (oldMember, newMember) => {
       timePassed /= 1000;
       let validTime = Math.floor(timePassed / 60); // How many minutes
 
-      console.log(validTime);
+      console.log(`TP: ${timePassed}`);
+      console.log(`VT: ${validTime}`);
 
       if(validTime == 0) return;
 
