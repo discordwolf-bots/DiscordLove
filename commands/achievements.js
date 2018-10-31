@@ -22,10 +22,18 @@ exports.run = async function(client, message, args){
   db.get(sql, async (err, row) => {
     if(err) return console.error(err.message);
     if(!row) return message.reply(`You need to create a profile first!`);
+
     let user_value_progress = row.achieve_your_value;
     let owned_value_progress = row.achieve_owned_value;
     let talks_a_lot_progress = row.achieve_talks_a_lot;
     let hidden_buyabot_progress = row.achieve_buy_the_bot;
+    let fishing_caught_progress = row.achieve_go_fishing;
+    let fishing_sold_progress = row.achieve_fishmonger;
+    let hidden_magikarp_progress = row.achieve_catch_a_karp;
+
+    let fish_caught = row.goneFishing;
+    let fish_sold = row.soldFish;
+    let magikarpCaught = row.magikarpCaught;
 
     let user_value_thresholds = config.thresh_self_worth;
     let owned_value_thresholds = config.thresh_expensive_taste;
@@ -40,33 +48,58 @@ exports.run = async function(client, message, args){
     let owned_value_icon = `:question:`;
     let talks_a_lot_icon = `:question:`;
     let buyabot_icon = `:question:`;
+    let fishing_caught_icon = `:question:`;
+    let fishing_sold_icon = `:question:`;
+    let magikarp_icon = `:question:`;
 
     if(user_value_progress > 0) user_value_icon = `:bust_in_silhouette:`;
     if(owned_value_progress > 0) owned_value_icon = `:busts_in_silhouette:`;
     if(talks_a_lot_progress > 0) talks_a_lot_icon = `:speaking_head:`;
+    if(fishing_caught_progress > 0) fishing_caught_icon = `:fish:`;
+    if(fishing_sold_progress > 0) fishing_sold_icon = `:fishing_pole_and_fish:`;
 
-    if(user_value_progress < 10){
-      await achievements_text.push(`${user_value_icon} **Self-Worth** - Level **${user_value_progress} / 10** \n*Get your value to \$${parseInt(uv_t[user_value_progress]).format(0)} or higher for level ${user_value_progress+1}*`);
+
+    if(user_value_progress < config.thresh_self_worth.length){
+      await achievements_text.push(`${user_value_icon} **Self-Worth** - Level **${user_value_progress} / ${config.thresh_self_worth.length}** \n*Get your value to \$${parseInt(uv_t[user_value_progress]).format(0)} or higher for level ${user_value_progress+1}*`);
     } else {
       await achievements_text.push(`${user_value_icon} **Self-Worth** - Level **Maxed**`);
     }
 
-    if(owned_value_progress < 10){
-      await achievements_text.push(`${owned_value_icon} **Expensive Taste** - Level **${owned_value_progress} / 10** \n*Buy somebody worth \$${parseInt(ov_t[owned_value_progress]).format(0)} or higher for level ${owned_value_progress+1}*`);
+    if(owned_value_progress < config.thresh_expensive_taste.length){
+      await achievements_text.push(`${owned_value_icon} **Expensive Taste** - Level **${owned_value_progress} / ${config.thresh_expensive_taste.length}** \n*Buy somebody worth \$${parseInt(ov_t[owned_value_progress]).format(0)} or higher for level ${owned_value_progress+1}*`);
     } else {
       await achievements_text.push(`${owned_value_icon} **Expensive Taste** - Level **Maxed**`);
     }
 
-    if(talks_a_lot_progress < 10){
-      await achievements_text.push(`${talks_a_lot_icon} **Talks a Lot** - Level **${talks_a_lot_progress} / 10** \n*Progress ${(row.messagesSent).format(0)} / ${parseInt(tal_t[talks_a_lot_progress]).format(0)} (send messages that earn you money)*`);
+    if(talks_a_lot_progress < config.thresh_talks_a_lot.length){
+      await achievements_text.push(`${talks_a_lot_icon} **Talks a Lot** - Level **${talks_a_lot_progress} / ${config.thresh_talks_a_lot.length}** \n*Progress ${(row.messagesSent).format(0)} / ${parseInt(tal_t[talks_a_lot_progress]).format(0)} (send messages that earn you money)*`);
     } else {
       await achievements_text.push(`${talks_a_lot_icon} **Talks a Lot** - Level **Maxed**`);
     }
+
+    if(fishing_caught_progress < 10){
+      await achievements_text.push(`${talks_a_lot_icon} **Gone Fishing** - Level **${fishing_caught_progress} / ${config.thresh_talks_a_lot.length}**`);
+    } else {
+      await achievements_text.push(`${talks_a_lot_icon} **Gone Fishing** - Level **Maxed**`);
+    }
+
+    if(fishing_sold_progress < 10){
+      await achievements_text.push(`${talks_a_lot_icon} **Fishmonger** - Level **${fishing_sold_progress} / ${config.thresh_talks_a_lot.length}**`);
+    } else {
+      await achievements_text.push(`${talks_a_lot_icon} **Fishmonger** - Level **Maxed**`);
+    }
+
 
     if(hidden_buyabot_progress == 0) achievements_text.push(`${buyabot_icon} **Hidden Achievement**`);
     if(hidden_buyabot_progress > 0) {
       buyabot_icon = `:robot:`;
       achievements_text.push(`${buyabot_icon} **Hidden Achievement** - Level **Maxed**`);
+    }
+
+    if(hidden_magikarp_progress == 0) achievements_text.push(`${magikarp_icon} **Hidden Achievement**`);
+    if(hidden_magikarp_progress > 0) {
+      magikarp_icon = `<:magikarp:507005931503222784>`;
+      achievements_text.push(`${magikarp_icon} **Hidden Achievement** - Level **Maxed**`);
     }
 
     let embed = new Discord.RichEmbed()
