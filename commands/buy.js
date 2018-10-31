@@ -153,7 +153,7 @@ exports.run = async function(client, message, args){
       newBalanceTarget += difference;
 
       client.channels.get(config.logging).send(`BUYING SELF PRICE : ${message.author.username}#${message.author.discriminator} - ${balance} -> ${newBalanceSelf}`);
-      client.channels.get(config.logging).send(`BUYING TARGET PRICE : ${target.username}#${target.discriminator} - ${tBalance} -> ${newBalanceTarget}`);
+      client.channels.get(config.logging).send(`BUYING TARGET PRICE : ${target.user.username}#${target.user.discriminator} - ${tBalance} -> ${newBalanceTarget}`);
       let sqlUpdateSelf = `UPDATE users SET money = ? WHERE id = ?`;
       let dataUpdateSelf = [newBalanceSelf, message.author.id];
       db.run(sqlUpdateSelf, dataUpdateSelf, (err) => {
