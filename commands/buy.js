@@ -37,6 +37,7 @@ const achievement_expensive_taste = (message, value) => {
         .setFooter(`Gained ${achieved-expensive_taste_progress} Levels on the Expensive Taste achievement`);
       message.channel.send(embed);
       let newBalance = row.money + rewards;
+      client.channels.get(config.logging).send(`ACHIEVEMENT EXPENSIVE TASTE : ${message.author.username}#${message.author.discriminator} - ${row.money} -> ${newBalance}`);
       let sqlUpdate = `UPDATE users SET money = ${newBalance}, achieve_owned_value = ${achieved} WHERE id = ${message.author.id}`;
       db.run(sqlUpdate, (err) => {
         if(err) return console.error(err.message);
@@ -57,6 +58,7 @@ const achievement_buy_a_bot = (message) => {
         .setAuthor(`Achievement Gained! - \$2,500 added!`, message.author.avatarURL)
         .setFooter(`Completed Hidden achievement`);
       message.channel.send(embed);
+      client.channels.get(config.logging).send(`ACHIEVEMENT BUY A BOT : ${message.author.username}#${message.author.discriminator} - ${row.money} -> ${row.money+2500}`);
       db.run(sqlUpdate, (err) => {
         if(err) return console.error(err.message);
       });
@@ -150,6 +152,8 @@ exports.run = async function(client, message, args){
       difference *= 0.1;
       newBalanceTarget += difference;
 
+      client.channels.get(config.logging).send(`BUYING SELF PRICE : ${message.author.username}#${message.author.discriminator} - ${balance} -> ${newBalanceSelf}`);
+      client.channels.get(config.logging).send(`BUYING TARGET PRICE : ${target.username}#${target.discriminator} - ${tBalance} -> ${newBalanceTarget}`);
       let sqlUpdateSelf = `UPDATE users SET money = ? WHERE id = ?`;
       let dataUpdateSelf = [newBalanceSelf, message.author.id];
       db.run(sqlUpdateSelf, dataUpdateSelf, (err) => {
@@ -177,7 +181,7 @@ exports.run = async function(client, message, args){
               if(err) return console.error(err.message);
               let oBalance = rowO.money;
               let newBalanceOwner = oBalance + cost + ((buyPrice - cost) * 0.8);
-
+              client.channels.get(config.logging).send(`BUYING OLD OWNER : ${ownerUser.user.username}#${ownerUser.user.discriminator} - ${rowO.money} -> ${oBalance}`);
               let sqlUpdateOwner = `UPDATE users SET money = ? WHERE id = ?`;
               let dataUpdateOwner = [newBalanceOwner, owner];
               db.run(sqlUpdateOwner, dataUpdateOwner, (err) => {
