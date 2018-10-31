@@ -31,7 +31,7 @@ const achievement_talks_a_lot = (message, value) => {
       let rewards = 0;
       for(let i=talks_a_lot_progress;i<=achieved;i++){
         for(let j=1; j<=config.thresh_talks_a_lot.length; j++){
-          if(i == j) rewards += config.reward_talks_a_lot.split(',')[j-1];
+          if(i == j) rewards += parseInt(config.reward_talks_a_lot.split(',')[j-1]);
         }
       }
       let embed = new Discord.RichEmbed()

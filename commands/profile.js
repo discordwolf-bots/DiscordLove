@@ -29,7 +29,7 @@ const achievement_self_worth = (message) => {
       let rewards = 0;
       for(let i=self_worth_progress;i<=achieved;i++){
         for(let j=1; j<=config.thresh_self_worth.length; j++){
-          if(i == j) rewards += config.reward_self_worth.split(',')[j-1];
+          if(i == j) rewards += parseInt(config.reward_self_worth.split(',')[j-1]);
         }
       }
 
