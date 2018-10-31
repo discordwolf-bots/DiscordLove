@@ -37,7 +37,7 @@ const achievement_expensive_taste = (message, value, client) => {
         .setFooter(`Gained ${achieved-expensive_taste_progress} Levels on the Expensive Taste achievement`);
       message.channel.send(embed);
       let newBalance = row.money + rewards;
-      client.channels.get(config.logging).send(`ACHIEVEMENT EXPENSIVE TASTE : ${message.author.username}#${message.author.discriminator} - ${row.money} -> ${newBalance}`);
+      client.channels.get(config.logging).send(`:busts_in_silhouette: ACHIEVEMENT EXPENSIVE TASTE : ${message.author.username}#${message.author.discriminator} - ${row.money} -> ${newBalance}`);
       let sqlUpdate = `UPDATE users SET money = ${newBalance}, achieve_owned_value = ${achieved} WHERE id = ${message.author.id}`;
       db.run(sqlUpdate, (err) => {
         if(err) return console.error(err.message);
