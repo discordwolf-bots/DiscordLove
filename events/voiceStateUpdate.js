@@ -47,7 +47,7 @@ module.exports = (oldMember, newMember) => {
       let balance = row.money;
       let newBalance = balance + toAdd;
 
-      client.channels.get(config.logging).send(`:mega: VOICE CHAT : ${message.guild.member(row.id).user.username}#${message.guild.members.get(row.id).user.discriminator} - ${row.money} -> ${newBalance}`);
+      client.channels.get(config.logging).send(`:mega: VOICE CHAT : ${oldMember.guild.member(row.id).user.username}#${oldMember.guild.members.get(row.id).user.discriminator} - ${row.money} -> ${newBalance}`);
 
       let sql2 = `UPDATE users SET voiceJoined = 0, money = ${newBalance}, voicetime = ${row.voicetime + Math.floor(validTime)} WHERE id = ${row.id}`;
       db.run(sql2, (err) => {
@@ -77,8 +77,8 @@ module.exports = (oldMember, newMember) => {
         let balance = row.money;
         let newBalance = balance + toAdd;
 
-        client.channels.get(config.logging).send(`:mega: VOICE CHAT : ${message.guild.member(row.id).user.username}#${message.guild.members.get(row.id).user.discriminator} - ${row.money} -> ${newBalance}`);
-        
+        client.channels.get(config.logging).send(`:mega: VOICE CHAT : ${oldMember.guild.member(row.id).user.username}#${oldMember.guild.members.get(row.id).user.discriminator} - ${row.money} -> ${newBalance}`);
+
         let sql2 = `UPDATE users SET voicejoined = 0, money = ${newBalance}, voicetime = ${row.voicetime + Math.floor(validTime)} WHERE id = ${row.id}`;
         db.run(sql2, (err) => {
           if(err) return console.error(err.message);
