@@ -130,8 +130,8 @@ module.exports = message => {
               let dataAddOwner = [rowO.money + Math.floor(random / 4), rowO.id];
               db.run(sqlAddOwner, dataAddOwner, (err) => {
                 if(err) return console.error(err.message);
-                console.log(`(User) ${message.guild.members.get(row.id).user.username}: ${row.money} -> ${row.money+random}`);
-                console.log(`(Owner) ${message.guild.members.get(rowO.id).user.username}: ${rowO.money} -> ${rowO.money + Math.floor(random/4)}`);
+                // console.log(`(User) ${message.guild.members.get(row.id).user.username}: ${row.money} -> ${row.money+random}`);
+                // console.log(`(Owner) ${message.guild.members.get(rowO.id).user.username}: ${rowO.money} -> ${rowO.money + Math.floor(random/4)}`);
                 let sqlUpdate = `UPDATE users SET lastmessage = ? WHERE id = ?`;
                 let dataUpdate = [now, row.id];
                 db.run(sqlUpdate, dataUpdate, (err) => {
