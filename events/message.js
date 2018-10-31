@@ -14,7 +14,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - Message`);
 });
 
-const achievement_talks_a_lot = (message, value, client, random) => {
+const achievement_talks_a_lot = (message, value, client) => {
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, (err, row) => {
     if(err) return console.error(err.message);
@@ -39,7 +39,7 @@ const achievement_talks_a_lot = (message, value, client, random) => {
         .setAuthor(`Achievement Gained! - \$${rewards} added!`, message.author.avatarURL)
         .setFooter(`Gained ${achieved-talks_a_lot_progress} Levels on the Talks a Lot achievement`);
       message.channel.send(embed);
-      let newBalance = row.money + random + rewards;
+      let newBalance = row.money + rewards;
       let sqlUpdate = `UPDATE users SET money = ${newBalance}, achieve_talks_a_lot = ${achieved} WHERE id = ${message.author.id}`;
       db.run(sqlUpdate, (err) => {
         if(err) return console.error(err.message);
@@ -122,7 +122,7 @@ module.exports = message => {
         db.run(sqlAdd, dataAdd, (err) => {
           if(err) return console.error(err.message);
           client.channels.get(config.logging).send(`:speech_left: TALKING SELF : ${message.author.username}#${message.author.discriminator} - ${row.money} -> ${row.money + random}`);
-          achievement_talks_a_lot(message, talks_a_lot_progress, client, random);
+          achievement_talks_a_lot(message, talks_a_lot_progress, client);
           if(row.owner != 0){
             let sqlCheckOwner = `SELECT * FROM users WHERE id = ${row.owner}`;
             db.get(sqlCheckOwner, [], (err, rowO) => {
