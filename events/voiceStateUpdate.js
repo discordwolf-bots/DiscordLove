@@ -56,12 +56,15 @@ module.exports = (oldMember, newMember) => {
     } else if(oldUserChannel === undefined && newUserChannel !== undefined){
       // User joins channel
       let sql2 = `UPDATE users SET voicejoined = ${now} WHERE id = ${row.id}`;
+      client.channels.get(config.voice).send(`:white_check_mark: ${oldMember.guild.member(row.id).user.username}#${oldMember.guild.members.get(row.id).user.discriminator} - ${newUserChannel.name}`);
       db.run(sql2, (err) => {
         if(err) return console.error(err.message);
       });
     } else if(newUserChannel === undefined){
       // User leaves channel
+        client.channels.get(config.voice).send(`:x: ${oldMember.guild.member(row.id).user.username}#${oldMember.guild.members.get(row.id).user.discriminator} - ${newUserChannel.name}`);
       if(row.voicejoined != 0){
+
         let timePassed = now - row.voicejoined;
         timePassed /= 1000;
         let validTime = timePassed / 60; // How many minutes
