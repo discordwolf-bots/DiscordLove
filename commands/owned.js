@@ -60,23 +60,23 @@ exports.run = function(client, message, args){
           let rowUser = message.guild.members.get(row.id);
           if(rowUser){
             if(rowUser.nickname != null){
-              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.nickname}** - **\$${row.cost-100}** <:cooldown:505752316649930774>`);
+              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.nickname}** - **\$${(row.cost-100).format(0)}** <:cooldown:505752316649930774>`);
             } else {
-              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.user.username}** - **\$${row.cost-100}** <:cooldown:505752316649930774>`);
+              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.user.username}** - **\$${(row.cost-100).format(0)}** <:cooldown:505752316649930774>`);
             }
           }
-          if(!rowUser) own_names.push(`${own_emoji} **${own_count}.** <${row.id}> - **\$${row.cost} <:cooldown:505752316649930774>`);
+          if(!rowUser) own_names.push(`${own_emoji} **${own_count}.** <${row.id}> - **\$${(row.cost).format(0)} <:cooldown:505752316649930774>`);
         } else {
           // Purchasable
           let rowUser = message.guild.members.get(row.id);
           if(rowUser){
             if(rowUser.nickname != null){
-              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.nickname}** - **\$${row.cost-100}**`);
+              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.nickname}** - **\$${(row.cost-100).format(0)}**`);
             } else {
-              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.user.username}** - **\$${row.cost-100}**`);
+              own_names.push(`${own_emoji} **${own_count}.** **${rowUser.user.username}** - **\$${(row.cost-100).format(0)}**`);
             }
           }
-          if(!rowUser) own_names.push(`${own_emoji} **${own_count}.** <${row.id}> - **\$${row.cost}`);
+          if(!rowUser) own_names.push(`${own_emoji} **${own_count}.** <${row.id}> - **\$${(row.cost).format(0)}`);
         }
 
       });
