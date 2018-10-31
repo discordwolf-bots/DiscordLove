@@ -67,7 +67,7 @@ module.exports = (oldMember, newMember) => {
       });
     } else if(newUserChannel === undefined){
       // User leaves channel
-        client.channels.get(config.voice).send(`:x: ${oldMember.guild.member(row.id).user.username}#${oldMember.guild.members.get(row.id).user.discriminator} - ${newUserChannel.name}  **(${validTime} minutes)**`);
+        client.channels.get(config.voice).send(`:x: ${oldMember.guild.member(row.id).user.username}#${oldMember.guild.members.get(row.id).user.discriminator} - **(${validTime} minutes)**`);
       if(row.voicejoined != 0){
 
         let timePassed = now - row.voicejoined;
