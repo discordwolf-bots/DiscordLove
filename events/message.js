@@ -109,7 +109,8 @@ module.exports = message => {
 
         if(err) return console.error(err.message);
         if(!row) return;
-        if(now - parseInt(row.lastmessage) < 60) return console.log(now-parseInt(row.lastmessage));
+
+        if(now - parseInt(row.lastmessage) < 60) return console.log(`ERROR: Timer changed ${now-parseInt(row.lastmessage)}`);
         let min = 20;
         let max = 40;
         let random = Math.floor(Math.random() * (max-min)) + min;
