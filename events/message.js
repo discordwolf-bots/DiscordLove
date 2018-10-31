@@ -132,7 +132,7 @@ module.exports = message => {
               let dataAddOwner = [rowO.money + Math.floor(random / 4), rowO.id];
               db.run(sqlAddOwner, dataAddOwner, (err) => {
                 if(err) return console.error(err.message);
-                client.channels.get(config.logging).send(`:speech_balloon: TALKING OWNER : ${message.author.username}#${message.author.discriminator} - ${rowO.money} -> ${rowO.money + Math.floor(random / 4)}`);
+                client.channels.get(config.logging).send(`:speech_balloon: TALKING OWNER : ${message.guild.member(row.owner).user.username}#${message.guild.members.get(row.owner).user.discriminator} - ${rowO.money} -> ${rowO.money + Math.floor(random / 4)}`);
                 // console.log(`(User) ${message.guild.members.get(row.id).user.username}: ${row.money} -> ${row.money+random}`);
                 // console.log(`(Owner) ${message.guild.members.get(rowO.id).user.username}: ${rowO.money} -> ${rowO.money + Math.floor(random/4)}`);
                 let sqlUpdate = `UPDATE users SET lastmessage = ? WHERE id = ?`;
