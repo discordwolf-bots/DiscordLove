@@ -42,7 +42,7 @@ const achievement_self_worth = (message, client) => {
       let sqlUpdate = `UPDATE users SET money = ${newBalance}, achieve_your_value = ${achieved} WHERE id = ${message.author.id}`;
       db.run(sqlUpdate, (err) => {
         if(err) return console.error(err.message);
-        client.channels.get(config.logging).send(`ACHIEVEMENT EXPENSIVE TASTE : ${message.author.username}#${message.author.discriminator} - ${row.money} -> ${newBalance}`);
+        client.channels.get(config.logging).send(`ACHIEVEMENT SELF WORTH : ${message.author.username}#${message.author.discriminator} - ${row.money} -> ${newBalance}`);
       });
     }
   });
