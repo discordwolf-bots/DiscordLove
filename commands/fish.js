@@ -34,8 +34,60 @@ exports.run = function(client, message, args){
 
     if(!args[0]){
       // Go fishing
+      let chance_fail = 47;
+      let chance_small = 30 + chance_fail;
+      let chance_medium = 13 + chance_small;
+      let chance_large = 9 + chance_medium;
+      let chance_super = 1 + chance_large;
+
+      // Legendary and Magikarp are on a seperate role (initiated when catching a super)
+      let chance_legendary = 50;
+      let chance_magikarp = 500;
+
+      let min = 0;
+      let max = chance_super;
+      let random = Math.floor(Math.random() * (max-min)) + min;
+
+      let embed = new Discord.RichEmbed()
+        .setAuthor(`Fishing Results - ${message.author.username}#${message.author.discriminator}`, message.author.avatarURL);
+
+      if(random < chance_fail){
+        // Failed
+        embed.setColor('#000000');
+        embed.addField(`Results`, `You cast out your hook and found nothing!`);
+      } else if(random < chance_small) {
+        // Catch Small
+        embed.setColor('#63cccc');
+        embed.addField(`Results`, `You feel a small bit of tension from your rod. You reel it in and find a ${small_fish_icon} Small Fish`);
+      } else if(random < chance_medium) {
+        // Catch Medium
+        embed.setColor('#63cccc');
+        embed.addField(`Results`, `After a small bit of fighting, you eventually pull in a ${medium_fish_icon} Medium Fish`);
+      } else if(random < chance_large) {
+        // Catch Large
+        embed.setColor('#63cccc');
+        embed.addField(`Results`, `Your arm nearly snapped in two trying to pull in this ${large_fish_icon} Large Fish!`);
+      } else {
+        let superRole = Math.floor(Math.random() * 500);
+        if(superRole <= chance_legendary) {
+          // Catch Legendary
+          embed.setColor('#dee067');
+          embed.addField(`Results`, `People have talked about this beast for years, but never did you think you would actually find it! You just got a ${legendary_fish_icon} Legendary Fish!`);
+        } else if(superRole == chance_magikarp){
+          // Catch Magikarp
+          embed.setColor('#e8a517');
+          embed.addField(`Results`, `This cant be right? You just found a ${magikarp_icon} Magikarp`);
+        } else {
+          // Catch Super
+          embed.setColor('#16b3e8');
+          embed.addField(`Results`, `Is it a bird? Is it a plane? I sure hope not, its in the water. Must be a ${super_fish_icon} Super Fish!`);
+        }
+      }
+      message.channel.send(embed);
+
     } else if(args[0] == "inventory" || args[0] == "inv"){
       // Show your inventory
+
       let inventory_display = "";
       inventory_display += `${small_fish_icon} x ${small_fish_count}\n`;
       inventory_display += `${medium_fish_icon} x ${medium_fish_count}\n`
@@ -51,6 +103,7 @@ exports.run = function(client, message, args){
         .addField(`Inventory`, `${inventory_display}`)
         .setFooter(`Fishing minigame is coming soon!`);
       message.channel.send(embed);
+
     } else if(args[0] == "sell"){
       if(!args[1]){
         // Let them know the correct format
@@ -71,8 +124,8 @@ exports.run = function(client, message, args){
           case "super":
             // Sell all super fish
             break;
-          case "shiny":
-            // Sell all shiny fish
+          case "legendary":
+            // Sell all legendary fish
             break;
           case "magikarp":
             // Sell all magikarp
@@ -89,7 +142,7 @@ exports.run = function(client, message, args){
 
 exports.conf = {
   aliases: [],
-  permLevel: 0
+  permLevel: 4
 };
 
 exports.help = {
