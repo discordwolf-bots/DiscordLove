@@ -58,29 +58,35 @@ exports.run = function(client, message, args){
       } else if(random < chance_small) {
         // Catch Small
         embed.setColor('#63cccc');
-        embed.setFooter(`You feel a small bit of tension from your rod. You reel it in and find a ${small_fish_icon} Small Fish`);
+        embed.addField(`\u0020`, `${small_fish_icon}`);
+        embed.setFooter(`You feel a small bit of tension from your rod. You reel it in and find a Small Fish`);
       } else if(random < chance_medium) {
         // Catch Medium
         embed.setColor('#63cccc');
-        embed.setFooter(`After a small bit of fighting, you eventually pull in a ${medium_fish_icon} Medium Fish`);
+        embed.addField(`\u0020`, `${medium_fish_icon}`);
+        embed.setFooter(`After a small bit of fighting, you eventually pull in a Medium Fish`);
       } else if(random < chance_large) {
         // Catch Large
         embed.setColor('#63cccc');
-        embed.setFooter(`Your arm nearly snapped in two trying to pull in this ${large_fish_icon} Large Fish!`);
+        embed.addField(`\u0020`, `${large_fish_icon}`);
+        embed.setFooter(`Your arm nearly snapped in two trying to pull in this Large Fish!`);
       } else {
         let superRole = Math.floor(Math.random() * 500);
         if(superRole <= chance_legendary) {
           // Catch Legendary
           embed.setColor('#dee067');
-          embed.setFooter(`People have talked about this beast for years, but never did you think you would actually find it! You just got a ${legendary_fish_icon} Legendary Fish!`);
+          embed.addField(`\u0020`, `${legendary_fish_icon}`);
+          embed.setFooter(`People have talked about this beast for years, but never did you think you would actually find it! You just got a Legendary Fish!`);
         } else if(superRole == chance_magikarp){
           // Catch Magikarp
           embed.setColor('#e8a517');
-          embed.setFooter(`This cant be right? You just found a ${magikarp_icon} Magikarp`);
+          embed.addField(`\u0020`, `${magikarp_icon}`);
+          embed.setFooter(`This cant be right? You just found a Magikarp`);
         } else {
           // Catch Super
           embed.setColor('#16b3e8');
-          embed.setFooter(`Is it a bird? Is it a plane? I sure hope not, its in the water. Must be a ${super_fish_icon} Super Fish!`);
+          embed.addField(`\u0020`, `${super_fish_icon}`);
+          embed.setFooter(`Is it a bird? Is it a plane? I sure hope not, its in the water. Must be a Super Fish!`);
         }
       }
       message.channel.send(embed);
