@@ -103,7 +103,7 @@ exports.run = function(client, message, args){
       }
       if(vcTime >= 60){
         let vcTime3 = Math.floor(vcTime / 60);
-        vcTimeFormat = vcTime3 + "hour";
+        vcTimeFormat = vcTime3 + " hour";
         if(vcTime3 >= 2) vcTimeFormat += "s";
         vcTimeFormat += " ";
         vcTime = vcTime - (vcTime3 * 60);
