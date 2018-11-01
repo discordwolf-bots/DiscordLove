@@ -65,15 +65,12 @@ module.exports = message => {
     if(message.content.startsWith(config.prefix)){
       command = message.content.split(' ')[0].slice(config.prefix.length);
       bool = true;
-      giveExp = false;
     } else if(message.content.startsWith(config.prefixtext)){
       command = message.content.split(' ')[0].slice(config.prefixtext.length);
       bool = true;
-      giveExp = false;
     } else if(message.content.startsWith(config.prefixemoji)){
       command = message.content.split(' ')[0].slice(config.prefixemoji.length);
       bool = true;
-      giveExp = false;
     }
 
     if(message.channel.id == '481585772718194708') giveExp = false;
