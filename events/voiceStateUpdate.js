@@ -29,6 +29,7 @@ module.exports = (oldMember, newMember) => {
 
   db.get(sql, (err, row) => {
     if(err) return console.error(err.message);
+    if(!row) return;
 
     if(newUserChannel === '507329576398225408' && oldUserChannel !== undefined){
       // User joined AFK
