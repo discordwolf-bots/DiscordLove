@@ -29,7 +29,7 @@ exports.run = function(client, message, args){
     lastfish TEXT DEFAULT 0,
 
     messagesSent INTEGER DEFAULT 0,
-    fishInventory TEXT DEFAULT 0,0,0,0,0,0
+    fishInventory TEXT DEFAULT '0,0,0,0,0,0'
 
     goneFishing INTEGER DEFAULT 0,
     soldFish INTEGER DEFAULT 0,
