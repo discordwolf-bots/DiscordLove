@@ -133,7 +133,7 @@ module.exports = (oldMember, newMember) => {
 
         client.channels.get(config.logging).send(`:mega: VOICE CHAT SWITCH : ${oldMember.guild.member(row.id).user.username}#${oldMember.guild.members.get(row.id).user.discriminator} - ${row.money} -> ${newBalance} **(${validTime} minutes)**`);
 
-        let sql2 = `UPDATE users SET voicejoined = 0, money = ${newBalance}, voicetime = ${row.voicetime + validTime} WHERE id = ${row.id}`;
+        let sql2 = `UPDATE users SET voicejoined = ${now}, money = ${newBalance}, voicetime = ${row.voicetime + validTime} WHERE id = ${row.id}`;
         db.run(sql2, (err) => {
           if(err) return console.error(err.message);
         });
