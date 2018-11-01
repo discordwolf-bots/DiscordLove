@@ -46,7 +46,7 @@ exports.run = function(client, message, args){
 
       let embed = new Discord.RichEmbed()
         .setColor('#7f8a9d')
-        .setTitle(`Fishing Inventory of ${message.guild.member(target).user.username}#${message.guild.members.get(target).user.discriminator}`)
+        .setTitle(`Fishing Inventory of ${message.guild.member(message.author.id).user.username}#${message.guild.members.get(message.author.id).user.discriminator}`)
         .setThumbnail(`${message.author.avatarURL}`)
         .addField(`Inventory`, `${inventory_display}`)
         .setFooter(`Fishing minigame is coming soon!`);
