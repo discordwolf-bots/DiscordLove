@@ -38,7 +38,7 @@ exports.run = function(client, message, args){
             leader_names.push(`${rank_emoji} **${leader_count}.** **${rowUser.user.username}** - **\$${(row.cost-100).format(0)}** <:cooldown:505752316649930774>`);
           }
         }
-        if(!rowUser) leader_names.push(`${rank_emoji} **${leader_count}.** <${row.id}> - **\$${(row.cost).format(0)} <:cooldown:505752316649930774>`);
+        if(!rowUser) leader_names.push(`${rank_emoji} **${leader_count}.** <${row.id}> - **\$${(row.cost).format(0)}** <:cooldown:505752316649930774>`);
       } else {
         // Purchasable
         let rowUser = message.guild.members.get(row.id);
@@ -49,7 +49,7 @@ exports.run = function(client, message, args){
             leader_names.push(`${rank_emoji} **${leader_count}.** **${rowUser.user.username}** - **\$${(row.cost-100).format(0)}**`);
           }
         }
-        if(!rowUser) leader_names.push(`${rank_emoji} **${leader_count}.** <${row.id}> - **\$${row.cost}`);
+        if(!rowUser) leader_names.push(`${rank_emoji} **${leader_count}.** <${row.id}> - **\$${row.cost}**`);
       }
 
     });
