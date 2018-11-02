@@ -33,7 +33,7 @@ exports.run = function(client, message, args){
               affordable_users.push(`**${rowUser.user.username}** - **\$${user_info.cost}** <:cooldown:505752316649930774>`);
             }
           }
-          if(!rowUser) affordable_users.push(`<${user_info.id}> - **\$${user_info.cost} <:cooldown:505752316649930774>`);
+          if(!rowUser) affordable_users.push(`<${user_info.id}> - **\$${user_info.cost}** <:cooldown:505752316649930774>`);
         } else {
           // Purchasable
           let rowUser = message.guild.members.get(user_info.id);
@@ -44,7 +44,7 @@ exports.run = function(client, message, args){
               affordable_users.push(`**${rowUser.user.username}** - **\$${user_info.cost}**`);
             }
           }
-          if(!rowUser) affordable_users.push(`<${user_info.id}> - **\$${user_info.cost}`);
+          if(!rowUser) affordable_users.push(`<${user_info.id}> - **\$${user_info.cost}**`);
         }
       });
       if(affordable_count == 0) return message.reply(`You cannot afford anybody at the moment`);
