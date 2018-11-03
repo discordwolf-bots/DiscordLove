@@ -124,7 +124,10 @@ exports.run = async function(client, message, args){
       if(now - parseInt(rowT.lastpurchase) < 300 * 1000){
         message.delete();
         let tFormat = "";
-        let tDiff = (300*1000) - (now - parseInt(rowT.lastpurchase)); // 295
+        console.log(now);
+        console.log(rowT.lastpurchase);
+        console.log(now-rowT.lastpurchase);
+        let tDiff = Math.floor(((300*1000) - (now - parseInt(rowT.lastpurchase)))/1000); // 295
         let tDiffMins = Math.floor((tDiff / 60)*1000);
         if(tDiffMins >= 2) {
           tFormat = tDiffMins + " minutes";
