@@ -51,7 +51,7 @@ const achievement_talks_a_lot = (message, value, client) => {
 
 module.exports = message => {
   try {
-    let now = moment().format('DDMMYYhhmmss');
+    let now = moment().format('x');
     if(message.author.bot) return;
     if(message.channel.type !== "text") return;
     if(message.guild.id != '480906420133429259') return;
@@ -108,7 +108,7 @@ module.exports = message => {
         if(err) return console.error(err.message);
         if(!row) return;
 
-        if(now - parseInt(row.lastmessage) < 60) return console.log(`ERROR: Timer changed ${now-parseInt(row.lastmessage)}`);
+        if(now - parseInt(row.lastmessage) < 60 * 1000) return;
         let min = 20;
         let max = 40;
         let random = Math.floor(Math.random() * (max-min)) + min;

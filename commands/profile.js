@@ -56,7 +56,7 @@ Number.prototype.format = function(n, x) {
 
 exports.run = function(client, message, args){
   let target = message.author.id;
-  let now = moment().format('DDMMYYhhmmss');
+  let now = moment().format('x');
   if(message.mentions.members.first()) target = message.mentions.members.first().user.id;
   let sqlCheck = `SELECT * FROM users WHERE id = ${target}`;
   db.get(sqlCheck, [], (err,row) => {
@@ -66,7 +66,7 @@ exports.run = function(client, message, args){
       return message.channel.send(`Please do the command **${config.prefix}start** in ${message.guild.channels.get('505128715202723850').toString()} first!`);
     } else {
 
-      if(now - parseInt(row.lastprofile) < 60){ message.delete(); return message.reply(`Please wait another **${60 - (now - parseInt(row.lastprofile))}** seconds.`); }
+      if(now - parseInt(row.lastprofile) < 60 * 1000){ message.delete(); return message.reply(`Please wait another **${( 60 * 1000 ) - (now - parseInt(row.lastprofile))}** seconds.`); }
 /**
   TODO: Multi guild check. Blocked channels?
 **/
@@ -94,7 +94,7 @@ exports.run = function(client, message, args){
 
       let vcTime = row.voicetime;
       let vcTimeFormat = "";
-      if(vcTime >= (60*24)){
+      if(vcTime >= (60*24*1000)){
         let vcTime2 = Math.floor(vcTime / 60*24);
         vcTimeFormat = vcTime2.format(0) + " day";
         if(vcTime2 >= 2) vcTimeFormat += "s";

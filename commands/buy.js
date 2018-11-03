@@ -74,7 +74,7 @@ Number.prototype.format = function(n, x) {
 };
 
 exports.run = async function(client, message, args){
-  let now = moment().format('DDMMYYhhmmss');
+  let now = moment().format('x');
   let target = message.mentions.members.first();
   if(!target) return message.channel.send("Please mention the user you want to buy!");
   if(target.user.id == message.author.id) return message.channel.send(`You cannot purchase yourself`);
@@ -121,17 +121,17 @@ exports.run = async function(client, message, args){
       let owner = rowT.owner;
       let tBalance = rowT.money;
 
-      if(now - parseInt(rowT.lastpurchase) < 300){
+      if(now - parseInt(rowT.lastpurchase) < 300 * 1000){
         message.delete();
         let tFormat = "";
-        let tDiff = 300 - (now - parseInt(rowT.lastpurchase)); // 295
-        let tDiffMins = Math.floor(tDiff / 60);
+        let tDiff = (300*1000) - (now - parseInt(rowT.lastpurchase)); // 295
+        let tDiffMins = Math.floor((tDiff / 60)*1000);
         if(tDiffMins >= 2) {
           tFormat = tDiffMins + " minutes";
         } else if(tDiffMins == 1) {
           tFormat = tDiffMins + " minute";
         }
-        let tDiffSecs = tDiff - (tDiffMins * 60);
+        let tDiffSecs = tDiff - (tDiffMins * 60*1000);
         if(tDiffSecs >= 2) {
           tFormat += " " + tDiffSecs + " seconds";
         } else if(tDiffSecs == 1){
