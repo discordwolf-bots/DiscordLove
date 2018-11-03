@@ -66,7 +66,7 @@ exports.run = function(client, message, args){
       return message.channel.send(`Please do the command **${config.prefix}start** in ${message.guild.channels.get('505128715202723850').toString()} first!`);
     } else {
 
-      if(now - parseInt(row.lastprofile) < 60 * 1000){ message.delete(); return message.reply(`Please wait another **${( 60 * 1000 ) - (now - parseInt(row.lastprofile))}** seconds.`); }
+      if(now - parseInt(row.lastprofile) < 60 * 1000){ message.delete(); return message.reply(`Please wait another **${( 60 ) - (now - parseInt(row.lastprofile))}** seconds.`); }
 /**
   TODO: Multi guild check. Blocked channels?
 **/
