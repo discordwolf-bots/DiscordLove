@@ -19,7 +19,7 @@ Number.prototype.format = function(n, x) {
 
 exports.run = function(client, message, args){
 
-  let now = moment().format('DDMMYYhhmmss');
+  let now = moment().format('x');
 
   let sqlCheck = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sqlCheck, [], (err,row) => {

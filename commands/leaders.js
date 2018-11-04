@@ -12,7 +12,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 });
 
 exports.run = function(client, message, args){
-  let now = moment().format('DDMMYYhhmmss');
+  let now = moment().format('x');
   let sql = `SELECT * FROM users ORDER BY cost DESC LIMIT 10`;
   db.all(sql, [], (err, rows) => {
     if(err) return console.error(err.message);
