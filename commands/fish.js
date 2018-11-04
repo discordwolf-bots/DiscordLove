@@ -12,7 +12,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 });
 
 const catch_fish = (size, message, row, fishingCost, client) => {
-  let now = moment.format('x');
+  let now = moment().format('x');
   let inventoryHistory = row.fishInventoryHistory.split(',');
   let inventory = row.fishInventory.split(',');
   let newFishCaught = row.goneFishing;
@@ -73,7 +73,7 @@ exports.run = function(client, message, args){
 
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, (err, row) => {
-    let now = moment.format('x');
+    let now = moment().format('x');
     let fishingCost = 25;
     if(err) return console.error(err.message);
     if(!row) return message.reply(`You need to start your profile first with **${config.prefix}start**`);
