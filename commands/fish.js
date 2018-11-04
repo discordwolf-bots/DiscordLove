@@ -19,33 +19,33 @@ const catch_fish = (size, message, row, fishingCost, client) => {
   let magikarp = row.magikarpCaught;
   let magikarp_achieve = row.achieve_catch_a_karp;
   if(size == "small") {
-    inventory[0] = parseInt(inventory[0])++;
-    inventoryHistory[0] = parseInt(inventoryHistory[0])++;
+    inventory[0] = parseInt(inventory[0])+1;
+    inventoryHistory[0] = parseInt(inventoryHistory[0])+1;
     newFishCaught = row.fish_caught+1;
   }
   if(size == "medium") {
-    inventory[1] = parseInt(inventory[1])++;
-    inventoryHistory[1] = parseInt(inventoryHistory[1])++;
+    inventory[1] = parseInt(inventory[1])+1;
+    inventoryHistory[1] = parseInt(inventoryHistory[1])+1;
     newFishCaught = row.fish_caught+1;
   }
   if(size == "large") {
-    inventory[2] = parseInt(inventory[2])++;
-    inventoryHistory[2] = parseInt(inventoryHistory[2])++;
+    inventory[2] = parseInt(inventory[2])+1;
+    inventoryHistory[2] = parseInt(inventoryHistory[2])+1;
     newFishCaught = row.fish_caught+1;
   }
   if(size == "super") {
-    inventory[3] = parseInt(inventory[3])++;
-    inventoryHistory[3] = parseInt(inventoryHistory[3])++;
+    inventory[3] = parseInt(inventory[3])+1;
+    inventoryHistory[3] = parseInt(inventoryHistory[3])+1;
     newFishCaught = row.fish_caught+1;
   }
   if(size == "legendary") {
-    inventory[4] = parseInt(inventory[4])++;
-    inventoryHistory[4] = parseInt(inventoryHistory[4])++;
+    inventory[4] = parseInt(inventory[4])+1;
+    inventoryHistory[4] = parseInt(inventoryHistory[4])+1;
     newFishCaught = row.fish_caught+1;
   }
   if(size == "magikarp") {
-    inventory[5] = parseInt(inventory[5])++;
-    inventoryHistory[5] = parseInt(inventoryHistory[5])++;
+    inventory[5] = parseInt(inventory[5])+1;
+    inventoryHistory[5] = parseInt(inventoryHistory[5])+1;
     newFishCaught = row.fish_caught+1;
     magikarp++;
     if(magikarp_achieve == 0) {
