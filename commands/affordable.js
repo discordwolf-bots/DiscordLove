@@ -24,7 +24,7 @@ exports.run = function(client, message, args){
       let affordable_count = 0;
       rows.forEach((user_info) => {
         affordable_count++;
-        if(now - parseInt(user_info.lastpurchase) < 300){
+        if(now - parseInt(rowT.lastpurchase) < 300 * 1000){
           let rowUser = message.guild.members.get(user_info.id);
           if(rowUser){
             if(rowUser.nickname != null){

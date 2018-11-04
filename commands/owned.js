@@ -42,21 +42,7 @@ exports.run = function(client, message, args){
         if(own_count == 3) own_emoji = `<:heart_gold:505750302226645003>`;
         if(own_count == 4) own_emoji = `<:heart_silver:505750301341515779>`;
         if(own_count == 5) own_emoji = `<:heart_bronze:505750301614276618>`;
-        if(now - parseInt(row.lastpurchase) < 300){
-          let tFormat = "";
-          let tDiff = 300 - (now - parseInt(row.lastpurchase));
-          let tDiffMins = Math.floor(tDiff / 60);
-          if(tDiffMins >= 2) {
-            tFormat = tDiffMins + " minutes";
-          } else if(tDiffMins == 1) {
-            tFormat = tDiffMins + " minute";
-          }
-          let tDiffSecs = tDiff - (tDiffMins * 60);
-          if(tDiffSecs >= 2) {
-            tFormat += " " + tDiffSecs + " seconds";
-          } else if(tDiffSecs == 1){
-            tFormat += " " + tDiffSecs + " second";
-          }
+        if(now - parseInt(rowT.lastpurchase) < 300 * 1000){
           let rowUser = message.guild.members.get(row.id);
           if(rowUser){
             if(rowUser.nickname != null){
