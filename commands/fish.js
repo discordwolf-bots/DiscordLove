@@ -99,6 +99,7 @@ exports.run = function(client, message, args){
       if(now - parseInt(row.lastfish) < 7 * 60 * 1000){
          message.delete();
          let tFormat = "";
+
          let tDiff = Math.floor(420 - (now - parseInt(row.lastfish))); // 295
          let tDiffMins = Math.floor((tDiff / 60)*1000);
          if(tDiffMins >= 2) {
@@ -111,6 +112,9 @@ exports.run = function(client, message, args){
            tFormat += " " + tDiffSecs + " seconds";
          } else if(tDiffSecs == 1){
            tFormat += " " + tDiffSecs + " second";
+         }
+         if(message.author.id == config.botowner){
+           message.channel.send(`tDiff: ${tDiff}, tDiffMins = ${tDiffMins}, tDiffSecs = ${tDiffSecs}`);
          }
          return message.reply(`Please wait another **${tFormat}** before trying to fish again.`);
        }
