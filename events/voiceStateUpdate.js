@@ -95,7 +95,8 @@ module.exports = (oldMember, newMember) => {
         client.channels.get(config.voice).send(`:x: ${oldMember.guild.member(row.id).user.username}#${oldMember.guild.members.get(row.id).user.discriminator} - **(${validTime} minutes)**`);
 
         let balance = row.money;
-        let newBalance = balance + toAdd;
+        //let newBalance = balance + toAdd;
+        let newBalance = balance;
 
         client.channels.get(config.logging).send(`:mega: VOICE CHAT : ${oldMember.guild.member(row.id).user.username}#${oldMember.guild.members.get(row.id).user.discriminator} - ${row.money} -> ${newBalance} **(${validTime} minutes)**`);
 
@@ -130,7 +131,8 @@ module.exports = (oldMember, newMember) => {
         client.channels.get(config.voice).send(`:performing_arts: ${oldMember.guild.member(row.id).user.username}#${oldMember.guild.members.get(row.id).user.discriminator} - **(${validTime} minutes)**`);
 
         let balance = row.money;
-        let newBalance = balance + toAdd;
+        //let newBalance = balance + toAdd;
+        let newBalance = balance;
 
         client.channels.get(config.logging).send(`:mega: VOICE CHAT SWITCH : ${oldMember.guild.member(row.id).user.username}#${oldMember.guild.members.get(row.id).user.discriminator} - ${row.money} -> ${newBalance} **(${validTime} minutes)**`);
 
