@@ -100,7 +100,7 @@ exports.run = function(client, message, args){
          message.delete();
          let tFormat = "";
 
-         let tDiff = Math.floor((( 60 * 7 * 1000 ) - (now - parseInt(row.lastprofile)))/1000);
+         let tDiff = Math.floor((( 60 * 7 * 1000 ) - ((now - parseInt(row.lastprofile))/1000));
          let tDiffMins = Math.floor((tDiff / 60));
          if(tDiffMins >= 2) {
            tFormat = tDiffMins + " minutes";
