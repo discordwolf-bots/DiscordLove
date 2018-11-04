@@ -78,7 +78,6 @@ exports.run = function(client, message, args){
     if(err) return console.error(err.message);
     if(!row) return message.reply(`You need to start your profile first with **${config.prefix}start**`);
     if(row.money < fishingCost) return message.reply(`You do not have enough money to fish! You need **${fishingCost.format(0)}**, you have **${row.money.format(0)}**`);
-    if(now - parseInt(row.lastfish) < 60 * 1000){ message.delete(); return message.reply(`Please wait another **${Math.floor((( 60 * 1000 ) - (now - parseInt(row.lastfish)))/1000)}** seconds before trying to fish again.`); }
 
     let inventory = row.fishInventory.split(',');
     let small_fish_count = parseInt(inventory[0]);
@@ -98,6 +97,7 @@ exports.run = function(client, message, args){
 
     if(!args[0]){
       // Go fishing
+      if(now - parseInt(row.lastfish) < 60 * 1000){ message.delete(); return message.reply(`Please wait another **${Math.floor((( 60 * 1000 ) - (now - parseInt(row.lastfish)))/1000)}** seconds before trying to fish again.`); }
       let chance_fail = 47;
       let chance_small = 30 + chance_fail;
       let chance_medium = 13 + chance_small;
