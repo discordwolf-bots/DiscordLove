@@ -99,7 +99,7 @@ exports.run = function(client, message, args){
       if(now - parseInt(row.lastfish) < 7 * 60 * 1000){
          message.delete();
          let tFormat = "";
-         let tDiff = Math.floor(now - parseInt(row.lastfish)); // 295
+         let tDiff = Math.floor(420 - (now - parseInt(row.lastfish))); // 295
          let tDiffMins = Math.floor((tDiff / 60)*1000);
          if(tDiffMins >= 2) {
            tFormat = tDiffMins + " minutes";
