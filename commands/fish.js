@@ -56,6 +56,7 @@ const catch_fish = (size, message, row, fishingCost, client) => {
   let newInventoryHistory = inventoryHistory.join(',');
 
   let sql = `UPDATE users SET money = ${row.money-25}, fish_caught=${newFishCaught}, fishInventory = '${newInventory}', fishInventoryHistory = '${newInventoryHistory}', magikarpCaught = ${magikarp}, achieve_catch_a_karp = ${magikarp_achieve} WHERE id = ${message.author.id}`;
+  console.log(sql);
   db.run(sql, (err) => {
     if(err) console.error(err.message);
   });
