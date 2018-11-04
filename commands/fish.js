@@ -240,7 +240,7 @@ exports.run = function(client, message, args){
 
 exports.conf = {
   aliases: [],
-  permLevel: 4
+  permLevel: 0
 };
 
 exports.help = {

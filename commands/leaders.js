@@ -29,7 +29,7 @@ exports.run = function(client, message, args){
       if(leader_count == 3) rank_emoji = `<:heart_gold:505750302226645003>`;
       if(leader_count == 4) rank_emoji = `<:heart_silver:505750301341515779>`;
       if(leader_count == 5) rank_emoji = `<:heart_bronze:505750301614276618>`;
-      if(now - parseInt(rowT.lastpurchase) < 300 * 1000){
+      if(now - parseInt(row.lastpurchase) < 300 * 1000){
         let rowUser = message.guild.members.get(row.id);
         if(rowUser){
           if(rowUser.nickname != null){
