@@ -99,7 +99,7 @@ exports.run = function(client, message, args){
       if(now - parseInt(row.lastfish) < 7 * 60 * 1000){
          message.delete();
          let tFormat = "";
-         let tDiff = Math.floor(7*60 - (now - parseInt(row.lastfish))); // 295
+         let tDiff = Math.floor((7*60) - (now - parseInt(row.lastfish))); // 295
          let tDiffMins = Math.floor((tDiff / 60)*1000);
          if(tDiffMins >= 2) {
            tFormat = tDiffMins + " minutes";
@@ -114,7 +114,7 @@ exports.run = function(client, message, args){
          }
          return message.reply(`Please wait another **${tFormat}** before trying to fish again.`);
        }
-     
+
       let chance_fail = 47;
       let chance_small = 30 + chance_fail;
       let chance_medium = 13 + chance_small;
