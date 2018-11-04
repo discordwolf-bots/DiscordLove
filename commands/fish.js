@@ -14,39 +14,39 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 const catch_fish = (size, message, row, fishingCost, client) => {
   let inventoryHistory = row.fishInventoryHistory.split(',');
   let inventory = row.fishInventory.split(',');
-  let newFishCaught = row.fish_caught;
+  let newFishCaught = row.goneFishing;
   let newFishCounter = row.goneFishing + 1;
   let magikarp = row.magikarpCaught;
   let magikarp_achieve = row.achieve_catch_a_karp;
   if(size == "small") {
     inventory[0] = parseInt(inventory[0])+1;
     inventoryHistory[0] = parseInt(inventoryHistory[0])+1;
-    newFishCaught = row.fish_caught+1;
+    newFishCaught = row.goneFishing+1;
   }
   if(size == "medium") {
     inventory[1] = parseInt(inventory[1])+1;
     inventoryHistory[1] = parseInt(inventoryHistory[1])+1;
-    newFishCaught = row.fish_caught+1;
+    newFishCaught = row.goneFishing+1;
   }
   if(size == "large") {
     inventory[2] = parseInt(inventory[2])+1;
     inventoryHistory[2] = parseInt(inventoryHistory[2])+1;
-    newFishCaught = row.fish_caught+1;
+    newFishCaught = row.goneFishing+1;
   }
   if(size == "super") {
     inventory[3] = parseInt(inventory[3])+1;
     inventoryHistory[3] = parseInt(inventoryHistory[3])+1;
-    newFishCaught = row.fish_caught+1;
+    newFishCaught = row.goneFishing+1;
   }
   if(size == "legendary") {
     inventory[4] = parseInt(inventory[4])+1;
     inventoryHistory[4] = parseInt(inventoryHistory[4])+1;
-    newFishCaught = row.fish_caught+1;
+    newFishCaught = row.goneFishing+1;
   }
   if(size == "magikarp") {
     inventory[5] = parseInt(inventory[5])+1;
     inventoryHistory[5] = parseInt(inventoryHistory[5])+1;
-    newFishCaught = row.fish_caught+1;
+    newFishCaught = row.goneFishing+1;
     magikarp++;
     if(magikarp_achieve == 0) {
       magikarp_achieve = 1;
@@ -55,7 +55,7 @@ const catch_fish = (size, message, row, fishingCost, client) => {
   let newInventory = inventory.join(',');
   let newInventoryHistory = inventoryHistory.join(',');
 
-  let sql = `UPDATE users SET money = ${row.money-25}, fish_caught=${newFishCaught}, fishInventory = '${newInventory}', fishInventoryHistory = '${newInventoryHistory}', magikarpCaught = ${magikarp}, achieve_catch_a_karp = ${magikarp_achieve} WHERE id = ${message.author.id}`;
+  let sql = `UPDATE users SET money = ${row.money-25}, fish_caught = ${newFishCaught}, fishInventory = '${newInventory}', fishInventoryHistory = '${newInventoryHistory}', magikarpCaught = ${magikarp}, achieve_catch_a_karp = ${magikarp_achieve} WHERE id = ${message.author.id}`;
   console.log(sql);
   db.run(sql, (err) => {
     if(err) console.error(err.message);
