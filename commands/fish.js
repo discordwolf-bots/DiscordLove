@@ -100,15 +100,16 @@ exports.run = function(client, message, args){
          message.delete();
          let tFormat = "";
 
-         let tDiff = Math.floor((420 * 1000) - ((now - parseInt(row.lastfish))/1000));
+         let tDiff = Math.floor((420 * 1000) - ((now - parseInt(row.lastfish))));
+         tDiff /= 1000;
          //let tDiff = Math.floor(( 60 * 7 * 1000 ) - ((now - parseInt(row.lastprofile)))/1000);
-         let tDiffMins = Math.floor((tDiff / 60)/1000);
+         let tDiffMins = Math.floor((tDiff / 60));
          if(tDiffMins >= 2) {
            tFormat = tDiffMins + " minutes";
          } else if(tDiffMins == 1) {
            tFormat = tDiffMins + " minute";
          }
-         let tDiffSecs = Math.floor((tDiff  / 1000) - (tDiffMins * 60));
+         let tDiffSecs = Math.floor(tDiff - (tDiffMins * 60));
          if(tDiffSecs >= 2) {
            tFormat += " " + tDiffSecs + " seconds";
          } else if(tDiffSecs == 1){
