@@ -57,7 +57,6 @@ const catch_fish = (size, message, row, fishingCost, client) => {
   let newInventoryHistory = inventoryHistory.join(',');
 
   let sql = `UPDATE users SET money = ${row.money-25}, goneFishing = ${newFishCaught}, fishInventory = '${newInventory}', fishInventoryHistory = '${newInventoryHistory}', magikarpCaught = ${magikarp}, achieve_catch_a_karp = ${magikarp_achieve}, lastfish = ${now} WHERE id = ${message.author.id}`;
-  console.log(sql);
   db.run(sql, (err) => {
     if(err) console.error(err.message);
   });
@@ -115,7 +114,7 @@ exports.run = function(client, message, args){
          }
            return message.reply(`This user has recently been bought! Please wait another **${tFormat}**`);
        }
-         return message.reply(`Please wait another **${tFormat}** before trying to fish again.`); 
+         return message.reply(`Please wait another **${tFormat}** before trying to fish again.`);
        }
       let chance_fail = 47;
       let chance_small = 30 + chance_fail;
