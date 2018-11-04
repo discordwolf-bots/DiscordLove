@@ -13,8 +13,8 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 
 exports.run = function(client, message, args){
 
-  let sql = `INSERT INTO users (id, userID, money, cost, owner, lastpurchase, lastprofile, lastmessage, achieve_your_value, achieve_owned_value, achieve_buy_the_bot, messagesSent, achieve_talks_a_lot, goneFishing, soldFish, magikarpCaught, achieve_go_fishing, achieve_fishmonger, lastfish, achieve_catch_a_karp, voicetime, voicejoined, achieve_chats_a_lot)
-    SELECT id, userID, money, cost, owner, lastpurchase, lastprofile, lastmessage, achieve_your_value, achieve_owned_value, achieve_buy_the_bot, messagesSent, achieve_talks_a_lot, goneFishing, soldFish, magikarpCaught, achieve_go_fishing, achieve_fishmonger, lastfish, achieve_catch_a_karp, voicetime, voicejoined, achieve_chats_a_lot
+  let sql = `INSERT INTO users (id, userID, money, cost, owner, lastpurchase, lastprofile, lastmessage, achieve_your_value, achieve_owned_value, achieve_buy_the_bot, messagesSent, achieve_talks_a_lot, goneFishing, soldFish, magikarpCaught, achieve_go_fishing, achieve_fishmonger, lastfish, achieve_catch_a_karp, voicetime, voicejoined, achieve_chats_a_lot, fishInventory)
+    SELECT id, userID, money, cost, owner, lastpurchase, lastprofile, lastmessage, achieve_your_value, achieve_owned_value, achieve_buy_the_bot, messagesSent, achieve_talks_a_lot, goneFishing, soldFish, magikarpCaught, achieve_go_fishing, achieve_fishmonger, lastfish, achieve_catch_a_karp, voicetime, voicejoined, achieve_chats_a_lot, fishInventory
     FROM _users_old`;
   db.run(sql, (err) => {
     if(err) return console.error(err.message);

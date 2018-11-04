@@ -30,6 +30,7 @@ exports.run = function(client, message, args){
 
     messagesSent INTEGER DEFAULT 0,
     fishInventory TEXT DEFAULT '0,0,0,0,0,0',
+    fishInventoryHistory TEXT DEFAULT '0,0,0,0,0,0',
 
     goneFishing INTEGER DEFAULT 0,
     soldFish INTEGER DEFAULT 0,
