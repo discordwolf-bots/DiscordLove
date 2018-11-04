@@ -51,7 +51,8 @@ module.exports = (oldMember, newMember) => {
       }
 
       let balance = row.money;
-      let newBalance = balance + toAdd;
+      //let newBalance = balance + toAdd;
+      let newBalance = balance;
 
       client.channels.get(config.logging).send(`:mega: VOICE CHAT : ${oldMember.guild.member(row.id).user.username}#${oldMember.guild.members.get(row.id).user.discriminator} - ${row.money} -> ${newBalance}  **(${validTime} minutes)**`);
 
