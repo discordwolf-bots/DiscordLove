@@ -11,6 +11,56 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - Start`);
 });
 
+const catch_fish = (size, message, row, fishingCost, client) => {
+  let inventoryHistory = row.fishInventoryHistory.split(',');
+  let inventory = row.fishInventory.split(',');
+  let newFishCaught = row.fish_caught;
+  let newFishCounter = row.goneFishing + 1;
+  let magikarp = row.magikarpCaught;
+  let magikarp_achieve = row.achieve_catch_a_karp;
+  if(size == "small") {
+    inventory[0] = parseInt(inventory[0])++;
+    inventoryHistory[0] = parseInt(inventoryHistory[0])++;
+    newFishCaught = row.fish_caught+1;
+  }
+  if(size == "medium") {
+    inventory[1] = parseInt(inventory[1])++;
+    inventoryHistory[1] = parseInt(inventoryHistory[1])++;
+    newFishCaught = row.fish_caught+1;
+  }
+  if(size == "large") {
+    inventory[2] = parseInt(inventory[2])++;
+    inventoryHistory[2] = parseInt(inventoryHistory[2])++;
+    newFishCaught = row.fish_caught+1;
+  }
+  if(size == "super") {
+    inventory[3] = parseInt(inventory[3])++;
+    inventoryHistory[3] = parseInt(inventoryHistory[3])++;
+    newFishCaught = row.fish_caught+1;
+  }
+  if(size == "legendary") {
+    inventory[4] = parseInt(inventory[4])++;
+    inventoryHistory[4] = parseInt(inventoryHistory[4])++;
+    newFishCaught = row.fish_caught+1;
+  }
+  if(size == "magikarp") {
+    inventory[5] = parseInt(inventory[5])++;
+    inventoryHistory[5] = parseInt(inventoryHistory[5])++;
+    newFishCaught = row.fish_caught+1;
+    magikarp++;
+    if(magikarp_achieve == 0) {
+      magikarp_achieve = 1;
+    }
+  }
+  let newInventory = inventory.join(',');
+  let newInventoryHistory = inventoryHistory.join(',');
+
+  let sql = `UPDATE users SET money = ${row.money-25}, fish_caught=${newFishCaught}, fishInventory = ${newInventory}, fishInventoryHistory = ${newInventoryHistory}, magikarpCaught = ${magikarp}, achieve_catch_a_karp = ${magikarp_achieve} WHERE id = ${message.author.id}`;
+  db.run(sql, (err) => {
+    if(err) console.error(err.message);
+  });
+}
+
 exports.run = function(client, message, args){
   let small_fish_icon = `<:SmallFish:507593596887629824>`;
   let medium_fish_icon = `<:MediumFish:507593596728508426>`;
@@ -21,8 +71,10 @@ exports.run = function(client, message, args){
 
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, (err, row) => {
+    let fishingCost = 25;
     if(err) return console.error(err.message);
     if(!row) return message.reply(`You need to start your profile first with **${config.prefix}start**`);
+    if(row.money < fishingCost) return message.reply(`You do not have enough money to fish! You need **${fishingCost.format(0)}**, you have **${row.money.format(0)}**`);
 
     let inventory = row.fishInventory.split(',');
     let small_fish_count = parseInt(inventory[0]);
@@ -31,6 +83,14 @@ exports.run = function(client, message, args){
     let super_fish_count = parseInt(inventory[3]);
     let legendary_fish_count = parseInt(inventory[4]);
     let magikarp_count = parseInt(inventory[5]);
+
+    let inventoryHistory = row.fishInventoryHistory.split(',');
+    let small_fish_count_history = parseInt(inventoryHistory[0]);
+    let medium_fish_count_history = parseInt(inventoryHistory[1]);
+    let large_fish_count_history = parseInt(inventoryHistory[2]);
+    let super_fish_count_history = parseInt(inventoryHistory[3]);
+    let legendary_fish_count_history = parseInt(inventoryHistory[4]);
+    let magikarp_count_history = parseInt(inventoryHistory[5]);
 
     if(!args[0]){
       // Go fishing
@@ -51,25 +111,30 @@ exports.run = function(client, message, args){
       let embed = new Discord.RichEmbed()
         .setAuthor(`Fishing Results - ${message.author.username}#${message.author.discriminator}`, message.author.avatarURL);
 
+      let sizeCatch = "";
       if(random < chance_fail){
         // Failed
         embed.setColor('#000000');
         embed.setFooter(`You cast out your hook and found nothing!`);
+        sizeCatch = "fail";
       } else if(random < chance_small) {
         // Catch Small
         embed.setColor('#63cccc');
         embed.addField(`\u200b`, `${small_fish_icon}`);
         embed.setFooter(`You feel a small bit of tension from your rod. You reel it in and find a Small Fish`);
+        sizeCatch = "small";
       } else if(random < chance_medium) {
         // Catch Medium
         embed.setColor('#63cccc');
         embed.addField(`\u200b`, `${medium_fish_icon}`);
         embed.setFooter(`After a small bit of fighting, you eventually pull in a Medium Fish`);
+        sizeCatch = "medium";
       } else if(random < chance_large) {
         // Catch Large
         embed.setColor('#63cccc');
         embed.addField(`\u200b`, `${large_fish_icon}`);
         embed.setFooter(`Your arm nearly snapped in two trying to pull in this Large Fish!`);
+        sizeCatch = "large";
       } else {
         let superRole = Math.floor(Math.random() * 500);
         if(superRole <= chance_legendary) {
@@ -77,19 +142,23 @@ exports.run = function(client, message, args){
           embed.setColor('#dee067');
           embed.addField(`\u200b`, `${legendary_fish_icon}`);
           embed.setFooter(`People have talked about this beast for years, but never did you think you would actually find it! You just got a Legendary Fish!`);
+          sizeCatch = "legendary";
         } else if(superRole == chance_magikarp){
           // Catch Magikarp
           embed.setColor('#e8a517');
           embed.addField(`\u200b`, `${magikarp_icon}`);
           embed.setFooter(`This cant be right? You just found a Magikarp`);
+          sizeCatch = "magikarp";
         } else {
           // Catch Super
           embed.setColor('#16b3e8');
           embed.addField(`\u200b`, `${super_fish_icon}`);
           embed.setFooter(`Is it a bird? Is it a plane? I sure hope not, its in the water. Must be a Super Fish!`);
+          sizeCatch = "super";
         }
       }
       message.channel.send(embed);
+      catch_fish(sizeCatch, message, row, fishingCost, client);
 
     } else if(args[0] == "inventory" || args[0] == "inv"){
       // Show your inventory
@@ -107,6 +176,25 @@ exports.run = function(client, message, args){
         .setTitle(`Fishing Inventory of ${message.guild.member(message.author.id).user.username}#${message.guild.members.get(message.author.id).user.discriminator}`)
         .setThumbnail(`${message.author.avatarURL}`)
         .addField(`Inventory`, `${inventory_display}`)
+        .setFooter(`Fishing minigame is coming soon!`);
+      message.channel.send(embed);
+
+    } else if(args[0] == "history" || args[0] == "alltime"){
+      // Show your inventory history
+
+      let inventory_history_display = "";
+      inventory_history_display += `${small_fish_icon} x ${small_fish_count_history}\n`;
+      inventory_history_display += `${medium_fish_icon} x ${medium_fish_count_history}\n`
+      inventory_history_display += `${large_fish_icon} x ${large_fish_count_history}\n`
+      inventory_history_display += `${super_fish_icon} x ${super_fish_count_history}\n`
+      inventory_history_display += `${legendary_fish_icon} x ${legendary_fish_count_history}\n`
+      inventory_history_display += `${magikarp_icon} x ${magikarp_count_history}`
+
+      let embed = new Discord.RichEmbed()
+        .setColor('#7f8a9d')
+        .setTitle(`Fishing History of ${message.guild.member(message.author.id).user.username}#${message.guild.members.get(message.author.id).user.discriminator}`)
+        .setThumbnail(`${message.author.avatarURL}`)
+        .addField(`Inventory`, `${inventory_history_display}`)
         .setFooter(`Fishing minigame is coming soon!`);
       message.channel.send(embed);
 
