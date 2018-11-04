@@ -11,6 +11,11 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - Buy`);
 });
 
+Number.prototype.format = function(n, x) {
+  var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+  return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
+};
+
 exports.run = function(client, message, args){
   let now = moment().format('x');
   let sql1 = `SELECT * FROM users WHERE id = ${message.author.id}`;
@@ -28,23 +33,23 @@ exports.run = function(client, message, args){
           let rowUser = message.guild.members.get(user_info.id);
           if(rowUser){
             if(rowUser.nickname != null){
-              affordable_users.push(`**${rowUser.nickname}** - **\$${user_info.cost}** <:cooldown:505752316649930774>`);
+              affordable_users.push(`**${rowUser.nickname}** - **\$${user_info.cost.format(0)}** <:cooldown:505752316649930774>`);
             } else {
-              affordable_users.push(`**${rowUser.user.username}** - **\$${user_info.cost}** <:cooldown:505752316649930774>`);
+              affordable_users.push(`**${rowUser.user.username}** - **\$${user_info.cost.format(0)}** <:cooldown:505752316649930774>`);
             }
           }
-          if(!rowUser) affordable_users.push(`<${user_info.id}> - **\$${user_info.cost}** <:cooldown:505752316649930774>`);
+          if(!rowUser) affordable_users.push(`<${user_info.id}> - **\$${user_info.cost.format(0)}** <:cooldown:505752316649930774>`);
         } else {
           // Purchasable
           let rowUser = message.guild.members.get(user_info.id);
           if(rowUser){
             if(rowUser.nickname != null){
-              affordable_users.push(`**${rowUser.nickname}** - **\$${user_info.cost}**`);
+              affordable_users.push(`**${rowUser.nickname}** - **\$${user_info.cost.format(0)}**`);
             } else {
-              affordable_users.push(`**${rowUser.user.username}** - **\$${user_info.cost}**`);
+              affordable_users.push(`**${rowUser.user.username}** - **\$${user_info.cost.format(0)}**`);
             }
           }
-          if(!rowUser) affordable_users.push(`<${user_info.id}> - **\$${user_info.cost}**`);
+          if(!rowUser) affordable_users.push(`<${user_info.id}> - **\$${user_info.cost.format(0)}**`);
         }
       });
       if(affordable_count == 0) return message.reply(`You cannot afford anybody at the moment`);
