@@ -124,7 +124,7 @@ exports.run = async function(client, message, args){
       if(now - parseInt(rowT.lastpurchase) < 300 * 1000){
         message.delete();
         let tFormat = "";
-        let tDiff = Math.floor((420 * 1000) - ((now - parseInt(row.lastpurchase))));
+        let tDiff = Math.floor((420 * 1000) - ((now - parseInt(rowT.lastpurchase))));
         tDiff /= 1000;
         let tDiffMins = Math.floor((tDiff / 60));
         if(tDiffMins >= 2) {
