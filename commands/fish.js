@@ -112,10 +112,9 @@ exports.run = function(client, message, args){
          } else if(tDiffSecs == 1){
            tFormat += " " + tDiffSecs + " second";
          }
-           return message.reply(`This user has recently been bought! Please wait another **${tFormat}**`);
-       }
          return message.reply(`Please wait another **${tFormat}** before trying to fish again.`);
        }
+     }
       let chance_fail = 47;
       let chance_small = 30 + chance_fail;
       let chance_medium = 13 + chance_small;
