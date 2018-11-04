@@ -114,6 +114,7 @@ exports.run = function(client, message, args){
            tFormat += " " + tDiffSecs + " second";
          }
          if(message.author.id == config.botowner){
+           message.channel.send(`now = ${now}, row.lastfish = ${parseInt(row.lastfish)}`);
            message.channel.send(`tDiff: ${tDiff}, tDiffMins = ${tDiffMins}, tDiffSecs = ${tDiffSecs}`);
          }
          return message.reply(`Please wait another **${tFormat}** before trying to fish again.`);
