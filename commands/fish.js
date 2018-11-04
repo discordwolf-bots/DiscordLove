@@ -97,7 +97,26 @@ exports.run = function(client, message, args){
 
     if(!args[0]){
       // Go fishing
-      if(now - parseInt(row.lastfish) < 7 * 60 * 1000){ message.delete(); return message.reply(`Please wait another **${Math.floor((( 7 * 60 * 1000 ) - (now - parseInt(row.lastfish)))/1000)}** seconds before trying to fish again.`); }
+      if(now - parseInt(row.lastfish) < 7 * 60 * 1000){
+         message.delete();
+         let tFormat = "";
+         let tDiff = Math.floor(7*60 - (now - parseInt(row.lastfish))); // 295
+         let tDiffMins = Math.floor((tDiff / 60)*1000);
+         if(tDiffMins >= 2) {
+           tFormat = tDiffMins + " minutes";
+         } else if(tDiffMins == 1) {
+           tFormat = tDiffMins + " minute";
+         }
+         let tDiffSecs = tDiff - (tDiffMins * 60*1000);
+         if(tDiffSecs >= 2) {
+           tFormat += " " + tDiffSecs + " seconds";
+         } else if(tDiffSecs == 1){
+           tFormat += " " + tDiffSecs + " second";
+         }
+           return message.reply(`This user has recently been bought! Please wait another **${tFormat}**`);
+       }
+         return message.reply(`Please wait another **${tFormat}** before trying to fish again.`); 
+       }
       let chance_fail = 47;
       let chance_small = 30 + chance_fail;
       let chance_medium = 13 + chance_small;
