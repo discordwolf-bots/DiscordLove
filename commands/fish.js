@@ -97,7 +97,7 @@ exports.run = function(client, message, args){
 
     if(!args[0]){
       // Go fishing
-      if(now - parseInt(row.lastfish) < 7 * 60 * 1000){ message.delete(); return message.reply(`Please wait another **${Math.floor((( 60 * 1000 ) - (now - parseInt(row.lastfish)))/1000)}** seconds before trying to fish again.`); }
+      if(now - parseInt(row.lastfish) < 7 * 60 * 1000){ message.delete(); return message.reply(`Please wait another **${Math.floor((( 7 * 60 * 1000 ) - (now - parseInt(row.lastfish)))/1000)}** seconds before trying to fish again.`); }
       let chance_fail = 47;
       let chance_small = 30 + chance_fail;
       let chance_medium = 13 + chance_small;
