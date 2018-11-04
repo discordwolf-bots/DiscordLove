@@ -12,6 +12,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 });
 
 const catch_fish = (size, message, row, fishingCost, client) => {
+  let now = moment.format('x');
   let inventoryHistory = row.fishInventoryHistory.split(',');
   let inventory = row.fishInventory.split(',');
   let newFishCaught = row.goneFishing;
@@ -55,7 +56,7 @@ const catch_fish = (size, message, row, fishingCost, client) => {
   let newInventory = inventory.join(',');
   let newInventoryHistory = inventoryHistory.join(',');
 
-  let sql = `UPDATE users SET money = ${row.money-25}, goneFishing = ${newFishCaught}, fishInventory = '${newInventory}', fishInventoryHistory = '${newInventoryHistory}', magikarpCaught = ${magikarp}, achieve_catch_a_karp = ${magikarp_achieve} WHERE id = ${message.author.id}`;
+  let sql = `UPDATE users SET money = ${row.money-25}, goneFishing = ${newFishCaught}, fishInventory = '${newInventory}', fishInventoryHistory = '${newInventoryHistory}', magikarpCaught = ${magikarp}, achieve_catch_a_karp = ${magikarp_achieve}, lastfish = ${now} WHERE id = ${message.author.id}`;
   console.log(sql);
   db.run(sql, (err) => {
     if(err) console.error(err.message);
@@ -72,10 +73,12 @@ exports.run = function(client, message, args){
 
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, (err, row) => {
+    let now = moment.format('x');
     let fishingCost = 25;
     if(err) return console.error(err.message);
     if(!row) return message.reply(`You need to start your profile first with **${config.prefix}start**`);
     if(row.money < fishingCost) return message.reply(`You do not have enough money to fish! You need **${fishingCost.format(0)}**, you have **${row.money.format(0)}**`);
+    if(now - parseInt(row.lastfish) < 60 * 1000){ message.delete(); return message.reply(`Please wait another **${Math.floor((( 60 * 1000 ) - (now - parseInt(row.lastfish)))/1000)}** seconds before trying to fish again.`); }
 
     let inventory = row.fishInventory.split(',');
     let small_fish_count = parseInt(inventory[0]);
