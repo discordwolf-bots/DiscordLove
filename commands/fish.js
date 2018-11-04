@@ -108,7 +108,7 @@ exports.run = function(client, message, args){
          } else if(tDiffMins == 1) {
            tFormat = tDiffMins + " minute";
          }
-         let tDiffSecs = tDiff - (tDiffMins * 60 * 1000);
+         let tDiffSecs = tDiff - (tDiffMins * 60);
          if(tDiffSecs >= 2) {
            tFormat += " " + tDiffSecs + " seconds";
          } else if(tDiffSecs == 1){
