@@ -96,11 +96,11 @@ exports.run = function(client, message, args){
 
     if(!args[0]){
       // Go fishing
-      if(now - parseInt(row.lastfish) < 7 * 60 * 1000){
+      if(now - parseInt(row.lastfish) < 5 * 60 * 1000){
          message.delete();
          let tFormat = "";
 
-         let tDiff = Math.floor((420 * 1000) - ((now - parseInt(row.lastfish))));
+         let tDiff = Math.floor((5 * 60 * 1000) - ((now - parseInt(row.lastfish))));
          tDiff /= 1000;
          let tDiffMins = Math.floor((tDiff / 60));
          if(tDiffMins >= 2) {
