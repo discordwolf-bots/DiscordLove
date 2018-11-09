@@ -65,7 +65,7 @@ exports.run = function(client, message, args){
       if(target != message.author.id) return message.channel.send(`This user needs to setup their own profile.`);
       return message.channel.send(`Please do the command **${config.prefix}start** in ${message.guild.channels.get('505128715202723850').toString()} first!`);
     } else {
-
+      console.log(row.fishInventory);
       if(now - parseInt(row.lastprofile) < 60 * 1000){ message.delete(); return message.reply(`Please wait another **${Math.floor((( 60 * 1000 ) - (now - parseInt(row.lastprofile)))/1000)}** seconds.`); }
 /**
   TODO: Multi guild check. Blocked channels?
