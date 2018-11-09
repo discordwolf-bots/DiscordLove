@@ -184,7 +184,7 @@ exports.run = function(client, message, args){
       message.channel.send(embed);
       catch_fish(sizeCatch, message, row, fishingCost, client);
 
-    ) else if(args[0] == "help"){
+    } else if(args[0] == "help"){
       // Show the fishing help meny
       let embed = new Discord.RichEmbed()
         .setColor(`#87a61f`)
