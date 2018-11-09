@@ -242,9 +242,9 @@ exports.run = function(client, message, args){
         // Let them know the correct format
         return message.reply(`Please use the correct format. **${config.prefix}fish sell <all | size>** (eg. ${config.prefix}fish sell medium)`);
       } else {
+        let sellPrice = 0;
+        let soldInventory = "";
         switch(args[1]){
-          let sellPrice = 0;
-          let soldInventory = "";
           case "all":
             // Sell all fish
             if(small_fish_count > 0 || medium_fish_count > 0 || large_fish_count > 0 || super_fish_count > 0 || legendary_fish_count > 0 || magikarp_count > 0){
