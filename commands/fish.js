@@ -321,6 +321,7 @@ exports.run = function(client, message, args){
         db.run(sql2, (err) => {
           if(err) console.error(err.message);
           message.reply(`Sale successful! You have gained **\$${sellPrice.format(0)}**`);
+          client.channels.get(config.logging).send(`:fish: FISHING SALE : ${message.guild.member(message.author.id).user.username}#${message.guild.members.get(message.author.id).user.discriminator} - ${row.money} -> ${newBalance}`);
         });
       }
     }
