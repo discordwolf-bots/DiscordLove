@@ -51,12 +51,14 @@ const achievement_talks_a_lot = (message, value, client, random) => {
 
 module.exports = message => {
   try {
+
     let now = moment().format('x');
     if(message.author.bot) return;
     if(message.channel.type !== "text") return;
     if(message.guild.id != '480906420133429259') return;
     const client = message.client;
-    const params = message.content.trim().split(' ').slice(1);
+    const params = message.content.replace(/ +(?= )/g,'').split(' ').slice(1);
+    console.log(params);
 
     var command = "";
     var bool = false;
