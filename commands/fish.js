@@ -240,6 +240,7 @@ exports.run = function(client, message, args){
       let magikarp_cost = 200000;
       if(!args[1]){
         // Let them know the correct format
+        return message.reply(`Please use the correct format. **${config.prefix}fish sell <all | size>** (eg. ${config.prefix}fish sell medium)`);
       } else {
         switch(args[1]){
           let sellPrice = 0;

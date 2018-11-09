@@ -56,7 +56,7 @@ module.exports = message => {
     if(message.channel.type !== "text") return;
     if(message.guild.id != '480906420133429259') return;
     const client = message.client;
-    const params = message.content.split(' ').slice(1);
+    const params = message.content.split(' ').trim().slice(1);
 
     var command = "";
     var bool = false;
