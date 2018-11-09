@@ -317,13 +317,15 @@ exports.run = function(client, message, args){
             // Let them know the correct format
             break;
         }
-        let newBalance = row.money + sellPrice;
-        let sql2 = `UPDATE users SET money = ${newBalance}, fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
-        db.run(sql2, (err) => {
-          if(err) console.error(err.message);
-          message.reply(`Sale successful! You have gained **\$${sellPrice.format(0)}**`);
-          client.channels.get(config.logging).send(`:fish: FISHING SALE : ${message.guild.member(message.author.id).user.username}#${message.guild.members.get(message.author.id).user.discriminator} - ${row.money} -> ${newBalance}`);
-        });
+        if(sellPrice > 0){
+          let newBalance = row.money + sellPrice;
+          let sql2 = `UPDATE users SET money = ${newBalance}, fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
+          db.run(sql2, (err) => {
+            if(err) console.error(err.message);
+            message.reply(`Sale successful! You have gained **\$${sellPrice.format(0)}**`);
+            client.channels.get(config.logging).send(`:fish: FISHING SALE : ${message.guild.member(message.author.id).user.username}#${message.guild.members.get(message.author.id).user.discriminator} - ${row.money} -> ${newBalance}`);
+          });
+        }
       }
     }
 
