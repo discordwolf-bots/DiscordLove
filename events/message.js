@@ -58,7 +58,6 @@ module.exports = message => {
     if(message.guild.id != '480906420133429259') return;
     const client = message.client;
     const params = message.content.replace(/ +(?= )/g,'').split(' ').slice(1);
-    console.log(params);
 
     var command = "";
     var bool = false;
