@@ -17,7 +17,13 @@ exports.run = function(client, message, args){
   db.all(sql, (err, rows) => {
     if(err) console.error(err.message);
     rows.forEach((row) => {
-      console.log(`ID ${row.id} balance ${row.money}`);
+      let oldMoney = row.money;
+      let newMoney = Math.floor(oldMoney/2);
+      let sql2 = `UPDATE users SET money = ${newMoney} WHERE id = ${row.id}`;
+      db.run(sql2, (err) => {
+        if(err) console.error(err.message);
+        message.channel.send(`User <@${row.id}> money has been changed from ${oldMoney} to ${newMoney}`);
+      });
     })
   });
 };
