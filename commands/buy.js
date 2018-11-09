@@ -150,7 +150,7 @@ exports.run = async function(client, message, args){
       let newBalanceTarget = tBalance;
       let difference = parseInt(buyPrice) - parseInt(cost);
       difference += 100;
-      difference *= 0.1;
+      difference *= 0.4;
       newBalanceTarget += difference;
 
       client.channels.get(config.logging).send(`:dollar: BUYING SELF PRICE : ${message.author.username}#${message.author.discriminator} - ${balance} -> ${newBalanceSelf}`);
@@ -181,7 +181,9 @@ exports.run = async function(client, message, args){
             db.get(sqlCheckOwner, [], (err, rowO) => {
               if(err) return console.error(err.message);
               let oBalance = rowO.money;
-              let newBalanceOwner = oBalance + cost + ((buyPrice - cost) * 0.8);
+              let newBalanceDifference = Math.floor((buyPrice - cost) * 0.4);
+              if(newBalanceDifference >= 1000) newBalanceDifference = 1000;
+              let newBalanceOwner = oBalance + cost + newBalanceDifference;
               client.channels.get(config.logging).send(`:dollar: BUYING OLD OWNER : ${message.guild.member(rowO.id).user.username}#${message.guild.members.get(rowO.id).user.discriminator} - ${rowO.money} -> ${newBalanceOwner}`);
               let sqlUpdateOwner = `UPDATE users SET money = ? WHERE id = ?`;
               let dataUpdateOwner = [newBalanceOwner, owner];
