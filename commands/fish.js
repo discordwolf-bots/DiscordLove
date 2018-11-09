@@ -118,11 +118,11 @@ exports.run = function(client, message, args){
          return message.reply(`Please wait another **${tFormat}** before trying to fish again.`);
        }
 
-      let chance_fail = 47;
-      let chance_small = 30 + chance_fail;
-      let chance_medium = 13 + chance_small;
-      let chance_large = 9 + chance_medium;
-      let chance_super = 1 + chance_large;
+      let chance_fail = 25;
+      let chance_small = 35 + chance_fail;
+      let chance_medium = 25 + chance_small;
+      let chance_large = 13 + chance_medium;
+      let chance_super = 2 + chance_large;
 
       // Legendary and Magikarp are on a seperate role (initiated when catching a super)
       let chance_legendary = 50;
