@@ -248,7 +248,7 @@ exports.run = async function(client, message, args){
 
 exports.conf = {
   aliases: [],
-  permLevel: 0
+  permLevel: 4
 };
 
 exports.help = {
