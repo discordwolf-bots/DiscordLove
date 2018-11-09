@@ -232,35 +232,96 @@ exports.run = function(client, message, args){
       message.channel.send(embed);
 
     } else if(args[0] == "sell"){
+      let small_fish_cost = 15;
+      let medium_fish_cost = 25;
+      let large_fish_cost = 50;
+      let super_fish_cost = 375;
+      let legendary_fish_cost = 3500;
+      let magikarp_cost = 200000;
       if(!args[1]){
         // Let them know the correct format
       } else {
         switch(args[1]){
+          let sellPrice = 0;
+          let soldInventory = "";
           case "all":
             // Sell all fish
+            if(small_fish_count > 0 || medium_fish_count > 0 || large_fish_count > 0 || super_fish_count > 0 || legendary_fish_count > 0 || magikarp_count > 0){
+              sellPrice += small_fish_count * small_fish_cost;
+              sellPrice += medium_fish_count * medium_fish_cost;
+              sellPrice += large_fish_count * large_fish_cost;
+              sellPrice += super_fish_count * super_fish_cost;
+              sellPrice += legendary_fish_count * legendary_fish_cost;
+              sellPrice += magikarp_count * magikarp_cost;
+              soldInventory = "0,0,0,0,0,0";
+            } else {
+              message.reply(`You dont have any fish you can sell.`)
+            }
             break;
           case "small":
             // Sell all small fish
+            if(small_fish_count > 0){
+              sellPrice += small_fish_count * small_fish_cost;
+              soldInventory = `0,${inventory[1]},${inventory[2]},${inventory[3]},${inventory[4]},${inventory[5]}`;
+            } else {
+              message.reply(`You dont have any Small Fish you can sell.`)
+            }
             break;
           case "medium":
             // Sell all medium fish
+            if(medium_fish_count > 0){
+              sellPrice += medium_fish_count * medium_fish_cost;
+              soldInventory = `${inventory[0]},0,${inventory[2]},${inventory[3]},${inventory[4]},${inventory[5]}`;
+            } else {
+              message.reply(`You dont have any Medium Fish you can sell.`)
+            }
             break;
           case "large":
             // Sell all large fish
+            if(large_fish_count > 0){
+              sellPrice += large_fish_count * large_fish_cost;
+              soldInventory = `${inventory[0]},${inventory[1]},0,${inventory[3]},${inventory[4]},${inventory[5]}`;
+            } else {
+              message.reply(`You dont have any Large Fish you can sell.`)
+            }
             break;
           case "super":
             // Sell all super fish
+            if(super_fish_count > 0){
+              sellPrice += super_fish_count * super_fish_cost;
+              soldInventory = `${inventory[0]},${inventory[1]},${inventory[2]},0,${inventory[4]},${inventory[5]}`;
+            } else {
+              message.reply(`You dont have any Super Fish you can sell.`)
+            }
             break;
           case "legendary":
             // Sell all legendary fish
+            if(legendary_fish_count > 0){
+              sellPrice += legendary_fish_count * legendary_fish_cost;
+              soldInventory = `${inventory[0]},${inventory[1]},${inventory[2]},${inventory[3]},0,${inventory[5]}`;
+            } else {
+              message.reply(`You dont have any Legendary Fish you can sell.`)
+            }
             break;
           case "magikarp":
             // Sell all magikarp
+            if(magikarp_count > 0){
+              sellPrice += magikarp_count * magikarp_cost;
+              soldInventory = `${inventory[0]},${inventory[1]},${inventory[2]},${inventory[3]},${inventory[4]},0`;
+            } else {
+              message.reply(`You dont have any Magikarp you can sell.`)
+            }
             break;
           default:
             // Let them know the correct format
             break;
         }
+        let newBalance = row.money + sellPrice;
+        let sql2 = `UPDATE users SET money = ${newBalance}, fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
+        db.run(sql2, (err) => {
+          if(err) console.error(err.message);
+          message.reply(`Sale successful! You have gained **\$${sellPrice.format(0)}**`);
+        });
       }
     }
 
