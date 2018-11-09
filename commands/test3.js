@@ -13,16 +13,15 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 
 exports.run = function(client, message, args){
 
-  let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
-  db.get(sql, (err, row) => {
-    if(err) return console.error(err.message);
-    message.channel.send(`${row.achieve_your_value}`)
-  });
+  let sql = `UPDATE users SET fishInventory = '31,13,8,1,0,0' WHERE id = ${message.author.id}`;
+  db.run(sql, (err) => {
+    if(err) console.error(err.message);
+  })
 
 };
 
 exports.conf = {
-  aliases: [],
+  aliases: ['fixMe'],
   permLevel: 4
 };
 
