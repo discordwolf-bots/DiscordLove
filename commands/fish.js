@@ -11,6 +11,11 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - Start`);
 });
 
+Number.prototype.format = function(n, x) {
+  var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+  return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
+};
+
 const achieve_fish_catch = (message, client, row) => {
   let gone_fishing_progress = row.achieve_fish_catch;
   let fish_caught = row.goneFishing;
@@ -30,8 +35,8 @@ const achieve_fish_catch = (message, client, row) => {
     }
     let embed = new Discord.RichEmbed()
       .setColor('#4DBF42')
-      .setAuthor(`Achievement Gained! - \$${rewards} added!`, message.author.avatarURL)
-      .setFooter(`Gained ${achieved-expensive_taste_progress} Levels on the Gone Fishing achievement`);
+      .setAuthor(`Achievement Gained! - \$${rewards.format(0)} added!`, message.author.avatarURL)
+      .setFooter(`Gained ${achieved-gone_fishing_progress} Levels on the Gone Fishing achievement`);
     message.channel.send(embed);
     let newBalance = row.money + rewards - 25;
     client.channels.get(config.logging).send(`:fish: ACHIEVEMENT GONE FISHING : ${message.author.username}#${message.author.discriminator} - ${row.money} -> ${newBalance}`);
@@ -39,6 +44,7 @@ const achieve_fish_catch = (message, client, row) => {
     db.run(sqlUpdate, (err) => {
       if(err) return console.error(err.message);
     });
+  }
 }
 
 const catch_fish = (size, message, row, fishingCost, client) => {
