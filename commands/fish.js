@@ -11,6 +11,36 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - Start`);
 });
 
+const achieve_fish_catch = (message, client, row) => {
+  let gone_fishing_progress = row.achieve_fish_catch;
+  let fish_caught = row.goneFishing;
+  let achieved = 0;
+
+  for(let i=0; i<config.thresh_catch_a_fish.length; i++){
+    if(fish_caught >= parseInt(config.thresh_catch_a_fish.split(',')[i]))
+      if(gone_fishing_progress < i+1)
+        achieved = i+1;
+  }
+  if(achieved > 0){
+    let rewards = 0;
+    for(let i=gone_fishing_progress;i<=achieved;i++){
+      for(let j=1; j<=config.thresh_catch_a_fish.length; j++){
+        if(i == j) rewards += parseInt(config.rewards.split(',')[j-1]);
+      }
+    }
+    let embed = new Discord.RichEmbed()
+      .setColor('#4DBF42')
+      .setAuthor(`Achievement Gained! - \$${rewards} added!`, message.author.avatarURL)
+      .setFooter(`Gained ${achieved-expensive_taste_progress} Levels on the Gone Fishing achievement`);
+    message.channel.send(embed);
+    let newBalance = row.money + rewards - 25;
+    client.channels.get(config.logging).send(`:fish: ACHIEVEMENT GONE FISHING : ${message.author.username}#${message.author.discriminator} - ${row.money} -> ${newBalance}`);
+    let sqlUpdate = `UPDATE users SET money = ${newBalance}, achieve_go_fishing = ${achieved} WHERE id = ${message.author.id}`;
+    db.run(sqlUpdate, (err) => {
+      if(err) return console.error(err.message);
+    });
+}
+
 const catch_fish = (size, message, row, fishingCost, client) => {
   let now = moment().format('x');
   let inventoryHistory = row.fishInventoryHistory.split(',');
@@ -59,6 +89,7 @@ const catch_fish = (size, message, row, fishingCost, client) => {
   let sql = `UPDATE users SET money = ${row.money-25}, goneFishing = ${newFishCaught}, fishInventory = '${newInventory}', fishInventoryHistory = '${newInventoryHistory}', magikarpCaught = ${magikarp}, achieve_catch_a_karp = ${magikarp_achieve}, lastfish = ${now} WHERE id = ${message.author.id}`;
   db.run(sql, (err) => {
     if(err) console.error(err.message);
+    achieve_fish_catch(message, client, row);
   });
 }
 
