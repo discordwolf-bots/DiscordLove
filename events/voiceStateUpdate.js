@@ -28,7 +28,7 @@ const achieve_chatting = (client, row, member) => {
   let author = member.guild.members.get(row.id);
 
   for(let i=0; i<config.thresh_chats_a_lot.length; i++){
-    if(fish_caught >= parseInt(config.thresh_chats_a_lot.split(',')[i]))
+    if(voiceTime >= parseInt(config.thresh_chats_a_lot.split(',')[i]))
       if(voiceTime_progress < i+1)
         achieved = i+1;
   }
