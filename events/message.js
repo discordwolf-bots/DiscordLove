@@ -84,6 +84,7 @@ module.exports = message => {
     if(message.channel.id == '501886295136796672') giveExp = false;
     if(message.channel.id == '481587436657442822') giveExp = false;
     if(message.channel.id == '481587506664570890') giveExp = false;
+    if(message.channel.id == '510954840139104266') giveExp = false; // #memes
 
     if(bool){
       let perms = client.elevation(message);
