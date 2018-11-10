@@ -83,9 +83,9 @@ exports.run = async function(client, message, args){
     }
 
     if(chats_a_lot_progress < config.thresh_chats_a_lot.split(',').length){
-      await achievements_text.push(`${talks_a_lot_icon} **Chats a Lot** - Level **${chats_a_lot_progress} / ${config.thresh_chats_a_lot.split(',').length}** \n*Be in a Voice Chat for a total of ${parseInt(cha_t[chats_a_lot_progress]).format(0)} minutes for level ${chats_a_lot_progress+1}*`);
+      await achievements_text.push(`${chats_a_lot_icon} **Chats a Lot** - Level **${chats_a_lot_progress} / ${config.thresh_chats_a_lot.split(',').length}** \n*Be in a Voice Chat for a total of ${parseInt(cha_t[chats_a_lot_progress]).format(0)} minutes for level ${chats_a_lot_progress+1}*`);
     } else {
-      await achievements_text.push(`${talks_a_lot_icon} **Chats a Lot** - Level **Maxed**`);
+      await achievements_text.push(`${chats_a_lot_icon} **Chats a Lot** - Level **Maxed**`);
     }
 
     if(fishing_caught_progress < 10){
