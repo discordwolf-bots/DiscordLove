@@ -16,8 +16,8 @@ module.exports = message => {
   } else if(message.content.startsWith(config.prefixtext)){
 
   } else if(message.content.startsWith(config.prefixemoji)){
-    
-  } else {}
+
+  } else {
     if(message.content.length > 1){
       embed = new Discord.RichEmbed()
         .setColor("#ff0000")
