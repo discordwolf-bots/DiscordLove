@@ -181,7 +181,10 @@ exports.run = async function(client, message, args){
             db.get(sqlCheckOwner, [], (err, rowO) => {
               if(err) return console.error(err.message);
               let oBalance = rowO.money;
-              let newBalanceDifference = Math.floor((buyPrice - cost) * 0.4);
+              let newBalanceDifference = (buyPrice - cost);
+              newBalanceDifference += 100;
+              newBalanceDifference *= 0.4;
+              newBalanceDifference = Math.floor(newBalanceDifference);
               if(newBalanceDifference >= 1000) newBalanceDifference = 1000;
               let newBalanceOwner = oBalance + cost + newBalanceDifference;
               client.channels.get(config.logging).send(`:dollar: BUYING OLD OWNER : ${message.guild.member(rowO.id).user.username}#${message.guild.members.get(rowO.id).user.discriminator} - ${rowO.money} -> ${newBalanceOwner}`);
