@@ -26,6 +26,7 @@ exports.run = async function(client, message, args){
     let user_value_progress = row.achieve_your_value;
     let owned_value_progress = row.achieve_owned_value;
     let talks_a_lot_progress = row.achieve_talks_a_lot;
+    let chats_a_lot_progress = row.achieve_chats_a_lot;
     let hidden_buyabot_progress = row.achieve_buy_the_bot;
     let fishing_caught_progress = row.achieve_go_fishing;
     let fishing_sold_progress = row.achieve_fishmonger;
@@ -38,15 +39,18 @@ exports.run = async function(client, message, args){
     let user_value_thresholds = config.thresh_self_worth;
     let owned_value_thresholds = config.thresh_expensive_taste;
     let talks_a_lot_thresholds = config.thresh_talks_a_lot;
+    let chats_a_lot_thresholds = config.thresh_chats_a_lot;
 
     let uv_t = user_value_thresholds.split(',');
     let ov_t = owned_value_thresholds.split(',');
     let tal_t = talks_a_lot_thresholds.split(',');
+    let cha_t = chats_a_lot_thresholds.split(',');
 
     let achievements_text = [];
     let user_value_icon = `:question:`;
     let owned_value_icon = `:question:`;
     let talks_a_lot_icon = `:question:`;
+    let chats_a_lot_icon = `:question:`;
     let buyabot_icon = `:question:`;
     let fishing_caught_icon = `:question:`;
     let fishing_sold_icon = `:question:`;
@@ -55,6 +59,7 @@ exports.run = async function(client, message, args){
     if(user_value_progress > 0) user_value_icon = `:bust_in_silhouette:`;
     if(owned_value_progress > 0) owned_value_icon = `:busts_in_silhouette:`;
     if(talks_a_lot_progress > 0) talks_a_lot_icon = `:speaking_head:`;
+    if(chats_a_lot_progress > 0) chats_a_lot_icon = `:speaker:`;
     if(fishing_caught_progress > 0) fishing_caught_icon = `:fish:`;
     if(fishing_sold_progress > 0) fishing_sold_icon = `:fishing_pole_and_fish:`;
 
@@ -75,6 +80,12 @@ exports.run = async function(client, message, args){
       await achievements_text.push(`${talks_a_lot_icon} **Talks a Lot** - Level **${talks_a_lot_progress} / ${config.thresh_talks_a_lot.split(',').length}** \n*Progress ${(row.messagesSent).format(0)} / ${parseInt(tal_t[talks_a_lot_progress]).format(0)} (send messages that earn you money)*`);
     } else {
       await achievements_text.push(`${talks_a_lot_icon} **Talks a Lot** - Level **Maxed**`);
+    }
+
+    if(chats_a_lot_progress < config.thresh_chats_a_lot.split(',').length){
+      await achievements_text.push(`${talks_a_lot_icon} **Chats a Lot** - Level **${chats_a_lot_progress} / ${config.thresh_chats_a_lot.split(',').length}** \n*Be in a Voice Chat for a total of ${parseInt(cha_t[chats_a_lot_progress]).format(0)} minutes for level ${chats_a_lot_progress+1}*`);
+    } else {
+      await achievements_text.push(`${talks_a_lot_icon} **Chats a Lot** - Level **Maxed**`);
     }
 
     if(fishing_caught_progress < 10){

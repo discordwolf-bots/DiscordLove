@@ -209,7 +209,7 @@ exports.run = function(client, message, args){
         .setTitle(`Fishing Inventory of ${message.guild.member(message.author.id).user.username}#${message.guild.members.get(message.author.id).user.discriminator}`)
         .setThumbnail(`${message.author.avatarURL}`)
         .addField(`Inventory`, `${inventory_display}`)
-        .setFooter(`Fishing minigame is coming soon!`);
+        .setTimestamp();
       message.channel.send(embed);
 
     } else if(args[0] == "history" || args[0] == "alltime"){
