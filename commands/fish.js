@@ -47,6 +47,37 @@ const achieve_fish_catch = (message, client, row) => {
   }
 }
 
+const achieve_fish_seller = (message, client, row, sale) => {
+  let gone_fishing_progress = row.achieve_fishmonger;
+  let fish_caught = row.soldFish;
+  let achieved = 0;
+
+  for(let i=0; i<config.thresh_sell_a_fish.length; i++){
+    if(fish_caught >= parseInt(config.thresh_sell_a_fish.split(',')[i]))
+      if(gone_fishing_progress < i+1)
+        achieved = i+1;
+  }
+  if(achieved > 0){
+    let rewards = 0;
+    for(let i=gone_fishing_progress;i<=achieved;i++){
+      for(let j=1; j<=config.thresh_sell_a_fish.length; j++){
+        if(i == j) rewards += parseInt(config.rewards.split(',')[j-1]);
+      }
+    }
+    let embed = new Discord.RichEmbed()
+      .setColor('#4DBF42')
+      .setAuthor(`Achievement Gained! - \$${rewards.format(0)} added!`, message.author.avatarURL)
+      .setFooter(`Gained ${achieved-gone_fishing_progress} Levels on the Fishmonger achievement`);
+    message.channel.send(embed);
+    let newBalance = row.money + rewards + sale;
+    client.channels.get(config.logging).send(`:fish: ACHIEVEMENT FISHMONGER : ${message.author.username}#${message.author.discriminator} - ${row.money} -> ${newBalance}`);
+    let sqlUpdate = `UPDATE users SET money = ${newBalance}, achieve_fishmonger = ${achieved} WHERE id = ${message.author.id}`;
+    db.run(sqlUpdate, (err) => {
+      if(err) return console.error(err.message);
+    });
+  }
+}
+
 const catch_fish = (size, message, row, fishingCost, client) => {
   let now = moment().format('x');
   let inventoryHistory = row.fishInventoryHistory.split(',');
@@ -280,11 +311,19 @@ exports.run = function(client, message, args){
         return message.reply(`Please use the correct format. **${config.prefix}fish sell <all | size>** (eg. ${config.prefix}fish sell medium)`);
       } else {
         let sellPrice = 0;
+        let soldTotal = 0;
         let soldInventory = "";
         switch(args[1]){
           case "all":
             // Sell all fish
             if(small_fish_count > 0 || medium_fish_count > 0 || large_fish_count > 0 || super_fish_count > 0 || legendary_fish_count > 0 || magikarp_count > 0){
+              soldTotal += small_fish_count;
+              soldTotal += medium_fish_count;
+              soldTotal += large_fish_count;
+              soldTotal += super_fish_count;
+              soldTotal += legendary_fish_count;
+              soldTotal += magikarp_count;
+
               sellPrice += small_fish_count * small_fish_cost;
               sellPrice += medium_fish_count * medium_fish_cost;
               sellPrice += large_fish_count * large_fish_cost;
@@ -300,6 +339,7 @@ exports.run = function(client, message, args){
             // Sell all small fish
             if(small_fish_count > 0){
               sellPrice += small_fish_count * small_fish_cost;
+              soldTotal += small_fish_count;
               soldInventory = `0,${inventory[1]},${inventory[2]},${inventory[3]},${inventory[4]},${inventory[5]}`;
             } else {
               message.reply(`You dont have any Small Fish you can sell.`)
@@ -309,6 +349,7 @@ exports.run = function(client, message, args){
             // Sell all medium fish
             if(medium_fish_count > 0){
               sellPrice += medium_fish_count * medium_fish_cost;
+              soldTotal += medium_fish_count;
               soldInventory = `${inventory[0]},0,${inventory[2]},${inventory[3]},${inventory[4]},${inventory[5]}`;
             } else {
               message.reply(`You dont have any Medium Fish you can sell.`)
@@ -318,6 +359,7 @@ exports.run = function(client, message, args){
             // Sell all large fish
             if(large_fish_count > 0){
               sellPrice += large_fish_count * large_fish_cost;
+              soldTotal += large_fish_count;
               soldInventory = `${inventory[0]},${inventory[1]},0,${inventory[3]},${inventory[4]},${inventory[5]}`;
             } else {
               message.reply(`You dont have any Large Fish you can sell.`)
@@ -327,6 +369,7 @@ exports.run = function(client, message, args){
             // Sell all super fish
             if(super_fish_count > 0){
               sellPrice += super_fish_count * super_fish_cost;
+              soldTotal += super_fish_count;
               soldInventory = `${inventory[0]},${inventory[1]},${inventory[2]},0,${inventory[4]},${inventory[5]}`;
             } else {
               message.reply(`You dont have any Super Fish you can sell.`)
@@ -336,6 +379,7 @@ exports.run = function(client, message, args){
             // Sell all legendary fish
             if(legendary_fish_count > 0){
               sellPrice += legendary_fish_count * legendary_fish_cost;
+              soldTotal += legendary_fish_count;
               soldInventory = `${inventory[0]},${inventory[1]},${inventory[2]},${inventory[3]},0,${inventory[5]}`;
             } else {
               message.reply(`You dont have any Legendary Fish you can sell.`)
@@ -345,6 +389,7 @@ exports.run = function(client, message, args){
             // Sell all magikarp
             if(magikarp_count > 0){
               sellPrice += magikarp_count * magikarp_cost;
+              soldTotal += magikarp_count;
               soldInventory = `${inventory[0]},${inventory[1]},${inventory[2]},${inventory[3]},${inventory[4]},0`;
             } else {
               message.reply(`You dont have any Magikarp you can sell.`)
@@ -356,11 +401,12 @@ exports.run = function(client, message, args){
         }
         if(sellPrice > 0){
           let newBalance = row.money + sellPrice;
-          let sql2 = `UPDATE users SET money = ${newBalance}, fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
+          let sql2 = `UPDATE users SET money = ${newBalance}, soldFish = '' fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
           db.run(sql2, (err) => {
             if(err) console.error(err.message);
             message.reply(`Sale successful! You have gained **\$${sellPrice.format(0)}**`);
             client.channels.get(config.logging).send(`:fish: FISHING SALE : ${message.guild.member(message.author.id).user.username}#${message.guild.members.get(message.author.id).user.discriminator} - ${row.money} -> ${newBalance}`);
+            achieve_fish_seller(message, client, row, sellPrice);
           });
         }
       }
