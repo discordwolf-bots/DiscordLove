@@ -28,7 +28,7 @@ const achievement_expensive_taste = (message, value, client) => {
       let rewards = 0;
       for(let i=expensive_taste_progress;i<=achieved;i++){
         for(let j=1; j<=config.thresh_expensive_taste.length; j++){
-          if(i == j) rewards += parseInt(config.reward_expensive_taste.split(',')[j-1]);
+          if(i == j) rewards += parseInt(config.rewards.split(',')[j-1]);
         }
       }
       let embed = new Discord.RichEmbed()
