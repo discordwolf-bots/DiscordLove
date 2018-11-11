@@ -93,7 +93,7 @@ exports.run = async function(client, message, args){
     }
 
     if(fishing_caught_progress < config.thresh_catch_a_fish.split(',').length){
-      await achievements_text.push(`${fishing_caught_icon} **Gone Fishing** - Level **${fishing_caught_progress} / ${config.thresh_catch_a_fish.split(',').length}** \n*Progress ${(row.goneFishing).format(0)} / ${parseInt(cat_t[gone_fishing_progress]).format(0)} (successfully catch fish)*`);
+      await achievements_text.push(`${fishing_caught_icon} **Gone Fishing** - Level **${fishing_caught_progress} / ${config.thresh_catch_a_fish.split(',').length}** \n*Progress ${(row.goneFishing).format(0)} / ${parseInt(cat_t[fishing_caught_progress]).format(0)} (successfully catch fish)*`);
     } else {
       await achievements_text.push(`${fishing_caught_icon} **Gone Fishing** - Level **Maxed**`);
     }
