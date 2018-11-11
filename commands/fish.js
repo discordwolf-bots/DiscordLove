@@ -286,11 +286,15 @@ exports.run = function(client, message, args){
 
       let inventory_history_display = "";
       inventory_history_display += `${small_fish_icon} x ${small_fish_count_history}\n`;
-      inventory_history_display += `${medium_fish_icon} x ${medium_fish_count_history}\n`
-      inventory_history_display += `${large_fish_icon} x ${large_fish_count_history}\n`
-      inventory_history_display += `${super_fish_icon} x ${super_fish_count_history}\n`
-      inventory_history_display += `${legendary_fish_icon} x ${legendary_fish_count_history}\n`
-      inventory_history_display += `${magikarp_icon} x ${magikarp_count_history}`
+      inventory_history_display += `${medium_fish_icon} x ${medium_fish_count_history}\n`;
+      inventory_history_display += `${large_fish_icon} x ${large_fish_count_history}\n`;
+      inventory_history_display += `${super_fish_icon} x ${super_fish_count_history}\n`;
+      inventory_history_display += `${legendary_fish_icon} x ${legendary_fish_count_history}\n`;
+      inventory_history_display += `${magikarp_icon} x ${magikarp_count_history}`;
+
+      inventory_history_total = small_fish_count_history + medium_fish_count_history + large_fish_count_history + super_fish_count_history + legendary_fish_count_history + magikarp_count_history;
+      inventory_total = small_fish_count + medium_fish_count + large_fish_count + super_fish_count + legendary_fish_count + magikarp_count;
+
 
       let embed = new Discord.RichEmbed()
         .setColor('#7f8a9d')
@@ -402,7 +406,11 @@ exports.run = function(client, message, args){
         }
         if(sellPrice > 0){
           let newBalance = row.money + sellPrice;
-          let sql2 = `UPDATE users SET money = ${newBalance}, soldFish = ${row.soldFish + soldTotal}, fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
+          if(row.soldFish != (inventory_history_total - inventory_total)){
+            let sql2 = `UPDATE users SET money = ${newBalance}, soldFish = ${(inventory_history_total-inventory_total) + soldTotal}, fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
+          } else {
+            let sql2 = `UPDATE users SET money = ${newBalance}, soldFish = ${row.soldFish + soldTotal}, fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
+          }
           db.run(sql2, (err) => {
             if(err) console.error(err.message);
             message.reply(`Sale successful! You have gained **\$${sellPrice.format(0)}** from selling **${soldTotal}** fish`);
