@@ -47,9 +47,9 @@ const achieve_fish_catch = (message, client, row) => {
   }
 }
 
-const achieve_fish_seller = (message, client, row, sale) => {
+const achieve_fish_seller = (message, client, row, sale, soldTotal) => {
   let gone_fishing_progress = row.achieve_fishmonger;
-  let fish_caught = row.soldFish;
+  let fish_caught = row.soldFish + soldTotal;
   let achieved = 0;
 
   for(let i=0; i<config.thresh_sell_a_fish.length; i++){
@@ -406,7 +406,7 @@ exports.run = function(client, message, args){
             if(err) console.error(err.message);
             message.reply(`Sale successful! You have gained **\$${sellPrice.format(0)}**`);
             client.channels.get(config.logging).send(`:fish: FISHING SALE : ${message.guild.member(message.author.id).user.username}#${message.guild.members.get(message.author.id).user.discriminator} - ${row.money} -> ${newBalance}`);
-            achieve_fish_seller(message, client, row, sellPrice);
+            achieve_fish_seller(message, client, row, sellPrice, soldTotal);
           });
         }
       }
