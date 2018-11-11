@@ -16,9 +16,10 @@ Number.prototype.format = function(n, x) {
   return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
 };
 
-const achieve_fish_catch = (message, client, row) => {
+const achieve_catching = (message, client, row) => {
+  console.log(`Started achievement : catching`);
   let gone_fishing_progress = row.achieve_fish_catch;
-  let fish_caught = row.goneFishing;
+  let fish_caught = row.goneFishing+1;
   let achieved = 0;
 
   for(let i=0; i<config.thresh_catch_a_fish.length; i++){
@@ -126,7 +127,7 @@ const catch_fish = (size, message, row, fishingCost, client) => {
   let sql = `UPDATE users SET money = ${row.money-25}, goneFishing = ${newFishCaught}, fishInventory = '${newInventory}', fishInventoryHistory = '${newInventoryHistory}', magikarpCaught = ${magikarp}, achieve_catch_a_karp = ${magikarp_achieve}, lastfish = ${now} WHERE id = ${message.author.id}`;
   db.run(sql, (err) => {
     if(err) console.error(err.message);
-    achieve_fish_catch(message, client, row);
+    achieve_catching(message, client, row);
   });
 }
 
