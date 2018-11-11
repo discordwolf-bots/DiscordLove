@@ -401,7 +401,7 @@ exports.run = function(client, message, args){
         }
         if(sellPrice > 0){
           let newBalance = row.money + sellPrice;
-          let sql2 = `UPDATE users SET money = ${newBalance}, soldFish = '' fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
+          let sql2 = `UPDATE users SET money = ${newBalance}, soldFish = ${soldTotal}, fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
           db.run(sql2, (err) => {
             if(err) console.error(err.message);
             message.reply(`Sale successful! You have gained **\$${sellPrice.format(0)}**`);
