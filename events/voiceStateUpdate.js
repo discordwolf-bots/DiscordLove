@@ -61,7 +61,6 @@ module.exports = (oldMember, newMember) => {
   let oldUserChannel = oldMember.voiceChannel;
 
   let now = moment().format('x');
-  console.log(now);
 
   let sql = `SELECT * FROM users WHERE id = ${oldMember.id}`;
 
@@ -115,8 +114,6 @@ module.exports = (oldMember, newMember) => {
         timePassed /= 1000;
         let validTime = Math.floor(timePassed / 60); // How many minutes
 
-        console.log(validTime);
-
         let min = 10;
         let max = 20;
         let toAdd = 0;
@@ -151,8 +148,6 @@ module.exports = (oldMember, newMember) => {
         let timePassed = now - row.voicejoined;
         timePassed /= 1000;
         let validTime = Math.floor(timePassed / 60); // How many minutes
-
-        console.log(validTime);
 
         let min = 10;
         let max = 20;
