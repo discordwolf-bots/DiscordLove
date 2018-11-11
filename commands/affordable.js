@@ -8,7 +8,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   if(err){
     console.error(err.message);
   }
-  console.log(`Connected to DB - Buy`);
+  console.log(`Connected to DB - Affordable`);
 });
 
 Number.prototype.format = function(n, x) {
