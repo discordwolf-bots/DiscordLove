@@ -132,12 +132,12 @@ const catch_fish = (size, message, row, fishingCost, client) => {
 }
 
 exports.run = function(client, message, args){
-  let small_fish_icon = `<:SmallFish:507593596887629824>`;
-  let medium_fish_icon = `<:MediumFish:507593596728508426>`;
-  let large_fish_icon = `<:LargeFish:507593595684126720>`;
-  let super_fish_icon = `<:SuperFish:507593597361586196>`;
-  let legendary_fish_icon = `<:LegendaryFish:507593595549908992>`;
-  let magikarp_icon = `<:magikarp:507005931503222784>`;
+  let small_fish_icon = `507593596887629824`;
+  let medium_fish_icon = `507593596728508426`;
+  let large_fish_icon = `507593595684126720`;
+  let super_fish_icon = `507593597361586196`;
+  let legendary_fish_icon = `507593595549908992`;
+  let magikarp_icon = `507005931503222784`;
 
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, (err, row) => {
@@ -216,39 +216,39 @@ exports.run = function(client, message, args){
       } else if(random < chance_small) {
         // Catch Small
         embed.setColor('#63cccc');
-        embed.addField(`\u200b`, `${small_fish_icon}`);
-        embed.setFooter(`You feel a small bit of tension from your rod. You reel it in and find a Small Fish`);
+        embed.setImage(`https://cdn.discordapp.com/emojis/${small_fish_icon}.png`);
+        embed.setFooter(`Oh there was something there, guess it was just a Small Fish.`);
         sizeCatch = "small";
       } else if(random < chance_medium) {
         // Catch Medium
         embed.setColor('#63cccc');
-        embed.addField(`\u200b`, `${medium_fish_icon}`);
-        embed.setFooter(`After a small bit of fighting, you eventually pull in a Medium Fish`);
+        embed.setImage(`https://cdn.discordapp.com/emojis/${medium_fish_icon}.png`);
+        embed.setFooter(`It nearly got away from you, but you just caught a Medium Fish.`);
         sizeCatch = "medium";
       } else if(random < chance_large) {
         // Catch Large
         embed.setColor('#63cccc');
-        embed.addField(`\u200b`, `${large_fish_icon}`);
-        embed.setFooter(`Your arm nearly snapped in two trying to pull in this Large Fish!`);
+        embed.setImage(`https://cdn.discordapp.com/emojis/${large_fish_icon}.png`);
+        embed.setFooter(`Is that Matt in fish form? Oh, it must be a Large Fish.`);
         sizeCatch = "large";
       } else {
         let superRole = Math.floor(Math.random() * 500);
         if(superRole <= chance_legendary) {
           // Catch Legendary
           embed.setColor('#dee067');
-          embed.addField(`\u200b`, `${legendary_fish_icon}`);
+          embed.setImage(`https://cdn.discordapp.com/emojis/${legendary_fish_icon}.png`);
           embed.setFooter(`People have talked about this beast for years, but never did you think you would actually find it! You just got a Legendary Fish!`);
           sizeCatch = "legendary";
         } else if(superRole == chance_magikarp){
           // Catch Magikarp
           embed.setColor('#e8a517');
-          embed.addField(`\u200b`, `${magikarp_icon}`);
+          embed.setImage(`https://cdn.discordapp.com/emojis/${magikarp_icon}.png`);
           embed.setFooter(`This cant be right? You just found a Magikarp`);
           sizeCatch = "magikarp";
         } else {
           // Catch Super
           embed.setColor('#16b3e8');
-          embed.addField(`\u200b`, `${super_fish_icon}`);
+          embed.setImage(`https://cdn.discordapp.com/emojis/${super_fish_icon}.png`);
           embed.setFooter(`Is it a bird? Is it a plane? I sure hope not, its in the water. Must be a Super Fish!`);
           sizeCatch = "super";
         }
