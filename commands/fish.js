@@ -405,7 +405,7 @@ exports.run = function(client, message, args){
           let sql2 = `UPDATE users SET money = ${newBalance}, soldFish = ${soldTotal}, fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
           db.run(sql2, (err) => {
             if(err) console.error(err.message);
-            message.reply(`Sale successful! You have gained **\$${sellPrice.format(0)}**`);
+            message.reply(`Sale successful! You have gained **\$${sellPrice.format(0)}** from selling **${soldTotal}** fish`);
             client.channels.get(config.logging).send(`:fish: FISHING SALE : ${message.guild.member(message.author.id).user.username}#${message.guild.members.get(message.author.id).user.discriminator} - ${row.money} -> ${newBalance}`);
             achieve_fish_seller(message, client, row, sellPrice, soldTotal);
           });
