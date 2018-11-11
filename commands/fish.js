@@ -139,12 +139,12 @@ exports.run = function(client, message, args){
   let legendary_fish_icon = `507593595549908992`;
   let magikarp_icon = `507005931503222784`;
 
-  let small_fish_emoji = `:SmallFish:507593596887629824`;
-  let medium_fish_emoji = `:MediumFish:507593596728508426`;
-  let large_fish_emoji = `:LargeFish:507593595684126720`;
-  let super_fish_emoji = `:SuperFish:507593597361586196`;
-  let legendary_fish_emoji = `:LegendaryFish:507593595549908992`;
-  let magikarp_emoji = `:magikarp:507005931503222784`;
+  let small_fish_emoji = `<:SmallFish:507593596887629824>`;
+  let medium_fish_emoji = `<:MediumFish:507593596728508426>`;
+  let large_fish_emoji = `<:LargeFish:507593595684126720>`;
+  let super_fish_emoji = `<:SuperFish:507593597361586196>`;
+  let legendary_fish_emoji = `<:LegendaryFish:507593595549908992>`;
+  let magikarp_emoji = `<:magikarp:507005931503222784>`;
 
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, (err, row) => {
