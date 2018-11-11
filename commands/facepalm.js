@@ -9,7 +9,7 @@ exports.run = function(client, message, args){
 };
 
 exports.conf = {
-  aliases: [],
+  aliases: ['fp'],
   permLevel: 0
 };
 
