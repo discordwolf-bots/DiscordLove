@@ -292,8 +292,8 @@ exports.run = function(client, message, args){
       inventory_history_display += `${legendary_fish_icon} x ${legendary_fish_count_history}\n`;
       inventory_history_display += `${magikarp_icon} x ${magikarp_count_history}`;
 
-      inventory_history_total = small_fish_count_history + medium_fish_count_history + large_fish_count_history + super_fish_count_history + legendary_fish_count_history + magikarp_count_history;
-      inventory_total = small_fish_count + medium_fish_count + large_fish_count + super_fish_count + legendary_fish_count + magikarp_count;
+      let inventory_history_total = small_fish_count_history + medium_fish_count_history + large_fish_count_history + super_fish_count_history + legendary_fish_count_history + magikarp_count_history;
+      let inventory_total = small_fish_count + medium_fish_count + large_fish_count + super_fish_count + legendary_fish_count + magikarp_count;
 
 
       let embed = new Discord.RichEmbed()
