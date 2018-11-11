@@ -40,11 +40,15 @@ exports.run = async function(client, message, args){
     let owned_value_thresholds = config.thresh_expensive_taste;
     let talks_a_lot_thresholds = config.thresh_talks_a_lot;
     let chats_a_lot_thresholds = config.thresh_chats_a_lot;
+    let gone_fishing_thresholds = config.thresh_catch_a_fish;
+    let sold_fish_thresholds = config.thresh_sell_a_fish;
 
     let uv_t = user_value_thresholds.split(',');
     let ov_t = owned_value_thresholds.split(',');
     let tal_t = talks_a_lot_thresholds.split(',');
     let cha_t = chats_a_lot_thresholds.split(',');
+    let cat_t = gone_fishing_thresholds.split(',');
+    let sol_t = sold_fish_thresholds.split(',');
 
     let achievements_text = [];
     let user_value_icon = `:question:`;
@@ -88,14 +92,14 @@ exports.run = async function(client, message, args){
       await achievements_text.push(`${chats_a_lot_icon} **Chats a Lot** - Level **Maxed**`);
     }
 
-    if(fishing_caught_progress < 10){
-      await achievements_text.push(`${fishing_caught_icon} **Gone Fishing** - Level **${fishing_caught_progress} / ${config.thresh_talks_a_lot.split(',').length}**`);
+    if(fishing_caught_progress < config.thresh_catch_a_fish.split(',').length){
+      await achievements_text.push(`${fishing_caught_icon} **Gone Fishing** - Level **${fishing_caught_progress} / ${config.thresh_catch_a_fish.split(',').length}** \n*Progress ${(row.goneFishing).format(0)} / ${parseInt(cat_t[gone_fishing_progress]).format(0)} (successfully catch fish)*`);
     } else {
       await achievements_text.push(`${fishing_caught_icon} **Gone Fishing** - Level **Maxed**`);
     }
 
-    if(fishing_sold_progress < 10){
-      await achievements_text.push(`${fishing_sold_icon} **Fishmonger** - Level **${fishing_sold_progress} / ${config.thresh_talks_a_lot.split(',').length}**`);
+    if(fishing_sold_progress < config.thresh_sell_a_fish.split(',').length){
+      await achievements_text.push(`${fishing_sold_icon} **Fishmonger** - Level **${fishing_sold_progress} / ${config.thresh_sell_a_fish.split(',').length}** \n*Progress ${(row.soldFish).format(0)} / ${parseInt(sol_t[fishing_sold_progress]).format(0)} (sell fish)*`);
     } else {
       await achievements_text.push(`${fishing_sold_icon} **Fishmonger** - Level **Maxed**`);
     }
