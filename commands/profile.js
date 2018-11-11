@@ -75,13 +75,9 @@ exports.run = function(client, message, args){
       if(owner != 0){
         let ownerUser = message.guild.members.get(owner);
         if(ownerUser){
-          if(ownerUser.nickname != null){
-            ownerName = `** ${ownerUser.nickname}** (${ownerUser.user.username}#${ownerUser.user.discriminator})`;
-          } else {
-            ownerName = `** ${ownerUser.user.username}** (${ownerUser.user.username}#${ownerUser.user.discriminator})`;
-          }
+          ownerName = `<@${owner}>`;
         }
-        if(!ownerUser) ownerName = "<" + owner + ">";
+        if(!ownerUser) ownerName = "" + owner;
       }
 
       // Get all icon Levels
