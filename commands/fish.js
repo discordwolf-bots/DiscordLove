@@ -408,10 +408,11 @@ exports.run = function(client, message, args){
         }
         if(sellPrice > 0){
           let newBalance = row.money + sellPrice;
+          let sql2 = "";
           if(row.soldFish != (inventory_history_total - inventory_total)){
-            let sql2 = `UPDATE users SET money = ${newBalance}, soldFish = ${(inventory_history_total-inventory_total) + soldTotal}, fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
+            sql2 = `UPDATE users SET money = ${newBalance}, soldFish = ${(inventory_history_total-inventory_total) + soldTotal}, fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
           } else {
-            let sql2 = `UPDATE users SET money = ${newBalance}, soldFish = ${row.soldFish + soldTotal}, fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
+            sql2 = `UPDATE users SET money = ${newBalance}, soldFish = ${row.soldFish + soldTotal}, fishInventory = '${soldInventory}' WHERE id = ${message.author.id}`;
           }
           db.run(sql2, (err) => {
             if(err) console.error(err.message);
