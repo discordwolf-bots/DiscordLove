@@ -276,12 +276,12 @@ exports.run = function(client, message, args){
       // Show your inventory
 
       let inventory_display = "";
-      inventory_display += `${small_fish_icon} x ${small_fish_count}\n`;
-      inventory_display += `${medium_fish_icon} x ${medium_fish_count}\n`
-      inventory_display += `${large_fish_icon} x ${large_fish_count}\n`
-      inventory_display += `${super_fish_icon} x ${super_fish_count}\n`
-      inventory_display += `${legendary_fish_icon} x ${legendary_fish_count}\n`
-      inventory_display += `${magikarp_icon} x ${magikarp_count}`
+      inventory_display += `${small_fish_emoji} *(small)* x ${small_fish_count}\n`;
+      inventory_display += `${medium_fish_emoji} *(medium)* x ${medium_fish_count}\n`
+      inventory_display += `${large_fish_emoji} *(large)* x ${large_fish_count}\n`
+      inventory_display += `${super_fish_emoji} *(super)* x ${super_fish_count}\n`
+      inventory_display += `${legendary_fish_emoji} *(legendary)* x ${legendary_fish_count}\n`
+      inventory_display += `${magikarp_emoji} *(magikarp)* x ${magikarp_count}`
 
       let embed = new Discord.RichEmbed()
         .setColor('#7f8a9d')
@@ -295,12 +295,12 @@ exports.run = function(client, message, args){
       // Show your inventory history
 
       let inventory_history_display = "";
-      inventory_history_display += `${small_fish_icon} x ${small_fish_count_history}\n`;
-      inventory_history_display += `${medium_fish_icon} x ${medium_fish_count_history}\n`;
-      inventory_history_display += `${large_fish_icon} x ${large_fish_count_history}\n`;
-      inventory_history_display += `${super_fish_icon} x ${super_fish_count_history}\n`;
-      inventory_history_display += `${legendary_fish_icon} x ${legendary_fish_count_history}\n`;
-      inventory_history_display += `${magikarp_icon} x ${magikarp_count_history}`;
+      inventory_history_display += `${small_fish_emoji} *(small)* x ${small_fish_count_history}\n`;
+      inventory_history_display += `${medium_fish_emoji} *(medium)* x ${medium_fish_count_history}\n`;
+      inventory_history_display += `${large_fish_emoji} *(large)* x ${large_fish_count_history}\n`;
+      inventory_history_display += `${super_fish_emoji} *(super)* x ${super_fish_count_history}\n`;
+      inventory_history_display += `${legendary_fish_emoji} *(legendary)* x ${legendary_fish_count_history}\n`;
+      inventory_history_display += `${magikarp_emoji} *(magikarp)* x ${magikarp_count_history}`;
 
 
 
