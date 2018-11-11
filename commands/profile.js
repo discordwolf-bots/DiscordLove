@@ -106,7 +106,7 @@ exports.run = function(client, message, args){
       if(owned_value >= 10) bank_icon = diamondHeart;
 
       // Achievements Icon is based on thresholds from all achievements
-      let achievement_points = row.achieve_your_value + row.achieve_talks_a_lot + row.achieve_owned_value + row.achieve_buy_the_bot + row.achieve_go_fishing + row.achieve_chats_a_lot + row.achieve_catch_a_karp + row.Fishmonger;
+      let achievement_points = row.achieve_your_value + row.achieve_talks_a_lot + row.achieve_owned_value + row.achieve_buy_the_bot + row.achieve_go_fishing + row.achieve_chats_a_lot + row.achieve_catch_a_karp + row.achieve_fishmonger;
       let achievement_points_icon = redHeart;
       if(achievement_points >= 10) achievement_points_icon = bronzeHeart;
       if(achievement_points >= 20) achievement_points_icon = silverHeart;
