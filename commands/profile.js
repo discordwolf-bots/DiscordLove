@@ -84,13 +84,76 @@ exports.run = function(client, message, args){
         if(!ownerUser) ownerName = "<" + owner + ">";
       }
 
+      // Get all icon Levels
+      let redHeart = `<:heart_red:505752941932838912>`;
+      let bronzeHeart = `<:heart_bronze:505750301614276618>`;
+      let silverHeart = `<:heart_silver:505750301341515779>`;
+      let goldHeart = `<:heart_gold:505750302226645003>`;
+      let platinumHeart = `<:heart_platinum:505750302796939283>`;
+      let diamondHeart = `<:heart_diamond:505750302863917056>`;
+      // Value Icon is based on rpw.achieve_your_value
+      let your_value = row.achieve_your_value;
+      let value_icon = redHeart;
+      if(your_value >= 6) value_icon = bronzeHeart;
+      if(your_value >= 7) value_icon = silverHeart;
+      if(your_value >= 8) value_icon = goldHeart;
+      if(your_value >= 9) value_icon = platinumHeart;
+      if(your_value >= 10) value_icon = diamondHeart;
+
+      // Bank Icon is based on row.achieve_owned_value
+      let owned_value = row.achieve_owned_value;
+      let bank_icon = redHeart;
+      if(owned_value >= 6) bank_icon = bronzeHeart;
+      if(owned_value >= 7) bank_icon = silverHeart;
+      if(owned_value >= 8) bank_icon = goldHeart;
+      if(owned_value >= 9) bank_icon = platinumHeart;
+      if(owned_value >= 10) bank_icon = diamondHeart;
+
+      // Achievements Icon is based on thresholds from all achievements
       let achievement_points = row.achieve_your_value + row.achieve_talks_a_lot + row.achieve_owned_value + row.achieve_buy_the_bot + row.achieve_go_fishing + row.achieve_chats_a_lot + row.achieve_catch_a_karp + row.Fishmonger;
-      let achievement_points_icon = `<:heart_red:505752941932838912>`;
-      if(achievement_points >= 10) achievement_points_icon = `<:heart_bronze:505750301614276618>`;
-      if(achievement_points >= 20) achievement_points_icon = `<:heart_silver:505750301341515779>`;
-      if(achievement_points >= 35) achievement_points_icon = `<:heart_gold:505750302226645003>`;
-      if(achievement_points >= 50) achievement_points_icon = `<:heart_platinum:505750302796939283>`;
-      if(achievement_points == 62) achievement_points_icon = `<:heart_diamond:505750302863917056>`;
+      let achievement_points_icon = redHeart;
+      if(achievement_points >= 10) achievement_points_icon = bronzeHeart;
+      if(achievement_points >= 20) achievement_points_icon = silverHeart;
+      if(achievement_points >= 35) achievement_points_icon = goldHeart;
+      if(achievement_points >= 50) achievement_points_icon = platinumHeart;
+      if(achievement_points == 62) achievement_points_icon = diamondHeart;
+
+      // Messages Icon is based on row.achieve_talks_a_lot
+      let messages_sent = row.achieve_talks_a_lot;
+      let messages_icon = redHeart;
+      if(messages_sent >= 6) messages_icon = bronzeHeart;
+      if(messages_sent >= 7) messages_icon = silverHeart;
+      if(messages_sent >= 8) messages_icon = goldHeart;
+      if(messages_sent >= 9) messages_icon = platinumHeart;
+      if(messages_sent >= 10) messages_icon = diamondHeart;
+
+      // VCTime Icon is based on row.achieve_chats_a_lot
+      let voice_time = row.achieve_chats_a_lot;
+      let vctime_icon = redHeart;
+      if(voice_time >= 6) vctime_icon = bronzeHeart;
+      if(voice_time >= 7) vctime_icon = silverHeart;
+      if(voice_time >= 8) vctime_icon = goldHeart;
+      if(voice_time >= 9) vctime_icon = platinumHeart;
+      if(voice_time >= 10) vctime_icon = diamondHeart;
+
+      // Fish Caught Icon is based on row.achieve_go_fishing
+      let fish_caught = row.achieve_go_fishing;
+      let fishcaught_icon = redHeart;
+      if(fish_caught >= 6) fishcaught_icon = bronzeHeart;
+      if(fish_caught >= 7) fishcaught_icon = silverHeart;
+      if(fish_caught >= 8) fishcaught_icon = goldHeart;
+      if(fish_caught >= 9) fishcaught_icon = platinumHeart;
+      if(fish_caught >= 10) fishcaught_icon = diamondHeart;
+
+      // Fish Sold Icon is based on row.achieve_fishmonger
+      let fish_sold = row.achieve_fishmonger;
+      let fishsold_icon = redHeart;
+      if(fish_sold >= 6) fishsold_icon = bronzeHeart;
+      if(fish_sold >= 7) fishsold_icon = silverHeart;
+      if(fish_sold >= 8) fishsold_icon = goldHeart;
+      if(fish_sold >= 9) fishsold_icon = platinumHeart;
+      if(fish_sold >= 10) fishsold_icon = diamondHeart;
+
 
       let vcTime = row.voicetime;
       let vcTimeFormat = "";
@@ -111,17 +174,21 @@ exports.run = function(client, message, args){
       vcTimeFormat += vcTime + " minute";
       if(vcTime >= 2) vcTimeFormat += "s";
 
+      let profileBox = [];
+      profileBox.push(`**Current Owner**: ${ownerName}`);
+      profileBox.push(`${bank_icon} **Current Bank**: \$${row.money.format(0)}`);
+      profileBox.push(`${value_icon} **Current Value**: \$${row.cost.format(0)}`);
+      profileBox.push(`${achievement_points_icon} **Achievement Points**: ${achievement_points.format(0)}`);
+      profileBox.push(`${messages_icon} **Messages Sent**: ${row.messagesSent.format(0)}`);
+      profileBox.push(`${vctime_icon} **Time in Voice Chat**: ${vcTimeFormat}`);
+      profileBox.push(`${fishcaught_icon} **Fish Caught**: ${row.goneFishing.format(0)}`);
+      profileBox.push(`${fishsold_icon} **Fish Sold**: ${row.soldFish.format(0)}`);
+
       let profile = new Discord.RichEmbed()
         .setColor(`#DA5020`)
-        .setTitle(`Profile of ${message.guild.member(target).user.username}#${message.guild.members.get(target).user.discriminator}`)
         .setThumbnail(`${message.guild.member(target).user.avatarURL}`)
-        .addField(`Current Bank`, `**\$** ${row.money.format(0)}`, true)
-        .addField(`Current Value`, `**\$** ${row.cost.format(0)}`, true)
-        .addField(`Current Owner`, `${ownerName}`)
-        .addField(`Achievement Points`, `${achievement_points_icon} ${achievement_points.format(0)}`)
-        .addField(`Messages Sent`, `${row.messagesSent.format(0)}`, true)
-        .addField(`Time in VC`, `${vcTimeFormat}`, true)
-        .setFooter(`More Achievements hopefully coming soon! **Rewards for ideas!**`);
+        .addField(`Profile of ${message.guild.member(target).user.username}#${message.guild.members.get(target).user.discriminator}`, `${profileBox.join('\n')}`)
+        .setFooter(`Use #discord-love-ideas to put your suggestions!`);
       message.channel.send({embed:profile});
       let sql = `UPDATE users SET lastprofile = '${now}' WHERE id = ${message.author.id}`;
       db.run(sql, [], (err) => {
