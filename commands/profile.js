@@ -83,13 +83,14 @@ exports.run = function(client, message, args){
         }
         if(!ownerUser) ownerName = "<" + owner + ">";
       }
-      let achievement_points = row.achieve_your_value + row.achieve_talks_a_lot + row.achieve_owned_value + row.achieve_buy_the_bot;
+
+      let achievement_points = row.achieve_your_value + row.achieve_talks_a_lot + row.achieve_owned_value + row.achieve_buy_the_bot + row.achieve_go_fishing + row.achieve_chats_a_lot + row.achieve_catch_a_karp + row.Fishmonger;
       let achievement_points_icon = `<:heart_red:505752941932838912>`;
-      if(achievement_points >= 5) achievement_points_icon = `<:heart_bronze:505750301614276618>`;
-      if(achievement_points >= 10) achievement_points_icon = `<:heart_silver:505750301341515779>`;
-      if(achievement_points >= 15) achievement_points_icon = `<:heart_gold:505750302226645003>`;
-      if(achievement_points >= 20) achievement_points_icon = `<:heart_platinum:505750302796939283>`;
-      if(achievement_points == 31) achievement_points_icon = `<:heart_diamond:505750302863917056>`;
+      if(achievement_points >= 10) achievement_points_icon = `<:heart_bronze:505750301614276618>`;
+      if(achievement_points >= 20) achievement_points_icon = `<:heart_silver:505750301341515779>`;
+      if(achievement_points >= 35) achievement_points_icon = `<:heart_gold:505750302226645003>`;
+      if(achievement_points >= 50) achievement_points_icon = `<:heart_platinum:505750302796939283>`;
+      if(achievement_points == 62) achievement_points_icon = `<:heart_diamond:505750302863917056>`;
 
       let vcTime = row.voicetime;
       let vcTimeFormat = "";
