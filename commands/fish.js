@@ -139,6 +139,13 @@ exports.run = function(client, message, args){
   let legendary_fish_icon = `507593595549908992`;
   let magikarp_icon = `507005931503222784`;
 
+  let small_fish_emoji = `:SmallFish:507593596887629824`;
+  let medium_fish_emoji = `:MediumFish:507593596728508426`;
+  let large_fish_emoji = `:LargeFish:507593595684126720`;
+  let super_fish_emoji = `:SuperFish:507593597361586196`;
+  let legendary_fish_emoji = `:LegendaryFish:507593595549908992`;
+  let magikarp_emoji = `:magikarp:507005931503222784`;
+
   let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql, (err, row) => {
     let now = moment().format('x');
@@ -262,8 +269,8 @@ exports.run = function(client, message, args){
         .setColor(`#87a61f`)
         .setTitle(`Fishing help`)
         .addField(`Commands`, `${config.prefix}fish - Go fishing!\n${config.prefix}fish inv - See your inventory\n${config.prefix}fish alltime - Shows all fish youve ever caught\n${config.prefix}fish sell <all | *size*> - Sell fish from your inventory (all sells everything, or specify a size)`)
-        .addField(`Probabilities`, `${small_fish_icon}:35%\n${medium_fish_icon}:25%\n${large_fish_icon}:13%\n${super_fish_icon}:1.796%\n${legendary_fish_icon}:0.2%\n${magikarp_icon}:0.004%`)
-        .addField(`Sell prices`, `${small_fish_icon}:15\n${medium_fish_icon}:25\n${large_fish_icon}:50\n${super_fish_icon}:375\n${legendary_fish_icon}:3,500\n${magikarp_icon}:200,000`);
+        .addField(`Probabilities`, `${small_fish_emoji} *(small)* :35%\n${medium_fish_emoji} *(medium)* :25%\n${large_fish_emoji} *(large)* :13%\n${super_fish_emoji} *(super)* :1.796%\n${legendary_fish_emoji} *(legendary)* :0.2%\n${magikarp_emoji} *(magikarp)* :0.004%`)
+        .addField(`Sell prices`, `${small_fish_emoji} *(small)* :15\n${medium_fish_emoji} *(medium)* :25\n${large_fish_emoji} *(large)* :50\n${super_fish_emoji} *(super)* :375\n${legendary_fish_emoji} *(legendary)* :3,500\n${magikarp_emoji} *(magikarp)* :200,000`);
       message.channel.send(embed);
     } else if(args[0] == "inventory" || args[0] == "inv"){
       // Show your inventory
