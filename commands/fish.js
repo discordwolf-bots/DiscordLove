@@ -18,7 +18,7 @@ Number.prototype.format = function(n, x) {
 
 const achieve_catching = (message, client, row) => {
   console.log(`Started achievement : catching`);
-  let gone_fishing_progress = row.achieve_fish_catch;
+  let gone_fishing_progress = row.achieve_go_fishing;
   let fish_caught = row.goneFishing+1;
   let achieved = 0;
 
@@ -29,6 +29,7 @@ const achieve_catching = (message, client, row) => {
       if(gone_fishing_progress < i+1)
         achieved = i+1;
   }
+
   if(achieved > 0){
     let rewards = 0;
     for(let i=gone_fishing_progress;i<=achieved;i++){
