@@ -22,6 +22,8 @@ const achieve_catching = (message, client, row) => {
   let fish_caught = row.goneFishing+1;
   let achieved = 0;
 
+  console.log(`Caught amount : ${fish_caught}`);
+
   for(let i=0; i<config.thresh_catch_a_fish.length; i++){
     if(fish_caught >= parseInt(config.thresh_catch_a_fish.split(',')[i]))
       if(gone_fishing_progress < i+1)
