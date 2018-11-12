@@ -64,15 +64,15 @@ module.exports = message => {
     var giveExp = true;
 
     if(message.content.startsWith(config.prefix)){
-      command = message.content.split(' ')[0].slice(config.prefix.length);
+      command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
       bool = true;
       giveExp = false;
     } else if(message.content.startsWith(config.prefixtext)){
-      command = message.content.split(' ')[0].slice(config.prefixtext.length);
+      command = message.content.split(' ')[0].slice(config.prefixtext.length).toLowerCase();
       bool = true;
       giveExp = false;
     } else if(message.content.startsWith(config.prefixemoji)){
-      command = message.content.split(' ')[0].slice(config.prefixemoji.length);
+      command = message.content.split(' ')[0].slice(config.prefixemoji.length).toLowerCase();
       bool = true;
       giveExp = false;
     }
