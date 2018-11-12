@@ -64,17 +64,43 @@ exports.run = async function(client, message, args){
     db.get(sql2, (err, rowTarget)=> {
       if(err) return console.error(err.message);
 
+      // Do they own this member?
+      if(rowTarget.owner != message.author.id) return message.reply(`You do not own this member.`);
+
+      // Can they be purchased?
+      if(now - parseInt(rowTarget.lastpurchase) < 300 * 1000){
+        message.delete();
+        let tFormat = "";
+        let tDiff = Math.floor((420 * 1000) - ((now - parseInt(rowTarget.lastpurchase))));
+        tDiff /= 1000;
+        let tDiffMins = Math.floor((tDiff / 60));
+        if(tDiffMins >= 2) {
+          tFormat = tDiffMins + " minutes";
+        } else if(tDiffMins == 1) {
+          tFormat = tDiffMins + " minute";
+        }
+        let tDiffSecs = Math.floor(tDiff - (tDiffMins * 60));
+        if(tDiffSecs >= 2) {
+          tFormat += " " + tDiffSecs + " seconds";
+        } else if(tDiffSecs == 1){
+          tFormat += " " + tDiffSecs + " second";
+        }
+          return message.reply(`This user has recently been bought! Please wait another **${tFormat}**`);
+      }
+
       let currentCost = rowTarget.cost - 100;
       let ownerMoney = rowOwner.money;
       let targetMoney = rowTarget.money;
 
       let increase = 100;
+      // Did they say a price?
       if(args[1]){
         increase = parseInt(args[1]);
         if(args[1].length < 1) increase = 100;
         if(parseInt(args[1]) != args[1]) buyPrice = 100;
       }
 
+      // Do they have enough money?
       if(increase >= ownerMoney) {
         // Get the nearest 100
         let nearest100 = Math.floor(ownerMoney/100);
@@ -82,12 +108,15 @@ exports.run = async function(client, message, args){
         increase = nearest100;
       }
 
+      // Is it over 100
       if(increase < 100) increase = 100;
 
+      // Set the new values
       let newCost = currentCost + increase;
       let newMoney = ownerMoney - increase;
       let targetIncrease = increase * 0.4;
 
+      // These are the SQL Commands
       let sql3 = `UPDATE users SET money = ${newMoney} WHERE id = ${message.author.id}`;
       let sql4 = `UPDATE users SET money = ${targetMoney+targetIncrease}, cost = ${newCost+100}, lastpurchase = ${now} WHERE id = ${target}`;
 
@@ -95,10 +124,11 @@ exports.run = async function(client, message, args){
         if(err) return console.error(err.message);
         db.run(sql4, (err) => {
           if(err) return console.error(err.message);
-
+          // Success!
           message.reply(`You have successfully increased the price of <@${target}> to **\$${newCost.format(0)}**`);
           client.channels.get(config.logging).send(`:dollar: INCREASE PRICE OWNER : ${message.author.username}#${message.author.discriminator} - ${ownerMoney} -> ${newMoney}`);
           client.channels.get(config.logging).send(`:heavy_dollar_sign: INCREASE PRICE TARGET : ${targetUser.user.username}#${targetUser.user.discriminator} - ${targetMoney} -> ${targetMoney+targetIncrease}`);
+          // Expensive taste achievement
           achievement_expensive_taste(message, newCost, client);
 
         });
