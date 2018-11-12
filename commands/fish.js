@@ -224,7 +224,7 @@ exports.run = function(client, message, args){
         // Catch Small
         embed.setColor('#63cccc');
         embed.setImage(`https://cdn.discordapp.com/emojis/${small_fish_icon}.png`);
-        embed.setFooter(`Oh there was something there, guess it was just a Small Fish.`);
+        embed.setFooter(`Is that Spooky? Oh, its just a Small Fish.`);
         sizeCatch = "small";
       } else if(random < chance_medium) {
         // Catch Medium
