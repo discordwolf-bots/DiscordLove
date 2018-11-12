@@ -22,7 +22,7 @@ exports.run = async function(client, message, args){
   let target = targetUser.user.id;
   if(!target) return message.channel.send("Please mention the user you want to increase the price of!");
 
-  let sql1 = `SELECT * FROM uses WHERE id = ${message.author.id}`;
+  let sql1 = `SELECT * FROM users WHERE id = ${message.author.id}`;
   db.get(sql1, (err, rowOwner)=> {
     if(err) return console.error(err.message);
     let sql2 = `SELECT * FROM users WHERE id = ${target}`;
