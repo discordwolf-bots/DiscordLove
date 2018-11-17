@@ -22,43 +22,7 @@ exports.run = function(client, message, args){
   db.get(sql1, (err, row) => {
     if(err) return console.error(err.message);
     if(!row) return message.reply(`You need a profile first`);
-    let sql2 = `SELECT * FROM users WHERE cost <= ${row.money} AND owner != ${row.id} AND id != ${row.id} ORDER BY cost DESC LIMIT 10`;
-    db.all(sql2, (err, rows) => {
-      if(err) return console.error(err.message);
-      let affordable_users = [];
-      let affordable_count = 0;
-      rows.forEach((user_info) => {
-        affordable_count++;
-        if(now - parseInt(user_info.lastpurchase) < 300 * 1000){
-          let rowUser = message.guild.members.get(user_info.id);
-          if(rowUser){
-            if(rowUser.nickname != null){
-              affordable_users.push(`**${rowUser.nickname}** - **\$${user_info.cost.format(0)}** <:cooldown:505752316649930774>`);
-            } else {
-              affordable_users.push(`**${rowUser.user.username}** - **\$${user_info.cost.format(0)}** <:cooldown:505752316649930774>`);
-            }
-          }
-          if(!rowUser) affordable_users.push(`<${user_info.id}> - **\$${user_info.cost.format(0)}** <:cooldown:505752316649930774>`);
-        } else {
-          // Purchasable
-          let rowUser = message.guild.members.get(user_info.id);
-          if(rowUser){
-            if(rowUser.nickname != null){
-              affordable_users.push(`**${rowUser.nickname}** - **\$${user_info.cost.format(0)}**`);
-            } else {
-              affordable_users.push(`**${rowUser.user.username}** - **\$${user_info.cost.format(0)}**`);
-            }
-          }
-          if(!rowUser) affordable_users.push(`<${user_info.id}> - **\$${user_info.cost.format(0)}**`);
-        }
-      });
-      if(affordable_count == 0) return message.reply(`You cannot afford anybody at the moment`);
-      let embed = new Discord.RichEmbed()
-        .setColor('#fa1201')
-        .addField(`Top 10 Users you can afford`, `${affordable_users.join('\n')}`)
-        .setFooter(`You currently have \$${(row.money).format(0)}`);
-      message.channel.send(embed);
-    });
+    
   });
 };
 

@@ -14,36 +14,43 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 exports.run = function(client, message, args){
 
   let sql = `CREATE TABLE IF NOT EXISTS users (
-    id TEXT,
-    userID INTEGER PRIMARY KEY ASC,
-    money INTEGER DEFAULT 1000,
-    cost INTEGER DEFAULT 100,
-    owner TEXT DEFAULT 0,
+    user_id INTEGER PRIMARY KEY ASC,
+    user_discord TEXT,
 
-    voicejoined TEXT DEFAULT 0,
-    voicetime INTEGER DEFAULT 0,
+    buy_money INTEGER DEFAULT 1000,
+    buy_cost INTEGER DEFAULT 100,
+    buy_owner TEXT DEFAULT 0,
 
-    lastpurchase TEXT DEFAULT 0,
-    lastprofile TEXT DEFAULT 0,
-    lastmessage TEXT DEFAULT 0,
-    lastfish TEXT DEFAULT 0,
+    reputation INTEGER DEFAULT 0,
+    reputation_given INTEGER DEFAULT 0,
+    reputation_given_today INTEGER DEFAULT 0,
 
-    messagesSent INTEGER DEFAULT 0,
-    fishInventory TEXT DEFAULT '0,0,0,0,0,0',
-    fishInventoryHistory TEXT DEFAULT '0,0,0,0,0,0',
+    premium INTEGER DEFAULT 0,
+    premium_time TEXT DEFAULT 0,
 
-    goneFishing INTEGER DEFAULT 0,
-    soldFish INTEGER DEFAULT 0,
-    magikarpCaught INTEGER DEFAULT 0,
+    cps REAL DEFAULT '0.0',
+    money_spent INTEGER DEFAULT 0,
 
-    achieve_your_value INTEGER DEFAULT 0,
-    achieve_owned_value INTEGER DEFAULT 0,
-    achieve_buy_the_bot INTEGER DEFAULT 0,
-    achieve_talks_a_lot INTEGER DEFAULT 0,
-    achieve_go_fishing INTEGER DEFAULT 0,
-    achieve_chats_a_lot INTEGER DEFAULT 0,
-    achieve_catch_a_karp INTEGER DEFAULT 0,
-    achieve_fishmonger INTEGER DEFAULT 0
+    ts_profile TEXT DEFAULT 0,
+    ts_reputation TEXT DEFAULT 0,
+    ts_fish TEXT DEFAULT 0,
+    ts_message TEXT DEFAULT 0,
+    ts_commands TEXT DEFAULT 0,
+
+    counter_messages INTEGER DEFAULT 0,
+    counter_fishing INTEGER DEFAULT 0,
+
+    list_fish_inventory TEXT DEFAULT '0,0,0,0,0,0',
+    list_fish_inventory_history TEXT DEFAULT '0,0,0,0,0,0',
+
+    a_premium INTEGER DEFAULT 0,
+    a_total_spent INTEGER DEFAULT 0,
+    a_commands_used INTEGER DEFAULT 0,
+    a_spammer INTEGER DEFAULT 0,
+    a_speading_love INTEGER DEFAULT 0,
+    a_social INTEGER DEFAULT 0,
+    a_fisher INTEGER DEFAULT 0
+
   )`;
   db.run(sql, (err) => {
     if(err){
