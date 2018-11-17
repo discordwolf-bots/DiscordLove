@@ -22,7 +22,7 @@ exports.run = function(client, message, args){
       db.run(sqlInsert, [], (err) => {
         if(err) return console.error(err.message);
         message.reply(`User profile created.`);
-        let discord_love_role = message.guild.roles.find("name", "DiscordLoved");
+        let discord_love_role = message.guild.roles.find(role => role.name === "DiscordLoved");
         if(!discord_love_role) return message.channel.send(`Please create the role \`\`DiscordLoved\`\``);
         message.guild.members.get(message.author.id).addRole(discord_love_role.id);
         console.log(`New user added : ${message.author.id}`);
