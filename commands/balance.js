@@ -18,11 +18,11 @@ Number.prototype.format = function(n, x) {
 
 exports.run = function(client, message, args){
   message.delete();
-  let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
+  let sql = `SELECT * FROM users WHERE user_discord = ${message.author.id}`;
   db.get(sql, [], (err, row) => {
     if(err) return console.error(err.message);
     if(!row) return message.reply(`You do not have a profile yet!`);
-    
+    message.reply(`Your balance is currently **\$${row.buy_money.format(0)}**`);
   });
 };
 

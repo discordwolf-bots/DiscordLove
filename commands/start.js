@@ -13,16 +13,18 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 
 exports.run = function(client, message, args){
   message.delete();
-  if(message.channel.id != '505128715202723850') return message.channel.send(`Please do the command **${config.prefix}start** in ${message.guild.channels.get('505128715202723850').toString()} first!`);
-  let sql = `SELECT * FROM users WHERE id = ${message.author.id}`;
+  if(message.channel.name != 'discord-love-setup') return message.channel.send(`Please do the command **${config.prefix}start** in **discord-love-setup** first!`);
+  let sql = `SELECT * FROM users WHERE user_discord = ${message.author.id}`;
   db.get(sql, [], (err, row) => {
     if(err) return console.error(err.message);
     if(!row) {
-      let sqlInsert = `INSERT INTO users (id) VALUES (${message.author.id})`;
+      let sqlInsert = `INSERT INTO users (user_discord) VALUES (${message.author.id})`;
       db.run(sqlInsert, [], (err) => {
         if(err) return console.error(err.message);
         message.reply(`User profile created.`);
-        message.guild.members.get(message.author.id).addRole('505131540150222849');
+        let discord_love_role = message.guild.roles.find("name", "DiscordLoved");
+        if(!discord_love_role) return message.channel.send(`Please create the role \`\`DiscordLoved\`\``);
+        message.guild.members.get(message.author.id).addRole(discord_love_role.id);
         console.log(`New user added : ${message.author.id}`);
       });
     } else {
