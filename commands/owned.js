@@ -11,7 +11,6 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - Owned`);
 });
 
-
 Number.prototype.format = function(n, x) {
   var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
   return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');

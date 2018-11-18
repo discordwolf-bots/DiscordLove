@@ -16,20 +16,20 @@ exports.run = function(client, message, args){
   let sql = `CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER PRIMARY KEY ASC,
     user_discord TEXT,
+    user_level INTEGER DEFAULT 0,
+    user_experience INTEGER DEFAULT 0,
+    user_money INTEGER DEFAULT 1000,
+    user_cps REAL DEFAULT '0.0',
 
-    buy_money INTEGER DEFAULT 1000,
     buy_cost INTEGER DEFAULT 100,
     buy_owner TEXT DEFAULT 0,
 
-    reputation INTEGER DEFAULT 0,
+    reputation_total INTEGER DEFAULT 0,
     reputation_given INTEGER DEFAULT 0,
-    reputation_given_today INTEGER DEFAULT 0,
+    reputation_given-today INTEGER DEFAULT 0,
 
-    premium INTEGER DEFAULT 0,
+    premium_status INTEGER DEFAULT 0,
     premium_time TEXT DEFAULT 0,
-
-    cps REAL DEFAULT '0.0',
-    money_spent INTEGER DEFAULT 0,
 
     ts_profile TEXT DEFAULT 0,
     ts_reputation TEXT DEFAULT 0,
@@ -38,18 +38,21 @@ exports.run = function(client, message, args){
     ts_commands TEXT DEFAULT 0,
 
     counter_messages INTEGER DEFAULT 0,
+    counter_commands INTEGER DEFAULT 0,
     counter_fishing INTEGER DEFAULT 0,
+    counter_fish-caught INTEGER DEFAULT 0,
+    counter_money-spent INTEGER DEFAULT 0,
 
-    list_fish_inventory TEXT DEFAULT '0,0,0,0,0,0',
-    list_fish_inventory_history TEXT DEFAULT '0,0,0,0,0,0',
+    list_fish-inventory TEXT DEFAULT '0,0,0,0,0,0',
+    list_fish-inventory-history TEXT DEFAULT '0,0,0,0,0,0',
 
-    a_premium INTEGER DEFAULT 0,
-    a_total_spent INTEGER DEFAULT 0,
-    a_commands_used INTEGER DEFAULT 0,
-    a_spammer INTEGER DEFAULT 0,
-    a_speading_love INTEGER DEFAULT 0,
-    a_social INTEGER DEFAULT 0,
-    a_fisher INTEGER DEFAULT 0
+    ach_premium INTEGER DEFAULT 0,
+    ach_total-spent INTEGER DEFAULT 0,
+    ach_commands-used INTEGER DEFAULT 0,
+    ach_spammer INTEGER DEFAULT 0,
+    ach_speading-love INTEGER DEFAULT 0,
+    ach_social INTEGER DEFAULT 0,
+    ach_fisher INTEGER DEFAULT 0
 
   )`;
   db.run(sql, (err) => {
