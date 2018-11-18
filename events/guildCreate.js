@@ -25,6 +25,7 @@ module.exports = guild => {
     name: role_name,
   })
     .then(role => {
+      console.log(`Stage 1`);
       // Create DiscordLove Category
       log(`Joined guild ${guild.name}`)
       guild.createChannel(`DiscordLove`, `category`, [{
@@ -32,6 +33,7 @@ module.exports = guild => {
       }])
     })
     .then(category => {
+      console.log(`Stage 2`);
       // Create Setup channel
       guild.createChannel(`discord-love-setup`, `text`)
         .then(channel => {
@@ -43,6 +45,7 @@ module.exports = guild => {
           // Create default channel
           guild.createChannel(`discord-love`, `text`)
             .then(channel_default => {
+              console.log(`Stage 3`);
               channel_default.setParent(category.id);
               channel_default.overwritePermissions(role, {
                 "VIEW_CHANNEL": true
@@ -56,7 +59,7 @@ module.exports = guild => {
               let data = [guild.id, guild.owner.id, channel.id, channel_default.id];
               db.run(sql, data, (err) => {
                 if(err) return console.error(err.message);
-
+                console.log(`Stage 4`);
                 embed = new Discord.RichEmbed()
                   .setColor("#00A30D")
                   .setAuthor(`${guild.name}`, guild.iconURL)
