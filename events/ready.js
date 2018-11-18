@@ -16,14 +16,6 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 });
 
 module.exports = client => {
-  let sql = `SELECT * FROM guilds`;
-  db.all(sql, [], (err, rows) => {
-    if(err) return console.error(err.message);
-    let counter = 0;
-    rows.forEach(row => {
-      counter++;
-    })
-    client.user.setActivity(`on \$${counter.format(0)} servers`);
-  });
+  client.user.setActivity(`on \$${client.guilds.size.format(0)} servers`);
   log(chalk.green(`Bot Started`));
 }
