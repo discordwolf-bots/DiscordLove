@@ -17,7 +17,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 
 module.exports = guild => {
   let client = guild.client;
-  const everyone = guild.roles.find("@" + "everyone");
+  const everyone = message.guild.roles.find('name', '@everyone');
 
   let role_name = `DiscordLoved`;
   // Create DiscordLoved Role
@@ -56,7 +56,7 @@ module.exports = guild => {
               let data = [guild.id, guild.owner.id, channel.id, channel_default.id];
               db.run(sql, data, (err) => {
                 if(err) return console.error(err.message);
-                
+
                 embed = new Discord.RichEmbed()
                   .setColor("#00A30D")
                   .setAuthor(`${guild.name}`, guild.iconURL)
