@@ -56,6 +56,13 @@ module.exports = guild => {
               let data = [guild.id, guild.owner.id, channel.id, channel_default.id];
               db.run(sql, data, (err) => {
                 if(err) return console.error(err.message);
+                
+                embed = new Discord.RichEmbed()
+                  .setColor("#00A30D")
+                  .setAuthor(`${guild.name}`, guild.iconURL)
+                  .setFooter(`New Guild`)
+                  .setTimestamp();
+                client.channels.get(config.log_guild).send(embed);
               })
             })
         })

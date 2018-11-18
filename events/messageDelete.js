@@ -11,6 +11,8 @@ module.exports = message => {
   let guild = message.guild;
   let client = message.client;
 
+  if(guild.id != `480906420133429259`) return;
+
   if(message.content.startsWith(config.prefix)){
 
   } else if(message.content.startsWith(config.prefixtext)){
