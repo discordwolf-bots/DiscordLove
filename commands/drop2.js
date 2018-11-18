@@ -12,7 +12,8 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 });
 
 exports.run = function(client, message, args){
-  let sql = `DROP TABLE users`;
+
+  let sql = `DROP TABLE guilds`;
   db.run(sql, (err) => {
     if(err){
       return console.error(err.message);
