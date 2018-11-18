@@ -31,50 +31,43 @@ module.exports = guild => {
       guild.createChannel(`DiscordLove`, `category`, [{
         id: guild.id,
       }])
-    })
-    .then(category => {
-      console.log(`Stage 2`);
-      // Create Setup channel
-      guild.createChannel(`discord-love-setup`, `text`)
-        .then(channel => {
-          channel.setParent(category.id);
-          channel.overwritePermissions(role, {
-            "VIEW_CHANNEL": false
-          })
-
-          // Create default channel
-          guild.createChannel(`discord-love`, `text`)
-            .then(channel_default => {
-              console.log(`Stage 3`);
-              channel_default.setParent(category.id);
-              channel_default.overwritePermissions(role, {
-                "VIEW_CHANNEL": true
-              });
-              channel_default.overwritePermissions(everyone, {
-                "VIEW_CHANNEL": false
-              })
-
-              // Add to database
-              let sql = `INSERT INTO guilds (guild_identifier, guild_owner, channel_setup, channel_main) VALUES(?,?,?,?)`;
-              let data = [guild.id, guild.owner.id, channel.id, channel_default.id];
-              db.run(sql, data, (err) => {
-                if(err) return console.error(err.message);
-                console.log(`Stage 4`);
-                embed = new Discord.RichEmbed()
-                  .setColor("#00A30D")
-                  .setAuthor(`${guild.name}`, guild.iconURL)
-                  .setFooter(`New Guild`)
-                  .setTimestamp();
-                client.channels.get(config.log_guild).send(embed);
-              })
+      .then(category => {
+        console.log(`Stage 2`);
+        // Create Setup channel
+        guild.createChannel(`discord-love-setup`, `text`)
+          .then(channel => {
+            channel.setParent(category.id);
+            channel.overwritePermissions(role, {
+              "VIEW_CHANNEL": false
             })
+
+            // Create default channel
+            guild.createChannel(`discord-love`, `text`)
+              .then(channel_default => {
+                console.log(`Stage 3`);
+                channel_default.setParent(category.id);
+                channel_default.overwritePermissions(role, {
+                  "VIEW_CHANNEL": true
+                });
+                channel_default.overwritePermissions(everyone, {
+                  "VIEW_CHANNEL": false
+                })
+
+                // Add to database
+                let sql = `INSERT INTO guilds (guild_identifier, guild_owner, channel_setup, channel_main) VALUES(?,?,?,?)`;
+                let data = [guild.id, guild.owner.id, channel.id, channel_default.id];
+                db.run(sql, data, (err) => {
+                  if(err) return console.error(err.message);
+                  console.log(`Stage 4`);
+                  embed = new Discord.RichEmbed()
+                    .setColor("#00A30D")
+                    .setAuthor(`${guild.name}`, guild.iconURL)
+                    .setFooter(`New Guild`)
+                    .setTimestamp();
+                  client.channels.get(config.log_guild).send(embed);
+                })
+              })
+          })
         })
     })
-    .then(category => {
-
-    })
-    .then(default_channel => {
-
-    })
-
 }
