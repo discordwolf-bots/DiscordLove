@@ -51,7 +51,6 @@ const achievement_talks_a_lot = (message, value, client, random) => {
 
 module.exports = message => {
   try {
-
     let now = moment().format('x');
     if(message.author.bot) return;
     if(message.channel.type !== "text") return;
@@ -65,14 +64,6 @@ module.exports = message => {
 
     if(message.content.startsWith(config.prefix)){
       command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
-      bool = true;
-      giveExp = false;
-    } else if(message.content.startsWith(config.prefixtext)){
-      command = message.content.split(' ')[0].slice(config.prefixtext.length).toLowerCase();
-      bool = true;
-      giveExp = false;
-    } else if(message.content.startsWith(config.prefixemoji)){
-      command = message.content.split(' ')[0].slice(config.prefixemoji.length).toLowerCase();
       bool = true;
       giveExp = false;
     }

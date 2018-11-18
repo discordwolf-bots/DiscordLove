@@ -78,6 +78,6 @@ exports.conf = {
 
 exports.help = {
   name: "build",
-  description: "Builds Databse",
+  description: "Builds Database",
   usage: "build"
 }
