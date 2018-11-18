@@ -16,16 +16,14 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 });
 
 module.exports = client => {
-  let sql = `SELECT * FROM users`;
+  let sql = `SELECT * FROM guilds`;
   db.all(sql, [], (err, rows) => {
     if(err) return console.error(err.message);
-    let value = 0;
     let counter = 0;
-    rows.forEach((row) => {
+    rows.forEach(row => {
       counter++;
-      value += row.cost - 100;
-    });
-    client.user.setActivity(`${counter.format(0)} users worth \$${value.format(0)}`);
+    })
+    client.user.setActivity(`on \$${counter.format(0)} servers`);
   });
   log(chalk.green(`Bot Started`));
 }

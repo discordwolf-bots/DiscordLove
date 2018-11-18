@@ -17,7 +17,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 
 module.exports = guild => {
   let client = guild.client;
-  const everyone = message.guild.roles.find('name', '@everyone');
+  const everyone = guild.roles.find('name', '@everyone');
 
   let role_name = `DiscordLoved`;
   // Create DiscordLoved Role
