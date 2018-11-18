@@ -10,6 +10,9 @@ const log = (msg) => {
 module.exports = member => {
   let guild = member.guild;
   let client = member.client;
+
+  if(guild.id != `480906420133429259`) return;
+
   embed = new Discord.RichEmbed()
     .setColor("#00A30D")
     .setAuthor(`${member.user.username}#${member.user.discriminator}`, member.avatarURL)
