@@ -9,5 +9,4 @@ const log = (msg) => {
 
 module.exports = error => {
   console.log(error);
-
 }
