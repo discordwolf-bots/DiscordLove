@@ -23,24 +23,24 @@ client.db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (er
   console.log(`Connected to DB - Index`);
 });
 
-client.guild_info = (guild, extras, callback) => {
+client.guild_info = (guild, extras) => {
   let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
   if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${user} ${extras}`;
   client.db.get(sql, (err, row) => {
     if(err) return console.error(`message.js - ${err.message}`);
     console.log(chalk.bold.red(`client.guild_info index.js`));
     console.log(row);
-    return callback(row);
+    return row;
   });
 }
-client.user_info = (user, extras, callback) => {
+client.user_info = (user, extras) => {
   let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
   if(extras != '') sql = `SELECT * FROM users WHERE user_discord = ${user} ${extras}`;
   client.db.get(sql, (err, row) => {
     if(err) return console.error(`message.js - ${err.message}`);
     console.log(chalk.bold.red(`client.user_info index.js`));
     console.log(row);
-    return callback(row);
+    return row;
   })
 }
 
