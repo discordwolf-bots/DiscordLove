@@ -9,6 +9,7 @@ exports.run = async function(client, message, args){
   client.guild_info(message.guild.id, '', (guild) => {
     client.user_info(message.author.id, '', (user) => {
       if(!guild || !user) return;
+      console.log(user);
       message.reply(`Money: ${user.user_money} (${parseFloat(user.user_money)} ${typeof parseFloat(user.user_money)})`)
     });
   });
