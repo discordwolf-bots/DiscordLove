@@ -18,53 +18,67 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 const set_up_server = (client, guild) => {
   let role_name = `DiscordLoved`;
   const everyone = guild.roles.find(role => role.name === '@everyone');
-  // Create DiscordLoved Role
+  const role_check = guild.roles.find(role => role.name === 'DiscordLoved');
+  if(role_check){
+    role = role_check;
+    create_channels(role, client, guild);
+  } else {
+    create_role(guild).then(role => {
+      create_channels(role, client, guild);
+    });
+  }
+}
+
+const create_role = (guild) => {
   guild.createRole({
-    name: role_name,
+    name: `DiscordLoved`
+  }).then(role => {
+    return role;
   })
-    .then(role => {
-      // Create DiscordLove Category
-      guild.createChannel(`DiscordLove`, `category`, [{
-        id: guild.id,
-      }])
-      .then(category => {
-        // Create Setup channel
-        guild.createChannel(`discord-love-setup`, `text`)
-          .then(channel => {
-            channel.setParent(category.id);
-            channel.overwritePermissions(role, {
-              VIEW_CHANNEL: false
-            });
-            channel.overwritePermissions(guild.id, {
+}
+
+const create_channels = (role, client, guild) => {
+  guild.createChannel(`DiscordLove`, `category`, [{
+    id: guild.id,
+  }])
+  .then(category => {
+    // Create Setup channel
+    guild.createChannel(`discord-love-setup`, `text`)
+      .then(channel => {
+        channel.setParent(category.id);
+        channel.overwritePermissions(role, {
+          VIEW_CHANNEL: false
+        });
+        channel.overwritePermissions(guild.id, {
+          VIEW_CHANNEL: true
+        });
+
+        // Create default channel
+        guild.createChannel(`discord-love`, `text`)
+          .then(channel_default => {
+            channel_default.setParent(category.id);
+            channel_default.overwritePermissions(role, {
               VIEW_CHANNEL: true
             });
+            channel_default.overwritePermissions(guild.id, {
+              VIEW_CHANNEL: false
+            });
 
-            // Create default channel
-            guild.createChannel(`discord-love`, `text`)
-              .then(channel_default => {
-                channel_default.setParent(category.id);
-                channel_default.overwritePermissions(role, {
-                  VIEW_CHANNEL: true
-                });
-                channel_default.overwritePermissions(guild.id, {
-                  VIEW_CHANNEL: false
-                });
-
-                // Add to database
-                let sql = `INSERT INTO guilds (guild_identifier, guild_owner, channel_setup, channel_main) VALUES(?,?,?,?)`;
-                let data = [guild.id, guild.owner.id, channel.id, channel_default.id];
-                db.run(sql, data, (err) => {
-                  if(err) return console.error(err.message);
-                  embed = new Discord.RichEmbed()
-                    .setColor("#00A30D")
-                    .setAuthor(`${guild.name} (${guild.memberCount.format(0)} members)`, guild.iconURL)
-                    .setFooter(`Owner: ${guild.owner.user.username}#${guild.owner.user.discriminator}`)
-                    .setTimestamp();
-                  client.channels.get(config.log_guild).send(embed);
-                })
-              })
+            // Add to database
+            let sql = `INSERT INTO guilds (guild_identifier, guild_owner, channel_setup, channel_main) VALUES(?,?,?,?)`;
+            let data = [guild.id, guild.owner.id, channel.id, channel_default.id];
+            db.run(sql, data, (err) => {
+              if(err) return console.error(err.message);
+              embed = new Discord.RichEmbed()
+                .setColor("#00A30D")
+                .setAuthor(`${guild.name} (${guild.memberCount.format(0)} members)`, guild.iconURL)
+                .setFooter(`Owner: ${guild.owner.user.username}#${guild.owner.user.discriminator}`)
+                .setTimestamp();
+              client.channels.get(config.log_guild).send(embed);
+              client.user.setActivity(`on ${client.guilds.size.format(0)} servers`);
+            })
           })
-        })
+      })
     })
 }
 
