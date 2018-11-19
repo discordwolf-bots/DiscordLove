@@ -12,6 +12,7 @@ exports.run = async function(client, message, args){
       let sql = `UPDATE users SET user_money = ${user.user_money + 0.5} WHERE user_discord = ${user.user_discord}`;
       client.db.run(sql, (err)=> {
         if(err) return console.error(err.message);
+        console.log(user);
       })
     });
   });
