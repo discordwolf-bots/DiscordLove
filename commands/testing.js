@@ -32,8 +32,8 @@ const user_info = (user, extras) => {
 }
 
 exports.run = async function(client, message, args){
-  await guild = guild_info(message.guild.id, '');
-  await user = user_info(message.author.id, '');
+  let guild = await guild_info(message.guild.id, '');
+  let user = await user_info(message.author.id, '');
 
   console.log(guild);
   console.log(user);
