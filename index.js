@@ -1,4 +1,5 @@
 const config = require(`./config.json`);
+const prefix = config.prefix;
 
 const chalk = require('chalk');
 const Discord = require('discord.js');
@@ -6,20 +7,18 @@ const client = new Discord.Client();
 const ddiff = require('return-deep-diff');
 const fs = require('fs');
 const moment = require('moment');
+const sql = require('sqlite');
+
+client.db = sql.open(`./utils/users.db`);
+if(!client.db) return console.log(`Error Connecting`);
+console.log(`Successfully connected to SQLite Database`);
 
 require('./utils/eventLoader')(client);
-const prefix = config.prefix;
+
+
 const log = (msg) => {
   console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${msg}`);
 }
-
-const sqlite3 = require('sqlite3').verbose();
-client.db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) => {
-  if(err){
-    console.error(err.message);
-  }
-  console.log(`Connected to DB - Index`);
-});
 
 client.guild_info = (guild) => {
   let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
