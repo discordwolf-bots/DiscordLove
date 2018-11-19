@@ -7,22 +7,20 @@ const client = new Discord.Client();
 const ddiff = require('return-deep-diff');
 const fs = require('fs');
 const moment = require('moment');
+const sqlite3 = require('sqlite3').verbose();
 
 require('./utils/eventLoader')(client);
-
 
 const log = (msg) => {
   console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${msg}`);
 }
 
-const sqlite3 = require('sqlite3').verbose();
 client.db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) => {
   if(err){
     console.error(err.message);
   }
   console.log(`Connected to DB - Index`);
 });
-
 client.guild_info = async (guild, extras, callback) => {
   try {
     let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
@@ -50,6 +48,17 @@ client.user_info = async (user, extras, callback) => {
   } catch(e) {
     console.error(e);
   }
+}
+client.update_money = async (user) => {
+  let now = moment().format('x');
+  let time_difference = now - user.ts_message;
+  let money_to_add = Math.floor(time_difference/1000) * Double.parseDouble(user.user_cps);
+  console.log(money_to_add);
+  console.log(Double.parseDouble(user.user_cps));
+  let sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, ts_message=${now} WHERE user_discord=${user.user_discord}`;
+  client.db.run(sql, (err) => {
+    if(err) return console.error(`index.js update_money ${err.message}`);
+  })
 }
 
 client.commands = new Discord.Collection();
