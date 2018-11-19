@@ -15,24 +15,19 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - Message`);
 });
 
-module.exports = guild => {
-  let client = guild.client;
-  const everyone = guild.roles.find(role => role.name === '@everyone');
-
+const set_up_server = (client, guild) => {
   let role_name = `DiscordLoved`;
+
   // Create DiscordLoved Role
   guild.createRole({
     name: role_name,
   })
     .then(role => {
-      console.log(`Stage 1`);
       // Create DiscordLove Category
-      log(`Joined guild ${guild.name}`)
       guild.createChannel(`DiscordLove`, `category`, [{
         id: guild.id,
       }])
       .then(category => {
-        console.log(`Stage 2`);
         // Create Setup channel
         guild.createChannel(`discord-love-setup`, `text`)
           .then(channel => {
@@ -44,7 +39,6 @@ module.exports = guild => {
             // Create default channel
             guild.createChannel(`discord-love`, `text`)
               .then(channel_default => {
-                console.log(`Stage 3`);
                 channel_default.setParent(category.id);
                 channel_default.overwritePermissions(role, {
                   "VIEW_CHANNEL": true
@@ -58,11 +52,10 @@ module.exports = guild => {
                 let data = [guild.id, guild.owner.id, channel.id, channel_default.id];
                 db.run(sql, data, (err) => {
                   if(err) return console.error(err.message);
-                  console.log(`Stage 4`);
                   embed = new Discord.RichEmbed()
                     .setColor("#00A30D")
-                    .setAuthor(`${guild.name}`, guild.iconURL)
-                    .setFooter(`New Guild`)
+                    .setAuthor(`${guild.name} (${guild.memberCount.format(0)} members)`, guild.iconURL)
+                    .setFooter(`Owner: ${guild.owner.user.username}#${guild.owner.user.discriminator}`)
                     .setTimestamp();
                   client.channels.get(config.log_guild).send(embed);
                 })
@@ -70,4 +63,23 @@ module.exports = guild => {
           })
         })
     })
+}
+
+module.exports = guild => {
+  let client = guild.client;
+  const everyone = guild.roles.find(role => role.name === '@everyone');
+
+  let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild.id}`;
+  db.get(sql, [], (err, row) => {
+    if(err) return console.error(err.message);
+    if(row){
+      let sql2 = `DELETE FROM guilds WHERE guild_identifier = ${guild.id}`;
+      db.run(sql2, (err) => {
+        if(err) return console.error(err.message);
+        set_up_server(client, guild);
+      });
+    } else {
+      set_up_server(client, guild);
+    }
+  })
 }
