@@ -33,7 +33,7 @@ const set_up_server = (client, guild) => {
           .then(channel => {
             channel.setParent(category.id);
             channel.overwritePermissions(role, {
-              "VIEW_CHANNEL": false
+              VIEW_CHANNEL: false
             })
 
             // Create default channel
@@ -41,11 +41,11 @@ const set_up_server = (client, guild) => {
               .then(channel_default => {
                 channel_default.setParent(category.id);
                 channel_default.overwritePermissions(role, {
-                  "VIEW_CHANNEL": true
+                  VIEW_CHANNEL: true
                 });
-                channel_default.overwritePermissions(everyone, {
-                  "VIEW_CHANNEL": false
-                })
+                channel_default.overwritePermissions(guild.id, {
+                  VIEW_CHANNEL: false
+                });
 
                 // Add to database
                 let sql = `INSERT INTO guilds (guild_identifier, guild_owner, channel_setup, channel_main) VALUES(?,?,?,?)`;
