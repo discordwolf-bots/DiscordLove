@@ -9,9 +9,6 @@ const fs = require('fs');
 const moment = require('moment');
 const sql = require('sqlite');
 
-const db = sql.open(`./utils/users.db`);
-if(!db) return console.log(`Error Connecting`);
-
 require('./utils/eventLoader')(client);
 
 
@@ -19,7 +16,8 @@ const log = (msg) => {
   console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${msg}`);
 }
 
-client.guild_info = (guild, extras) => {
+client.guild_info = async (guild, extras) => {
+  let db = sql.open(`./utils/users.db`);
   let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
   if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild} ${extras}`;
   db.get(sql, (err, row) => {
@@ -28,7 +26,8 @@ client.guild_info = (guild, extras) => {
     return row;
   });
 }
-client.user_info = (user, extras) => {
+client.user_info = async (user, extras) => {
+  let db = sql.open(`./utils/users.db`);
   let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
   if(extras != '') sql = `SELECT * FROM users WHERE user_discord = ${user} ${extras}`;
   db.get(sql, (err, row) => {
