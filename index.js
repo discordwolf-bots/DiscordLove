@@ -21,10 +21,10 @@ client.guild_info = async (guild, extras) => {
   let db = sqlite.open(`./utils/users.db`);
   let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
   if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild} ${extras}`;
-  db.get(sql, (err, row) => {
+  db.all(sql, (err, rows) => {
     if(err) return console.error(`index.js - ${err.message}`);
     console.log(chalk.bold.red(`client.guild_info`));
-    return row;
+    return rows;
   });
 }
 client.user_info = async (user, extras) => {
@@ -32,10 +32,10 @@ client.user_info = async (user, extras) => {
   let db = sqlite.open(`./utils/users.db`);
   let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
   if(extras != '') sql = `SELECT * FROM users WHERE user_discord = ${user} ${extras}`;
-  db.get(sql, (err, row) => {
+  db.all(sql, (err, rows) => {
     if(err) return console.error(`index.js - ${err.message}`);
     console.log(chalk.bold.red(`client.user_info`));
-    return row;
+    return rows;
   })
 }
 
