@@ -19,22 +19,20 @@ const log = (msg) => {
   console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${msg}`);
 }
 
-client.guild_info = (guild) => {
-  let sql;
-  if(extras == '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
+client.guild_info = (guild, extras) => {
+  let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
   if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild} ${extras}`;
   console.log(sql);
-  await client.db.get(sql, (err, row) => {
+  client.db.get(sql, (err, row) => {
     if(err) return console.error(`index.js - ${err.message}`);
     console.log(chalk.bold.red(`client.guild_info`));
     return row;
   });
 }
-client.user_info = (user) => {
-  let sql;
-  if(extras == '') sql = `SELECT * FROM users WHERE user_discord = ${user}`;
+client.user_info = (user, extras) => {
+  let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
   if(extras != '') sql = `SELECT * FROM users WHERE user_discord = ${user} ${extras}`;
-  await client.db.get(sql, (err, row) => {
+  client.db.get(sql, (err, row) => {
     if(err) return console.error(`index.js - ${err.message}`);
     console.log(chalk.bold.red(`client.user_info`));
     return row;
