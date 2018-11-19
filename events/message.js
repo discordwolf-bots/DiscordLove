@@ -50,7 +50,7 @@ module.exports = message => {
       client.guild_info(message.guild.id, '', (guild) => {
         client.user_info(message.author.id, '', (user) => {
           // It wasnt a command, lets add some experience!
-          //client.update_money(user);
+          client.update_money(user);
         });
       });
     }
