@@ -30,35 +30,46 @@ module.exports = message => {
     // Testing purposes only (only runs in Wolfs Den)
     // if(message.guild.id != '480906420133429259') return;
 
-    var command = "";
-    var bool = false;
-    var giveExp = true;
+    client.guild_info(message.guild.id, '', (guild) => {
+      client.user_info(message.author.id, '', (user) => {
 
-    if(message.content.startsWith(config.prefix)){
-      command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
-      bool = true;
-      giveExp = false;
-    }
-
-    if(bool){
-      let perms = client.elevation(message);
-      let cmd;
-      if(client.commands.has(command)){
-        cmd = client.commands.get(command);
-      } else if(client.aliases.has(command)){
-        cmd = client.commands.get(client.aliases.get(command));
-      }
-      if(cmd){
-        if(perms < cmd.conf.permLevel){
-          let embed = new Discord.RichEmbed()
-            .setColor(`#ff0000`)
-            .addField(`Error!`, `You do not have the permissions to use ${command}`)
-            .setTimestamp();
-          return message.channel.send({embed : embed});
+        // Check if the message is a command
+        let command = "";
+        let foundCommand = false;
+        if(message.content.startsWith(config.prefix)){
+          command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
         }
-        cmd.run(client, message, params, perms);
-      }
-    }
+
+        // If it started with the prefix, lets see if it was actually a valid command
+        if(foundCommand){
+          let perms = client.elevation(message); // Gets the users permission level
+          let cmd;
+          if(client.commands.has(command)){ // Did they type the full command?
+            cmd = client.commands.get(command);
+          } else if(client.aliases.has(command)){ // Did they type an alias of a command?
+            cmd = client.commands.get(client.aliases.get(command));
+          }
+
+          // We have found a command
+          if(cmd){
+            // Do they have permissions to run this command?
+            if(perms < cmd.conf.permLevel){
+              let embed = new Discord.RichEmbed()
+                .setColor(`#ff0000`)
+                .setTitle(`Error! You do not have the permissions to use ${command}`)
+                .setTimestamp();
+              return message.channel.send({embed : embed});
+            }
+            // Okay, they can use this command, lets run it
+            cmd.run(client, message, params, perms);
+          }
+        } else {
+          // It wasnt a command, lets add some experience!
+          
+        }
+
+      });
+    });
 
   } catch(e) {
     console.log(e.stack);
