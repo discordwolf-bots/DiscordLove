@@ -7,15 +7,13 @@ const db = sqlite.open(`./utils/users.db`);
 
 exports.run = async (client, message, args) => {
   let sql = `SELECT * FROM users WHERE user_discord = ${message.author.id}`;
-  db.get(sql, (err, row) => {
-    if(err) return console.error(err.message);
-    console.log(row);
-  });
+  let row = db.get(sql);
+  console.log(row);
   // let guild = await client.guild_info(message.guild.id, '');
   // let user = await client.user_info(message.author.id, '');
 
-  console.log(guild);
-  console.log(user);
+  // console.log(guild);
+  // console.log(user);
 };
 
 exports.conf = {
