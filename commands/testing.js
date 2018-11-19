@@ -1,13 +1,37 @@
-const functions = require(`../utils/globalEvents.js`);
 const chalk = require('chalk');
 const moment = require('moment');
 const Discord = require('discord.js');
 const config = require(`../config.json`);
+const sqlite3 = require('sqlite3').verbose();
+
+let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) => {
+  if(err) return console.error(err.message);
+  console.log(`Connected to DB - TESTING`);
+});
+
+const guild_info = (guild, extras) => {
+  let sql;
+  if(extras == '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
+  if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild} ${extras}`;
+  db.get(sql, (err, row) => {
+    if(err) return console.error(`message.js - ${err.message}`);
+    return row;
+  });
+}
+
+const user_info = (user, extras) => {
+  let sql;
+  if(extras == '') sql = `SELECT * FROM users WHERE user_discord = ${user}`;
+  if(extras != '') sql = `SELECT * FROM users WHERE user_discord = ${user} ${extras}`;
+  db.get(sql, (err, row) => {
+    if(err) return console.error(`message.js - ${err.message}`);
+    return row;
+  })
+}
 
 exports.run = function(client, message, args){
-  let db = functions.db;
-  let guild = functions.guild_info(message.guild.id, db);
-  let user = functions.user_info(message.author.id, db);
+  let guild = guild_info(message.guild.id, '');
+  let user = user_info(message.author.id, '');
 
   console.log(guild);
   console.log(user);
