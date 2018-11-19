@@ -5,15 +5,11 @@ const config = require(`../config.json`);
 const sqlite3 = require('sqlite3').verbose();
 
 exports.run = async function(client, message, args){
-  client.guild_info(message.guild.id, '').then( guild => {
-    console.log(guild);
-  });
-  client.user_info(message.author.id, '').then( user => {
-    console.log(user);
-  });
+  let guild = await client.guild_info(message.guild.id, '', function(guild));
+  let user = await client.user_info(message.author.id, '', function(user));
 
-  // console.log(guild);
-  // console.log(user);
+  console.log(guild);
+  console.log(user);
 };
 
 exports.conf = {
