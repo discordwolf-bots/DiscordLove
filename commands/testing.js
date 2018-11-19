@@ -9,23 +9,23 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - TESTING`);
 });
 
-const guild_info = (guild, extras) => {
+const guild_info = async (guild, extras) => {
   let sql;
   if(extras == '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
   if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild} ${extras}`;
   console.log(sql);
-  db.get(sql, (err, row) => {
+  await db.get(sql, (err, row) => {
     if(err) return console.error(`message.js - ${err.message}`);
     console.log(row);
     return row;
   });
 }
 
-const user_info = (user, extras) => {
+const user_info = async (user, extras) => {
   let sql;
   if(extras == '') sql = `SELECT * FROM users WHERE user_discord = ${user}`;
   if(extras != '') sql = `SELECT * FROM users WHERE user_discord = ${user} ${extras}`;
-  db.get(sql, (err, row) => {
+  await db.get(sql, (err, row) => {
     if(err) return console.error(`message.js - ${err.message}`);
     return row;
   })
