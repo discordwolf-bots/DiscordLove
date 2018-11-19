@@ -34,7 +34,10 @@ const set_up_server = (client, guild) => {
             channel.setParent(category.id);
             channel.overwritePermissions(role, {
               VIEW_CHANNEL: false
-            })
+            });
+            channel.overwritePermissions(guild.id, {
+              VIEW_CHANNEL: true
+            });
 
             // Create default channel
             guild.createChannel(`discord-love`, `text`)
