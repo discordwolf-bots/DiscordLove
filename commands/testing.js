@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 const config = require(`../config.json`);
 const sqlite3 = require('sqlite3').verbose();
 
-exports.run = function(client, message, args){
+exports.run = async function(client, message, args){
   let guild = await client.guild_info(message.guild.id, '');
   let user = await client.user_info(message.author.id, '');
 
