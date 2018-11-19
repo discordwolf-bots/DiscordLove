@@ -25,18 +25,16 @@ module.exports = message => {
 
     client.guild_info(message.guild.id, '', (guild) => {
       client.user_info(message.author.id, '', (user) => {
-        console.log(`Stage 1`);
         // Check if the message is a command
         let command = "";
         let foundCommand = false;
         if(message.content.startsWith(config.prefix)){
-          console.log(`Stage 2`);
           command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
+          foundCommand = true;
         }
 
         // If it started with the prefix, lets see if it was actually a valid command
         if(foundCommand){
-          console.log(`Stage 3`);
           let perms = client.elevation(message); // Gets the users permission level
           let cmd;
           if(client.commands.has(command)){ // Did they type the full command?
@@ -47,7 +45,6 @@ module.exports = message => {
 
           // We have found a command
           if(cmd){
-            console.log(`Stage 4`);
             // Do they have permissions to run this command?
             if(perms < cmd.conf.permLevel){
               let embed = new Discord.RichEmbed()
@@ -57,7 +54,6 @@ module.exports = message => {
               return message.channel.send({embed : embed});
             }
             // Okay, they can use this command, lets run it
-            console.log(`Stage 5`);
             cmd.run(client, message, params, perms);
           }
         } else {
