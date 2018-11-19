@@ -7,7 +7,7 @@ const client = new Discord.Client();
 const ddiff = require('return-deep-diff');
 const fs = require('fs');
 const moment = require('moment');
-const sql = require('sqlite');
+
 
 require('./utils/eventLoader')(client);
 
@@ -17,6 +17,7 @@ const log = (msg) => {
 }
 
 client.guild_info = async (guild, extras) => {
+  const sql = require('sqlite');
   let db = sql.open(`./utils/users.db`);
   let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
   if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild} ${extras}`;
@@ -27,6 +28,7 @@ client.guild_info = async (guild, extras) => {
   });
 }
 client.user_info = async (user, extras) => {
+  const sql = require('sqlite');
   let db = sql.open(`./utils/users.db`);
   let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
   if(extras != '') sql = `SELECT * FROM users WHERE user_discord = ${user} ${extras}`;
