@@ -18,6 +18,7 @@ const getGuild = (guild) => {
   let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
   db.get(sql, (err, row) => {
     if(err) return console.error(`message.js - ${err.message}`);
+    console.log(row);
     return row;
   });
 }

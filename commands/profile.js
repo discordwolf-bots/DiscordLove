@@ -18,11 +18,11 @@ Number.prototype.format = function(n, x) {
 
 exports.run = function(client, message, args){
   message.delete();
-  let sql = `SELECT * FROM users WHERE user_discord = ${message.author.id}`;
+  let sql = `SELECT * FROM guilds WHERE guild_identifier = ${message.guild.id}`;
   db.get(sql, [], (err, row) => {
     if(err) return console.error(err.message);
     if(!row) return message.reply(`You do not have a profile yet!`);
-
+    message.reply(row.guild_owner);
   });
 };
 
