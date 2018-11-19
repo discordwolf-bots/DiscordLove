@@ -32,6 +32,8 @@ client.user_info = (user) => {
   let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
   client.db.get(sql, (err, row) => {
     if(err) return console.error(`message.js - ${err.message}`);
+    console.log(chalk.bold.red(`client.user_info index.js`));
+    console.log(row);
     return row;
   })
 }
