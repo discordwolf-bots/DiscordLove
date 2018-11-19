@@ -26,7 +26,7 @@ client.guild_info = async (guild, extras, callback) => {
     let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
     if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${user} ${extras}`;
     await client.db.get(sql, (err, row) => {
-      if(err) return console.error(`message.js - ${err.message}`);
+      if(err) return console.error(`index.js - ${err.message}`);
       // console.log(chalk.bold.red(`client.guild_info index.js`));
       // console.log(row);
       return callback(row);
@@ -40,7 +40,7 @@ client.user_info = async (user, extras, callback) => {
     let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
     if(extras != '') sql = `SELECT * FROM users WHERE user_discord = ${user} ${extras}`;
     await client.db.get(sql, (err, row) => {
-      if(err) return console.error(`message.js - ${err.message}`);
+      if(err) return console.error(`index.js - ${err.message}`);
       // console.log(chalk.bold.red(`client.user_info index.js`));
       // console.log(row);
       return callback(row);
