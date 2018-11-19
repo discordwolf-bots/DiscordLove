@@ -21,7 +21,7 @@ exports.run = function(client, message, args){
   client.guild_info(message.guild.id, '', (guild) => {
     client.user_info(message.author.id, '', (user) => {
       if(!guild || !user) return;
-      message.reply(user.user_cps)
+      message.reply(user.user_discord)
     });
   });
 };
