@@ -2,7 +2,7 @@ const chalk = require('chalk');
 const moment = require('moment');
 const Discord = require('discord.js');
 const config = require(`../config.json`);
-const sqlite3 = require('sqlite3').verbose();
+const sql = require('sqlite');
 
 exports.run = async (client, message, args) => {
   let guild = await client.guild_info(message.guild.id, '');
