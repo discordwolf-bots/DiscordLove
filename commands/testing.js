@@ -1,12 +1,13 @@
-require(`../utils/globalEvents.js`);
+const functions = require(`../utils/globalEvents.js`);
 const chalk = require('chalk');
 const moment = require('moment');
 const Discord = require('discord.js');
 const config = require(`../config.json`);
 
 exports.run = function(client, message, args){
-  let guild = global.guild_info(message.guild.id);
-  let user = global.user_info(message.author.id);
+  let db = functions.db();
+  let guild = functions.guild_info(message.guild.id, db);
+  let user = functions.user_info(message.author.id, db);
 
   console.log(guild);
   console.log(user);
