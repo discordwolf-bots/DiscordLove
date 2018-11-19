@@ -16,8 +16,6 @@ exports.run = function(client, message, args){
     .setFooter(`Command Used`)
     .setTimestamp();
   client.channels.get(config.commands).send({embed});
-
-  console.log(client.guildinfo.guild_owner);
 };
 
 exports.conf = {

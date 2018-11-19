@@ -13,10 +13,31 @@ const log = (msg) => {
   console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${msg}`);
 }
 
+const sqlite3 = require('sqlite3').verbose();
+client.db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) => {
+  if(err){
+    console.error(err.message);
+  }
+  console.log(`Connected to DB - Index`);
+});
+
+client.guild_info = (guild) => {
+  let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
+  db.get(sql, (err, row) => {
+    if(err) return console.error(`message.js - ${err.message}`);
+    return row;
+  });
+}
+client.user_info = (user) => {
+  let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
+  db.get(sql, (err, row) => {
+    if(err) return console.error(`message.js - ${err.message}`);
+    return row;
+  })
+}
+
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
-client.guildInfo = new Discord.Collection();
-client.userInfo = new Discord.Collection();
 
 fs.readdir(`./commands/`, (err, files) => {
   if (err) console.error(err);

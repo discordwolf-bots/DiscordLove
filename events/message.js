@@ -14,23 +14,6 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - Message`);
 });
 
-const getGuild = (guild) => {
-  let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
-  db.get(sql, (err, row) => {
-    if(err) return console.error(`message.js - ${err.message}`);
-    console.log(row);
-    return row;
-  });
-}
-
-const getUser = (user) => {
-  let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
-  db.get(sql, (err, row) => {
-    if(err) return console.error(`message.js - ${err.message}`);
-    return row;
-  })
-}
-
 module.exports = message => {
   try {
     if(message.author.bot) return; // Is it a bot talking?
@@ -38,14 +21,13 @@ module.exports = message => {
 
     const client = message.client; // Give us a `client` variable
     const params = message.content.replace(/ +(?= )/g,'').split(' ').slice(1); // Remove all double spaces
-    client.guildInfo = getGuild(message.guild.id); // Get the guild info from the database
-    let userRow = getUser(message.author.id);
-    if(userRow) client.userInfo = userRow;
-
     let now = moment().format('x'); // Current UNIX Timestamp
 
+    // Get Database info
+    const guild_info = getGuild(message.guild.id);
+    const user_info = getUser(message.author.id);
 
-
+    // Testing purposes only (only runs in Wolfs Den)
     if(message.guild.id != '480906420133429259') return;
 
     var command = "";
