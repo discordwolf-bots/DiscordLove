@@ -9,7 +9,7 @@ const fs = require('fs');
 const moment = require('moment');
 const sql = require('sqlite');
 
-client.db = sql.open(`./utils/users-test.db`);
+client.db = sql.open(`./utils/users.db`);
 if(!client.db) return console.log(`Error Connecting`);
 
 require('./utils/eventLoader')(client);
@@ -20,20 +20,23 @@ const log = (msg) => {
 }
 
 client.guild_info = (guild) => {
-  let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
-  client.db.get(sql, (err, row) => {
-    if(err) return console.error(`message.js - ${err.message}`);
-    console.log(chalk.bold.red(`client.guild_info index.js`));
-    console.log(row);
+  let sql;
+  if(extras == '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
+  if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild} ${extras}`;
+  console.log(sql);
+  await client.db.get(sql, (err, row) => {
+    if(err) return console.error(`index.js - ${err.message}`);
+    console.log(chalk.bold.red(`client.guild_info`));
     return row;
   });
 }
 client.user_info = (user) => {
-  let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
-  client.db.get(sql, (err, row) => {
-    if(err) return console.error(`message.js - ${err.message}`);
-    console.log(chalk.bold.red(`client.user_info index.js`));
-    console.log(row);
+  let sql;
+  if(extras == '') sql = `SELECT * FROM users WHERE user_discord = ${user}`;
+  if(extras != '') sql = `SELECT * FROM users WHERE user_discord = ${user} ${extras}`;
+  await client.db.get(sql, (err, row) => {
+    if(err) return console.error(`index.js - ${err.message}`);
+    console.log(chalk.bold.red(`client.user_info`));
     return row;
   })
 }

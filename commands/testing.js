@@ -4,36 +4,9 @@ const Discord = require('discord.js');
 const config = require(`../config.json`);
 const sqlite3 = require('sqlite3').verbose();
 
-let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) => {
-  if(err) return console.error(err.message);
-  console.log(`Connected to DB - TESTING`);
-});
-
-const guild_info = async (guild, extras) => {
-  let sql;
-  if(extras == '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
-  if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild} ${extras}`;
-  console.log(sql);
-  await db.get(sql, (err, row) => {
-    if(err) return console.error(`message.js - ${err.message}`);
-    console.log(row);
-    return row;
-  });
-}
-
-const user_info = async (user, extras) => {
-  let sql;
-  if(extras == '') sql = `SELECT * FROM users WHERE user_discord = ${user}`;
-  if(extras != '') sql = `SELECT * FROM users WHERE user_discord = ${user} ${extras}`;
-  await db.get(sql, (err, row) => {
-    if(err) return console.error(`message.js - ${err.message}`);
-    return row;
-  })
-}
-
 exports.run = async function(client, message, args){
-  let guild = await guild_info(message.guild.id, '');
-  let user = await user_info(message.author.id, '');
+  let guild = await client.guild_info(message.guild.id, '');
+  let user = await client.user_info(message.author.id, '');
 
   console.log(guild);
   console.log(user);
