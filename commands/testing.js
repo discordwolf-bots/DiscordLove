@@ -7,6 +7,7 @@ exports.run = function(client, message, args){
   let guild = client.guild_info(message.guild.id);
   let user = client.user_info(message.author.id);
 
+  console.log(client.guild_info(message.guild.id).guild_owner);
   console.log(guild);
   console.log(user);
 };
