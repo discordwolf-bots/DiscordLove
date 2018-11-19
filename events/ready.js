@@ -16,6 +16,6 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 });
 
 module.exports = client => {
-  client.user.setActivity(`on \$${client.guilds.size.format(0)} servers`);
+  client.user.setActivity(`on ${client.guilds.size.format(0)} servers`);
   log(chalk.green(`Bot Started`));
 }

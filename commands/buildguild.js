@@ -41,7 +41,7 @@ exports.run = function(client, message, args){
 };
 
 exports.conf = {
-  aliases: ['2'],
+  aliases: ['b2'],
   permLevel: 4
 };
 
