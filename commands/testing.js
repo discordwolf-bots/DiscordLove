@@ -13,8 +13,10 @@ const guild_info = (guild, extras) => {
   let sql;
   if(extras == '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
   if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild} ${extras}`;
+  console.log(sql);
   db.get(sql, (err, row) => {
     if(err) return console.error(`message.js - ${err.message}`);
+    console.log(row);
     return row;
   });
 }
