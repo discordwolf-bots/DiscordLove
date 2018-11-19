@@ -8,7 +8,6 @@ const ddiff = require('return-deep-diff');
 const fs = require('fs');
 const moment = require('moment');
 
-
 require('./utils/eventLoader')(client);
 
 
@@ -16,26 +15,30 @@ const log = (msg) => {
   console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${msg}`);
 }
 
-client.guild_info = async (guild, extras) => {
-  const sqlite = require('sqlite');
-  let db = sqlite.open(`./utils/users.db`);
+const sqlite3 = require('sqlite3').verbose();
+client.db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) => {
+  if(err){
+    console.error(err.message);
+  }
+  console.log(`Connected to DB - Index`);
+});
+
+client.guild_info = (guild, callback) => {
   let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
-  if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild} ${extras}`;
-  db.all(sql, (err, rows) => {
-    if(err) return console.error(`index.js - ${err.message}`);
-    console.log(chalk.bold.red(`client.guild_info`));
-    return rows;
+  client.db.get(sql, (err, row) => {
+    if(err) return console.error(`message.js - ${err.message}`);
+    console.log(chalk.bold.red(`client.guild_info index.js`));
+    console.log(row);
+    return callback(row);
   });
 }
-client.user_info = async (user, extras) => {
-  const sqlite = require('sqlite');
-  let db = sqlite.open(`./utils/users.db`);
+client.user_info = (user) => {
   let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
-  if(extras != '') sql = `SELECT * FROM users WHERE user_discord = ${user} ${extras}`;
-  db.all(sql, (err, rows) => {
-    if(err) return console.error(`index.js - ${err.message}`);
-    console.log(chalk.bold.red(`client.user_info`));
-    return rows;
+  client.db.get(sql, (err, row) => {
+    if(err) return console.error(`message.js - ${err.message}`);
+    console.log(chalk.bold.red(`client.user_info index.js`));
+    console.log(row);
+    return callback(row);
   })
 }
 
