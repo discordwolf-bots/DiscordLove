@@ -13,6 +13,7 @@ exports.run = async function(client, message, args){
       client.db.run(sql, (err)=> {
         if(err) return console.error(err.message);
         console.log(user);
+        console.log(typeof user.user_money);
       })
     });
   });
