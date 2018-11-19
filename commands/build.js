@@ -18,8 +18,8 @@ exports.run = function(client, message, args){
     user_discord TEXT,
     user_level INTEGER DEFAULT 0,
     user_experience INTEGER DEFAULT 0,
-    user_money INTEGER DEFAULT 1000,
-    user_cps REAL DEFAULT '0.0',
+    user_money REAL DEFAULT 1000.00,
+    user_cps REAL DEFAULT 0.00,
 
     buy_cost INTEGER DEFAULT 100,
     buy_owner TEXT DEFAULT 0,
