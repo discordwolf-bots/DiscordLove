@@ -14,14 +14,38 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
   console.log(`Connected to DB - Message`);
 });
 
+const getGuild = (guild) => {
+  let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
+  db.get(sql, (err, row) => {
+    if(err) return console.error(`message.js - ${err.message}`);
+    return row;
+  });
+}
+
+const getUser = (user) => {
+  let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
+  db.get(sql, (err, row) => {
+    if(err) return console.error(`message.js - ${err.message}`);
+    return row;
+  })
+}
+
 module.exports = message => {
   try {
-    let now = moment().format('x');
-    if(message.author.bot) return;
-    if(message.channel.type !== "text") return;
+    if(message.author.bot) return; // Is it a bot talking?
+    if(message.channel.type !== "text") return; // Is it actually a text channel?
+
+    const client = message.client; // Give us a `client` variable
+    const params = message.content.replace(/ +(?= )/g,'').split(' ').slice(1); // Remove all double spaces
+    client.guildinfo = getGuild(message.guild.id); // Get the guild info from the database
+    let userRow = getUser(message.author.id);
+    if(userRow) client.userinfo = userRow;
+
+    let now = moment().format('x'); // Current UNIX Timestamp
+
+
+
     if(message.guild.id != '480906420133429259') return;
-    const client = message.client;
-    const params = message.content.replace(/ +(?= )/g,'').split(' ').slice(1);
 
     var command = "";
     var bool = false;
