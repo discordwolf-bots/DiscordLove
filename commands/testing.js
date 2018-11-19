@@ -5,8 +5,8 @@ const Discord = require('discord.js');
 const config = require(`../config.json`);
 
 exports.run = function(client, message, args){
-  let guild = client.guild_info(message.guild.id);
-  let user = client.user_info(message.author.id);
+  let guild = global.guild_info(message.guild.id);
+  let user = global.user_info(message.author.id);
 
   console.log(guild);
   console.log(user);
