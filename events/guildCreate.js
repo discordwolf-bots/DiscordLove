@@ -17,7 +17,7 @@ let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) 
 
 const set_up_server = (client, guild) => {
   let role_name = `DiscordLoved`;
-
+  const everyone = guild.roles.find(role => role.name === '@everyone');
   // Create DiscordLoved Role
   guild.createRole({
     name: role_name,
@@ -67,7 +67,6 @@ const set_up_server = (client, guild) => {
 
 module.exports = guild => {
   let client = guild.client;
-  const everyone = guild.roles.find(role => role.name === '@everyone');
 
   let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild.id}`;
   db.get(sql, [], (err, row) => {
