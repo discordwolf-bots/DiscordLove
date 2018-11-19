@@ -24,8 +24,8 @@ module.exports = message => {
     let now = moment().format('x'); // Current UNIX Timestamp
 
     // Get Database info
-    const guild_info = getGuild(message.guild.id);
-    const user_info = getUser(message.author.id);
+    // const guild_info = getGuild(message.guild.id);
+    // const user_info = getUser(message.author.id);
 
     // Testing purposes only (only runs in Wolfs Den)
     if(message.guild.id != '480906420133429259') return;
