@@ -17,8 +17,8 @@ const log = (msg) => {
 }
 
 client.guild_info = async (guild, extras) => {
-  const sql = require('sqlite');
-  let db = sql.open(`./utils/users.db`);
+  const sqlite = require('sqlite');
+  let db = sqlite.open(`./utils/users.db`);
   let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
   if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild} ${extras}`;
   db.get(sql, (err, row) => {
@@ -28,8 +28,8 @@ client.guild_info = async (guild, extras) => {
   });
 }
 client.user_info = async (user, extras) => {
-  const sql = require('sqlite');
-  let db = sql.open(`./utils/users.db`);
+  const sqlite = require('sqlite');
+  let db = sqlite.open(`./utils/users.db`);
   let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
   if(extras != '') sql = `SELECT * FROM users WHERE user_discord = ${user} ${extras}`;
   db.get(sql, (err, row) => {
