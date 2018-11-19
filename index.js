@@ -10,7 +10,7 @@ const moment = require('moment');
 const sql = require('sqlite');
 
 const db = sql.open(`./utils/users.db`);
-if(!client.db) return console.log(`Error Connecting`);
+if(!db) return console.log(`Error Connecting`);
 
 require('./utils/eventLoader')(client);
 
