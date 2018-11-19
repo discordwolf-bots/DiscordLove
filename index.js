@@ -9,7 +9,7 @@ const fs = require('fs');
 const moment = require('moment');
 const sql = require('sqlite');
 
-client.db = sql.open(`./utils/users.db`);
+const db = sql.open(`./utils/users.db`);
 if(!client.db) return console.log(`Error Connecting`);
 
 require('./utils/eventLoader')(client);
@@ -22,8 +22,7 @@ const log = (msg) => {
 client.guild_info = (guild, extras) => {
   let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
   if(extras != '') sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild} ${extras}`;
-  console.log(sql);
-  client.db.get(sql, (err, row) => {
+  db.get(sql, (err, row) => {
     if(err) return console.error(`index.js - ${err.message}`);
     console.log(chalk.bold.red(`client.guild_info`));
     return row;
@@ -32,7 +31,7 @@ client.guild_info = (guild, extras) => {
 client.user_info = (user, extras) => {
   let sql = `SELECT * FROM users WHERE user_discord = ${user}`;
   if(extras != '') sql = `SELECT * FROM users WHERE user_discord = ${user} ${extras}`;
-  client.db.get(sql, (err, row) => {
+  db.get(sql, (err, row) => {
     if(err) return console.error(`index.js - ${err.message}`);
     console.log(chalk.bold.red(`client.user_info`));
     return row;
