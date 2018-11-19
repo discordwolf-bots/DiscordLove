@@ -28,7 +28,7 @@ exports.conf = {
 };
 
 exports.help = {
-  name: "drop",
+  name: "drop2",
   description: "Deletes Table",
   usage: "drop"
 }
