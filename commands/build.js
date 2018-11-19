@@ -26,7 +26,7 @@ exports.run = function(client, message, args){
 
     reputation_total INTEGER DEFAULT 0,
     reputation_given INTEGER DEFAULT 0,
-    reputation_given-today INTEGER DEFAULT 0,
+    reputation_given_today INTEGER DEFAULT 0,
 
     premium_status INTEGER DEFAULT 0,
     premium_time TEXT DEFAULT 0,
@@ -40,17 +40,17 @@ exports.run = function(client, message, args){
     counter_messages INTEGER DEFAULT 0,
     counter_commands INTEGER DEFAULT 0,
     counter_fishing INTEGER DEFAULT 0,
-    counter_fish-caught INTEGER DEFAULT 0,
+    counter_fish_caught INTEGER DEFAULT 0,
     counter_money-spent INTEGER DEFAULT 0,
 
     list_fish-inventory TEXT DEFAULT '0,0,0,0,0,0',
-    list_fish-inventory-history TEXT DEFAULT '0,0,0,0,0,0',
+    list_fish-inventory_history TEXT DEFAULT '0,0,0,0,0,0',
 
     ach_premium INTEGER DEFAULT 0,
-    ach_total-spent INTEGER DEFAULT 0,
-    ach_commands-used INTEGER DEFAULT 0,
+    ach_total_spent INTEGER DEFAULT 0,
+    ach_commands_used INTEGER DEFAULT 0,
     ach_spammer INTEGER DEFAULT 0,
-    ach_speading-love INTEGER DEFAULT 0,
+    ach_speading_love INTEGER DEFAULT 0,
     ach_social INTEGER DEFAULT 0,
     ach_fisher INTEGER DEFAULT 0
 
