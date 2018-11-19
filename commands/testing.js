@@ -9,8 +9,10 @@ exports.run = async function(client, message, args){
   client.guild_info(message.guild.id, '', (guild) => {
     client.user_info(message.author.id, '', (user) => {
       if(!guild || !user) return;
-      console.log(user);
-      message.reply(`Money: ${user.user_money} (${parseFloat(user.user_money)} ${typeof parseFloat(user.user_money)})`)
+      let sql = `UPDATE users SET user_money = ${user.user_money + 0.5} WHERE user_discord = ${user.user_discord}`;
+      client.db.run(sql, (err)=> {
+        if(err) return console.error(err.message);
+      })
     });
   });
 
