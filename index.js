@@ -25,6 +25,8 @@ client.guild_info = (guild) => {
   let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
   client.db.get(sql, (err, row) => {
     if(err) return console.error(`message.js - ${err.message}`);
+    console.log(chalk.bold.red(`client.guild_info index.js`));
+    console.log(row);
     return row;
   });
 }
