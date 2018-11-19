@@ -15,6 +15,9 @@ const log = (msg) => {
 
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
+client.guildInfo = new Discord.Collection();
+client.userInfo = new Discord.Collection();
+
 fs.readdir(`./commands/`, (err, files) => {
   if (err) console.error(err);
   log(chalk.bold.cyan(`Loading ${files.length} Commands`));

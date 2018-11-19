@@ -38,9 +38,9 @@ module.exports = message => {
 
     const client = message.client; // Give us a `client` variable
     const params = message.content.replace(/ +(?= )/g,'').split(' ').slice(1); // Remove all double spaces
-    client.guildinfo = getGuild(message.guild.id); // Get the guild info from the database
+    client.guildInfo = getGuild(message.guild.id); // Get the guild info from the database
     let userRow = getUser(message.author.id);
-    if(userRow) client.userinfo = userRow;
+    if(userRow) client.userInfo = userRow;
 
     let now = moment().format('x'); // Current UNIX Timestamp
 
