@@ -58,7 +58,7 @@ module.exports = message => {
           }
         } else {
           // It wasnt a command, lets add some experience!
-          client.update_money(user);
+          //client.update_money(user);
         }
 
       });
