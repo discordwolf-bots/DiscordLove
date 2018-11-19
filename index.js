@@ -52,9 +52,8 @@ client.user_info = async (user, extras, callback) => {
 client.update_money = async (user) => {
   let now = moment().format('x');
   let time_difference = now - user.ts_message;
-  let money_to_add = Math.floor(time_difference/1000) * Double.parseDouble(user.user_cps);
+  let money_to_add = Math.floor(time_difference/1000) * user.user_cps;
   console.log(money_to_add);
-  console.log(Double.parseDouble(user.user_cps));
   let sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, ts_message=${now} WHERE user_discord=${user.user_discord}`;
   client.db.run(sql, (err) => {
     if(err) return console.error(`index.js update_money ${err.message}`);
