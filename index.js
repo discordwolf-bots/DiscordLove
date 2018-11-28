@@ -49,15 +49,21 @@ client.user_info = async (user, extras, callback) => {
     console.error(e);
   }
 }
-client.update_money = async (user) => {
+
+client.update_money = async (user_id) => {
   let now = moment().format('x');
-  let time_difference = now - user.ts_message;
-  let money_to_add = Math.floor(time_difference/1000) * user.user_cps;
-  console.log(money_to_add);
-  let sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, ts_message=${now} WHERE user_discord=${user.user_discord}`;
-  client.db.run(sql, (err) => {
-    if(err) return console.error(`index.js update_money ${err.message}`);
-  })
+  client.user_info(user_id, ''. (user) => {
+    let time_difference = now - user.ts_message;
+    if(user.premium_status > 0) time_difference *= 2;
+    let money_to_add = Math.floor(time_difference/1000) * user.user_cps;
+    let sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, ts_message=${now} WHERE user_discord=${user.user_discord}`;
+    client.db.run(sql, (err) => {
+      if(err) return console.error(`index.js update_money ${err.message}`);
+    })
+  });
+}
+client.counter_messages = async (user) => {
+
 }
 
 client.commands = new Discord.Collection();

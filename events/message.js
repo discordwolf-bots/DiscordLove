@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const ms = require('ms');
 const moment = require('moment');
 
-module.exports = message => {
+module.exports = async message => {
   try {
     if(message.author.bot) return; // Is it a bot talking?
     if(message.channel.type !== "text") return; // Is it actually a text channel?
@@ -14,6 +14,9 @@ module.exports = message => {
     const client = message.client; // Give us a `client` variable
     const params = message.content.replace(/ +(?= )/g,'').split(' ').slice(1); // Remove all double spaces
     let now = moment().format('x'); // Current UNIX Timestamp
+
+    // Update users money
+    await client.update_money(message.author.id);
 
     // Check if the message is a command
     let command = "";
@@ -47,12 +50,7 @@ module.exports = message => {
         cmd.run(client, message, params, perms);
       }
     } else {
-      client.guild_info(message.guild.id, '', (guild) => {
-        client.user_info(message.author.id, '', (user) => {
-          // It wasnt a command, lets add some experience!
-          client.update_money(user);
-        });
-      });
+      // Not a valid command (wrong spelling or just regular chat, do something else)
     }
 
   } catch(e) {
