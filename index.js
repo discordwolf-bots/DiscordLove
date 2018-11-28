@@ -7,7 +7,15 @@ const client = new Discord.Client();
 const ddiff = require('return-deep-diff');
 const fs = require('fs');
 const moment = require('moment');
+
+// Connect to Database before anything else
 const sqlite3 = require('sqlite3').verbose();
+client.db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) => {
+  if(err){
+    console.error(err.message);
+  }
+  console.log(`Connected to DB`);
+});
 
 require('./utils/eventLoader')(client);
 
@@ -15,12 +23,6 @@ const log = (msg) => {
   console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${msg}`);
 }
 
-client.db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) => {
-  if(err){
-    console.error(err.message);
-  }
-  console.log(`Connected to DB - Index`);
-});
 client.guild_info = async (guild, extras, callback) => {
   try {
     let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
