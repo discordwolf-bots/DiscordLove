@@ -12,6 +12,7 @@ exports.run = function(client, message, args){
     user_experience INTEGER DEFAULT 0,
     user_money REAL DEFAULT 0.00,
     user_cps REAL DEFAULT 0.10,
+    user_colour TEXT DEFAULT 'RAND',
 
     buy_cost INTEGER DEFAULT 100,
     buy_owner TEXT DEFAULT 0,
