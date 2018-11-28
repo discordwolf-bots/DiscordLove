@@ -32,7 +32,7 @@ exports.run = function(client, message, args){
       // Format username
       let display_name = message.member.displayName;
       if(user.premium_status > 0) display_name = `**[PREMIUM]** ${display_name}`;
-      profile.push(`Profile of ${displayName}`);
+      profile.push(`Profile of ${display_name}`);
 
       // Get users money
       profile.push(`Bank: **$${user.user_money.format(2)}**`);
