@@ -56,25 +56,19 @@ const create_channels = (role, client, guild) => {
               VIEW_CHANNEL: false
             });
 
-            guild.defaultChannel.createInvite()
-              .then(guild_invite => {
-                // Add to database
-                let sql = `INSERT INTO guilds (guild_identifier, guild_owner, channel_setup, channel_main) VALUES(?,?,?,?)`;
-                let data = [guild.id, guild.owner.id, channel.id, channel_default.id];
-                client.db.run(sql, data, (err) => {
-                  if(err) return console.error(err.message);
-                  embed = new Discord.RichEmbed()
-                    .setColor("#00A30D")
-                    .setURL(guild_invite)
-                    .setAuthor(`${guild.name} (${guild.memberCount.format(0)} members)`, guild.iconURL)
-                    .setFooter(`Owner: ${guild.owner.user.username}#${guild.owner.user.discriminator}`)
-                    .setTimestamp();
-                  client.channels.get(config.log_guild).send(embed);
-                  client.user.setActivity(`on ${client.guilds.size.format(0)} servers`);
-                })
-              });
-
-
+            // Add to database
+            let sql = `INSERT INTO guilds (guild_identifier, guild_owner, channel_setup, channel_main) VALUES(?,?,?,?)`;
+            let data = [guild.id, guild.owner.id, channel.id, channel_default.id];
+            client.db.run(sql, data, (err) => {
+              if(err) return console.error(err.message);
+              embed = new Discord.RichEmbed()
+                .setColor("#00A30D")
+                .setAuthor(`${guild.name} (${guild.memberCount.format(0)} members)`, guild.iconURL)
+                .setFooter(`Owner: ${guild.owner.user.username}#${guild.owner.user.discriminator}`)
+                .setTimestamp();
+              client.channels.get(config.log_guild).send(embed);
+              client.user.setActivity(`on ${client.guilds.size.format(0)} servers`);
+            })
           })
       })
     })
