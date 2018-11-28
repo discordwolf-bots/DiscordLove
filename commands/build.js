@@ -33,7 +33,7 @@ exports.run = function(client, message, args){
     counter_commands INTEGER DEFAULT 0,
     counter_fishing INTEGER DEFAULT 0,
     counter_fish_caught INTEGER DEFAULT 0,
-    counter_money_spent INTEGER DEFAULT 0,
+    counter_money_spent REAL DEFAULT 0,
 
     list_fish_inventory TEXT DEFAULT '0,0,0,0,0,0',
     list_fish_inventory_history TEXT DEFAULT '0,0,0,0,0,0',
