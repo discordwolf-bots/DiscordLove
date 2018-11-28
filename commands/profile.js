@@ -21,7 +21,31 @@ exports.run = function(client, message, args){
   client.guild_info(message.guild.id, '', (guild) => {
     client.user_info(message.author.id, '', (user) => {
       if(!guild || !user) return;
-      message.channel.send(`CPS: ${user.user_cps}\nMoney: $${user.user_money.format(2)}`)
+      // Function to get a users profile colour
+      let embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+      // let embed_colour = '#' + user.user_colour;
+      // if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+
+      // Build embed field
+      let profile = [];
+
+      // Format username
+      let display_name = message.member.displayName;
+      if(user.premium_status > 0) display_name = `**[PREMIUM]** ${display_name}`;
+      profile.push(`Profile of ${displayName}`);
+
+      // Get users money
+      profile.push(`Bank: **$${user.user_money.format(2)}**`);
+
+      // Get users CPS
+      profile.push(`BPS: **${user.user_cps.format(1)}** *(bank per second)*`)
+
+      // Build embed
+      let embed = new Discord.RichEmbed
+        .setColor(embed_colour)
+        .setImage(message.author.avatarURL)
+        .addField(profile.join('\n'));
+      message.channel.send(embed);
     });
   });
 };
