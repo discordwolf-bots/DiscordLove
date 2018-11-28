@@ -41,7 +41,7 @@ exports.run = function(client, message, args){
       profile.push(`BPS: **${user.user_cps.format(1)}** *(bank per second)*`)
 
       // Build embed
-      let embed = new Discord.RichEmbed
+      let embed = new Discord.RichEmbed()
         .setColor(embed_colour)
         .setImage(message.author.avatarURL)
         .addField(profile.join('\n'));
