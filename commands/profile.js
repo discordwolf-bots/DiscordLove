@@ -31,7 +31,6 @@ exports.run = function(client, message, args){
       // Format username
       let display_name = message.member.displayName;
       if(user.premium_status > 0) display_name = `**[PREMIUM]** ${display_name}`;
-      profile.push(`Profile of ${display_name}`);
 
       // Get users money
       profile.push(`Bank: **$${user.user_money.format(2)}**`);
@@ -43,10 +42,8 @@ exports.run = function(client, message, args){
       let embed = new Discord.RichEmbed()
         .setColor(embed_colour)
         .setThumbnail(message.author.avatarURL)
-        .addField(profile.join('\n'));
-      console.log(profile);
+        .addField(`Profile of ${display_name}`, profile.join('\n'));
       message.channel.send(embed);
-      console.log(embed);
       message.delete();
     });
   });
