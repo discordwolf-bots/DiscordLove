@@ -2,7 +2,6 @@ const chalk = require('chalk');
 const moment = require('moment');
 const Discord = require('discord.js');
 const config = require(`../config.json`);
-const sqlite3 = require('sqlite3').verbose();
 
 exports.run = async function(client, message, args){
 

@@ -3,14 +3,6 @@ const moment = require('moment');
 const Discord = require('discord.js');
 const config = require(`../config.json`);
 
-const sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database('./utils/users.db', sqlite3.OPEN_READWRITE, (err) => {
-  if(err){
-    console.error(err.message);
-  }
-  console.log(`Connected to DB - Start`);
-});
-
 exports.run = function(client, message, args){
   message.delete();
   client.guild_info(message.guild.id, '', (guild) => {
@@ -29,7 +21,7 @@ exports.run = function(client, message, args){
       if(!user){
         // New user being added
         let sqlInsert = `INSERT INTO users (user_discord) VALUES (${message.author.id})`;
-        db.run(sqlInsert, [], (err) => {
+        client.db.run(sqlInsert, [], (err) => {
           if(err) return console.error(err.message);
         });
       }
