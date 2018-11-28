@@ -17,7 +17,6 @@ Number.prototype.format = function(n, x) {
 };
 
 exports.run = function(client, message, args){
-  message.delete();
   client.guild_info(message.guild.id, '', (guild) => {
     client.user_info(message.author.id, '', (user) => {
       if(!guild || !user) return;
@@ -45,7 +44,10 @@ exports.run = function(client, message, args){
         .setColor(embed_colour)
         .setThumbnail(message.author.avatarURL)
         .addField(profile.join('\n'));
+      console.log(profile);
       message.channel.send(embed);
+      console.log(embed);
+      message.delete();
     });
   });
 };
