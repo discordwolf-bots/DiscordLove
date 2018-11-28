@@ -43,7 +43,7 @@ exports.run = function(client, message, args){
       // Build embed
       let embed = new Discord.RichEmbed()
         .setColor(embed_colour)
-        .setImage(message.author.avatarURL)
+        .setThumbnail(message.author.avatarURL)
         .addField(profile.join('\n'));
       message.channel.send(embed);
     });
