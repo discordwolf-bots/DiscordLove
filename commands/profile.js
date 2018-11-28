@@ -21,7 +21,7 @@ exports.run = function(client, message, args){
   client.guild_info(message.guild.id, '', (guild) => {
     client.user_info(message.author.id, '', (user) => {
       if(!guild || !user) return;
-      message.channel.send(`CPS: ${user.user_cps}\nMoney: ${user.user_money}`)
+      message.channel.send(`CPS: ${user.user_cps}\nMoney: $${user.user_money.format(2)}`)
     });
   });
 };
