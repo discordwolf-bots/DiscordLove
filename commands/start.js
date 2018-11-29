@@ -23,6 +23,11 @@ exports.run = function(client, message, args){
         let sqlInsert = `INSERT INTO users (user_discord) VALUES (${message.author.id})`;
         client.db.run(sqlInsert, [], (err) => {
           if(err) return console.error(err.message);
+          let now = moment().format('x');
+          let sqlUpdateTS = `UPDATE users SET ts_message=${now} WHERE user_discord=${message.author.id}`;
+          client.db.run(sqlUpdateTS, [], (err) => {
+            if(err) return console.error(err.message);
+          })
         });
       }
       // Gives the member the DiscordLoved role
