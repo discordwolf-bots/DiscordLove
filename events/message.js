@@ -47,7 +47,7 @@ module.exports = async message => {
           return message.channel.send({embed : embed});
         }
         // Okay, they can use this command, lets run it
-        cmd.run(client, message, params, perms);
+        await cmd.run(client, message, params, perms);
       }
     } else {
       // Not a valid command (wrong spelling or just regular chat, do something else)

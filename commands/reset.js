@@ -7,7 +7,7 @@ exports.run = function(client, message, args){
   let sql = `DELETE FROM users WHERE user_discord = ${message.author.id}`;
   client.db.run(sql, [], (err) => {
     if(err) return console.error(err.message);
-    message.channel.reply(`Account removed`);
+    message.reply(`Account removed`);
   })
 };
 
