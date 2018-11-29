@@ -38,8 +38,6 @@ exports.run = function(client, message, args){
           // Lifetime premium
           profile.push(`Premium Status: **LIFETIME**`);
         } else {
-          console.log(now);
-          console.log(user.premium_time);
           let premium_time_difference = now - parseInt(user.premium_time);
           let premium_time_display = premium_time_difference * -1;
           let premium_time_format = '';
@@ -65,6 +63,7 @@ exports.run = function(client, message, args){
             premium_time_format += `${premium_minutes} minute${premium_minutes > 1 ? 's ' : ' '}`;
             premium_time_display = premium_time_display - (minute_millis * premium_minutes);
           }
+          // How many seconds?
           if(premium_time_display > 0){
             let premium_seconds = Math.floor(premium_time_display/1000);
             premium_time_format += `${premium_seconds} second${premium_seconds > 1 ? 's' : ''}`;
@@ -89,7 +88,7 @@ exports.run = function(client, message, args){
 
 exports.conf = {
   aliases: [],
-  permLevel: 4
+  permLevel: 0
 };
 
 exports.help = {
