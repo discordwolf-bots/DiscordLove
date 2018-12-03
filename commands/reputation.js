@@ -13,6 +13,7 @@ exports.run = async function(client, message, args){
       if(!mentioned) return message.reply(`Please mention a user to give reputation to`);
       if(user.reputation_given_today == 1 && user.premium_status == 0) return message.reply(`You can give no more reputation today!`);
       if(user.reputation_given_today == 2 && user.premium_status > 0) return message.reply(`You can give no more reputation today!`);
+      if(mentioned == message.author) return message.reply(`You cannot give reputation to yourself`);
 
       let now = moment().format('x');
 
@@ -30,7 +31,7 @@ exports.run = async function(client, message, args){
               if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
               let embed = new Discord.RichEmbed()
                 .setColor(embed_colour)
-                .setAuthor(`${message.member.displayName} has given ${target.displayName} a reputation point!`, message.author.avatarURL)
+                .setAuthor(`${message.author.username}#${message.author.discriminator} has given ${mentioned.username}#${mentioned.discriminator} a reputation point!`, message.author.avatarURL)
                 .setTimestamp();
               message.channel.send(embed);
             });
@@ -69,7 +70,7 @@ exports.run = async function(client, message, args){
 
 exports.conf = {
   aliases: ['rep'],
-  permLevel: 4
+  permLevel: 0
 };
 
 exports.help = {

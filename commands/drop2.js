@@ -10,12 +10,12 @@ exports.run = function(client, message, args){
     if(err){
       return console.error(err.message);
     }
-    console.log(`Table deleted`);
+    message.channel.send(`Table \`guilds\` has been deleted`)
   });
 };
 
 exports.conf = {
-  aliases: [],
+  aliases: ['d2'],
   permLevel: 4
 };
 

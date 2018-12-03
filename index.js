@@ -53,38 +53,61 @@ client.user_info = async (user, extras, callback) => {
 }
 
 client.update_money = async (user_id, callback) => {
-  client.check_premium_status(user_id, () => {
-    let now = moment().format('x');
-    client.user_info(user_id, '', (user) => {
-      if(!user) return callback();
-      let time_difference = now - user.ts_message;
-      if(user.premium_status > 0) time_difference *= 2;
-      let money_to_add = Math.floor(time_difference/1000) * user.user_cps;
-      let sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, ts_message=${now} WHERE user_discord=${user.user_discord}`;
-      client.db.run(sql, (err) => {
-        if(err) return console.error(`index.js update_money ${err.message}`);
-        return callback();
-      })
+  try {
+    await client.check_premium_status(user_id, async () => {
+      await client.check_reputation_status(user_id, async () => {
+        let now = moment().format('x');
+        await client.user_info(user_id, '', async (user) => {
+          if(user){
+            let time_difference = now - user.ts_message;
+            if(user.premium_status > 0) time_difference *= 2;
+            let money_to_add = Math.floor(time_difference/1000) * user.user_cps;
+            let sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, ts_message=${now} WHERE user_discord=${user.user_discord}`;
+            await client.db.run(sql, (err) => {
+              if(err) return console.error(`index.js update_money ${err.message}`);
+            })
+          }
+          return callback();
+        });
+      });
     });
-  })
+
+  } catch(e) {
+    console.log(e.stack);
+  }
 }
 
-client.check_premium_status = (user_id, callback) => {
+client.check_premium_status = async (user_id, callback) => {
   let now = moment().format('x');
-  client.user_info(user_id, '', (user) => {
-    if(!user) return callback();
-    if(user.premium_status != 1) return callback();
-    let time_difference = now - user.premium_time;
-    console.log(time_difference);
-    if(time_difference > 0){
-      let sql = `UPDATE users SET premium_status = 0 WHERE user_discord = ${user_id}`;
-      client.db.run(sql, [], (err) => {
-        if(err) return console.error(`index.js check_premium_status ${err.message}`);
-        return callback();
-      });
+  await client.user_info(user_id, '', (user) => {
+    if(user){
+      if(user.premium_status == 1) {
+        let time_difference = now - user.premium_time;
+        if(time_difference > 0){
+          let sql = `UPDATE users SET premium_status = 0 WHERE user_discord = ${user_id}`;
+          client.db.run(sql, [], (err) => {
+            if(err) return console.error(`index.js check_premium_status ${err.message}`);
+          });
+        }
+      }
     }
     return callback();
   });
+}
+
+client.check_reputation_status = async (user_id, callback) => {
+  let now = moment().format('x');
+  await client.user_info(user_id, '', (user) => {
+    if(user){
+      if(now - (1000 * 60 * 60 * 24) >= user.ts_reputation){
+        let sql = `UPDATE users SET reputation_given_today = 0 WHERE user_discord = ${user.user_discord}`;
+        client.db.run(sql, [], (err) => {
+          if(err) return console.error(`index.js check_reputation_status ${err.message}`);
+        });
+      }
+    }
+    return callback();
+  })
 }
 
 client.counter_messages = async (user) => {

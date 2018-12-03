@@ -20,16 +20,8 @@ exports.run = function(client, message, args){
     if(err){
       return console.error(err.message);
     }
-    message.channel.send(`New table created - guilds`);
-    console.log(`Table created`);
+    message.channel.send(`Table \`guilds\` has been created`)
   });
-
-  let embed = new Discord.RichEmbed()
-    .setColor(`#6D0A0A`)
-    .setAuthor(`${message.author.username} used command 'ping'`, message.author.avatarURL)
-    .setFooter(`Command Used`)
-    .setTimestamp();
-  //client.channels.get(config.commands).send({embed});
 };
 
 exports.conf = {

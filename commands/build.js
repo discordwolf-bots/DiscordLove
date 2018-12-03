@@ -13,9 +13,7 @@ exports.run = function(client, message, args){
     user_money REAL DEFAULT 0.00,
     user_cps REAL DEFAULT 0.10,
     user_colour TEXT DEFAULT 'RAND',
-
-    buy_cost INTEGER DEFAULT 100,
-    buy_owner TEXT DEFAULT 0,
+    user_start_ts TEXT DEFAULT 0,
 
     reputation_total INTEGER DEFAULT 0,
     reputation_given INTEGER DEFAULT 0,
@@ -50,16 +48,9 @@ exports.run = function(client, message, args){
   )`;
   client.db.run(sql, (err) => {
     if(err) return console.error(err.message);
-    message.channel.send(`New table created - users`);
+    message.channel.send(`Table \`users\` has been created`)
     console.log(`Table created`);
   });
-
-  let embed = new Discord.RichEmbed()
-    .setColor(`#6D0A0A`)
-    .setAuthor(`${message.author.username} used command 'ping'`, message.author.avatarURL)
-    .setFooter(`Command Used`)
-    .setTimestamp();
-  //client.channels.get(config.commands).send({embed});
 };
 
 exports.conf = {

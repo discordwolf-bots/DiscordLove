@@ -19,14 +19,15 @@ exports.run = function(client, message, args){
         client.db.run(sqlInsert, [], (err) => {
           if(err) return console.error(err.message);
           let now = moment().format('x');
-          let sqlUpdateTS = `UPDATE users SET ts_message=${now} WHERE user_discord=${message.author.id}`;
+          let sqlUpdateTS = `UPDATE users SET user_start_ts=${now}, ts_message=${now} WHERE user_discord=${message.author.id}`;
           client.db.run(sqlUpdateTS, [], (err) => {
             if(err) return console.error(err.message);
           })
         });
-      } 
+      }
       // Gives the member the DiscordLoved role
       message.member.addRole(discord_love_role.id);
+      message.channel.send(`${message.author} has joined the party!`)
     });
   });
 };

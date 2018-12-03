@@ -7,12 +7,12 @@ exports.run = function(client, message, args){
   let sql = `DROP TABLE users`;
   client.db.run(sql, (err) => {
     if(err) return console.error(err.message);
-    console.log(`Table deleted`);
+    message.channel.send(`Table \`users\` has been deleted`)
   });
 };
 
 exports.conf = {
-  aliases: [],
+  aliases: ['d'],
   permLevel: 4
 };
 
