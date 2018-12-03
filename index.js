@@ -56,7 +56,7 @@ client.update_money = async (user_id, callback) => {
   client.check_premium_status(user_id, () => {
     let now = moment().format('x');
     client.user_info(user_id, '', (user) => {
-      if(!user) return;
+      if(!user) return callback();
       let time_difference = now - user.ts_message;
       if(user.premium_status > 0) time_difference *= 2;
       let money_to_add = Math.floor(time_difference/1000) * user.user_cps;

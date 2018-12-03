@@ -11,13 +11,8 @@ exports.run = function(client, message, args){
       if(message.channel.name != 'discord-love-setup')
         return message.channel.send(`Please do the command **${config.prefix}start** in **discord-love-setup** first!`);
       let discord_love_role = message.guild.roles.find(role => role.name === "DiscordLoved");
-      if(!discord_love_role)
-        return message.channel.send(`Please create the role \`\`DiscordLoved\`\``);
-
-      if(!guild){
-        // Bot has not been added to the guild database, need a new function for this
-        return message.reply(`Please re-invite the bot to this server!`);
-      }
+      if(!discord_love_role) return message.channel.send(`Please create the role \`\`DiscordLoved\`\``)
+      if(!guild) return message.reply(`Please re-invite the bot to this server!`);
       if(!user){
         // New user being added
         let sqlInsert = `INSERT INTO users (user_discord) VALUES (${message.author.id})`;
@@ -29,7 +24,7 @@ exports.run = function(client, message, args){
             if(err) return console.error(err.message);
           })
         });
-      }
+      } 
       // Gives the member the DiscordLoved role
       message.member.addRole(discord_love_role.id);
     });

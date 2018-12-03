@@ -16,7 +16,7 @@ module.exports = async message => {
     let now = moment().format('x'); // Current UNIX Timestamp
 
     // Update users money
-    client.update_money(message.author.id, () => {
+    // client.update_money(message.author.id, () => {
 
       // Check if the message is a command
       let command = "";
@@ -52,7 +52,7 @@ module.exports = async message => {
       } else {
         // Not a valid command (wrong spelling or just regular chat, do something else)
       }
-    });
+    // });
 
   } catch(e) {
     console.log(e.stack);
