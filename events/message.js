@@ -55,7 +55,7 @@ module.exports = async message => {
     // Update users money
     await client.user_info(message.author.id, '', async (user) => {
       if(user){
-        await client.update_money(message.author.id, async (crate_chance) => {
+        await client.update_money(message, message.author.id, async (crate_chance) => {
           let embed_colour = '#' + user.user_colour;
           if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
           switch(crate_chance){

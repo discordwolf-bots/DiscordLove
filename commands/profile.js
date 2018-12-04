@@ -89,6 +89,10 @@ exports.run = function(client, message, args){
           premium_array.push(`Premium Status: **NaN**\n`);
         }
 
+        // Show level and experience
+        let next_level_requirement = Math.floor(Math.pow(user.user_level+1, 1.8)*100);
+        user_array.push(`Level: **${user.user_level.format(0)}** *${(next_level_requirement - user.user_experience).format(0)} XP Remaining*`)
+
         // Get users account number
         user_array.push(`Account Number: **#${(user_account_number + user.user_id).slice(((total_users_number_length-1)*-1))}**`);
 

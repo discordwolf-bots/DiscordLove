@@ -52,7 +52,7 @@ client.user_info = async (user, extras, callback) => {
   }
 }
 
-client.update_money = async (user_id, callback) => {
+client.update_money = async (message, user_id, callback) => {
   try {
     await client.check_premium_status(user_id, async () => {
       await client.check_reputation_status(user_id, async () => {
@@ -75,7 +75,27 @@ client.update_money = async (user_id, callback) => {
               if(err) return console.error(`index.js update_money ${err.message}`);
               // Update message counter
               if(time_difference > 60 * 1000){
-                let sql_update_message = `UPDATE users SET counter_messages = ${user.counter_messages+1}, ts_message = ${now} WHERE user_discord = ${user.user_discord}`;
+                let sql_update_message;
+                let level_up = false;
+                let experience_random = (user.premium_status > 0 ? 2 : 1) * (Math.floor(Math.random() * 10)+1);
+                let next_level_requirement = Math.floor(Math.pow(user.user_level+1, 1.8)*100);
+                if(user.user_experience + experience_random >= next_level_requirement){
+                  sql_update_message = `UPDATE users SET user_experience = ${user.user_experience + experience_random}, user_level = ${user.user_level + 1}, counter_messages = ${user.counter_messages+1}, ts_message = ${now} WHERE user_discord = ${user.user_discord}`;
+                  level_up = true;
+                } else {
+                  sql_update_message = `UPDATE users SET user_experience = ${user.user_experience + experience_random}, counter_messages = ${user.counter_messages+1}, ts_message = ${now} WHERE user_discord = ${user.user_discord}`;
+                }
+
+                if(level_up){
+                  let embed_colour = '#' + user.user_colour;
+                  if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+                  let embed = new Discord.RichEmbed()
+                    .setColor(embed_colour)
+                    .setAuthor(`${message.member.displayName} has just reached level ${user.user_level + 1}`, message.author.avatarURL)
+                    .setTimestamp();
+                  message.channel.send(embed);
+                }
+
                 client.db.run(sql_update_message, (err) => {
                   if(err) return console.error(`index.js update_counter_messages ${err.message}`);
                 });
