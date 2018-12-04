@@ -16,6 +16,7 @@ exports.run = async function(client, message, args){
       if(mentioned == message.author) return message.reply(`You cannot give reputation to yourself`);
 
       let now = moment().format('x');
+      let target_mentioned = message.guild.members.get(mentioned.id);
 
       if(now - user.ts_reputation > (1000 * 60 * 60 * 24)){
         // It has been over 24 hours since last reputation given
@@ -29,7 +30,6 @@ exports.run = async function(client, message, args){
 
               let embed_colour = '#' + user.user_colour;
               if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
-              let target_mentioned = message.guild.members.get(mentioned.id);
               let embed = new Discord.RichEmbed()
                 .setColor(embed_colour)
                 .setAuthor(`${message.member.displayName} has given ${target_mentioned.displayName} a reputation point!`, message.author.avatarURL)
