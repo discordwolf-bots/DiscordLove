@@ -64,6 +64,13 @@ exports.run = async function(client, message, args){
         }
       }
 
+      if(now - user.ts_commands > 60 * 1000){
+        let sql_update_command_counter = `UPDATE users SET counter_commands = ${user.counter_commands+1}, ts_commands = ${now} WHERE user_discord = ${user.user_discord}`;
+        client.db.run(sql_update_command_counter, (err) => {
+          if(err) return console.error(`reputation.js sql_update_command_counter ${err.message}`);
+        })
+      }
+
     });
   });
 

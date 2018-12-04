@@ -158,7 +158,24 @@ exports.run = function(client, message, args){
         crate_array.push(`Rare Crates: **${user.crate_rare}**`);
 
         // Get users messages sent
-        counter_array.push(`Messages: **${user.counter_messages.format(0)}**`)
+        let counter_message_display = (now - (parseInt(user.ts_message) + minute_millis)) * -1;
+        let counter_message_seconds = '';
+        if(counter_message_display > 0){
+          counter_message_seconds += Math.floor(counter_message_display/1000);
+        } else {
+          counter_message_seconds = '0';
+        }
+        counter_array.push(`Messages: **${user.counter_messages.format(0)}** (${counter_message_seconds}s)`)
+
+        // Get users commands used
+        let counter_commands_display = (now - (parseInt(user.ts_commands) + minute_millis)) * -1;
+        let counter_commands_seconds = '';
+        if(counter_commands_display > 0){
+          counter_commands_seconds += Math.floor(counter_commands_display/1000);
+        } else {
+          counter_commands_seconds = '0';
+        }
+        counter_array.push(`Commands: **${user.counter_commands.format(0)}** (${counter_commands_seconds}s)`)
 
 
         // Build embed
@@ -174,6 +191,14 @@ exports.run = function(client, message, args){
           .setTimestamp();
         message.channel.send(embed);
         message.delete();
+
+        if(now - user.ts_commands > 60 * 1000){
+          let sql_update_command_counter = `UPDATE users SET counter_commands = ${user.counter_commands+1}, ts_commands = ${now} WHERE user_discord = ${user.user_discord}`;
+          client.db.run(sql_update_command_counter, (err) => {
+            if(err) return console.error(`profile.js sql_update_command_counter ${err.message}`);
+          })
+        }
+
 
       })
 

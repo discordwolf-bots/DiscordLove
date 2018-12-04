@@ -67,9 +67,9 @@ client.update_money = async (user_id, callback) => {
 
             // Has their history never been logged?
             if(user.user_money_history == 0){
-              sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, user_money_history = ${user.user_money + money_to_add}, ts_message=${now} WHERE user_discord=${user.user_discord}`;
+              sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, user_money_history = ${user.user_money + money_to_add} WHERE user_discord=${user.user_discord}`;
             } else {
-              sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, user_money_history = ${user.user_money_history + money_to_add}, ts_message=${now} WHERE user_discord=${user.user_discord}`;
+              sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, user_money_history = ${user.user_money_history + money_to_add} WHERE user_discord=${user.user_discord}`;
             }
             await client.db.run(sql, (err) => {
               if(err) return console.error(`index.js update_money ${err.message}`);
