@@ -55,11 +55,29 @@ module.exports = async message => {
     // Update users money
     await client.user_info(message.author.id, '', async (user) => {
       if(user){
-        await client.update_money(message.author.id, async () => {
-          await run_command(client, message, params);
+        await client.update_money(message.author.id, async (crate_chance) => {
+          let embed_colour = '#' + user.user_colour;
+          if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+          switch(crate_chance){
+            case 0:
+            default:
+              break;
+            case 1:
+              let embed = new Discord.RichEmbed()
+                .setColor(embed_colour)
+                .setTitle(`${message.author.username}#${message.author.discriminator} just found a Rare Crate!`)
+                .setTimestamp();
+              message.channel.send(embed);
+              let sql_add_rare_crate = `UPDATE users SET crate_rare = ${user.crate_rare + 1} WHERE user_discord = ${user.user_discord}`;
+              client.db.run(sql_add_rare_crate, (err) => {
+                if(err) return console.error(`message.js Adding rare crate ${err.message}`);
+              });
+              break;
+          }
+          return run_command(client, message, params);
         });
       } else {
-        run_command(client, message, params);
+        return run_command(client, message, params);
       }
     });
 

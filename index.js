@@ -58,6 +58,7 @@ client.update_money = async (user_id, callback) => {
       await client.check_reputation_status(user_id, async () => {
         let now = moment().format('x');
         await client.user_info(user_id, '', async (user) => {
+          let crate_chance = 0;
           if(user){
             let time_difference = now - user.ts_message;
             if(user.premium_status > 0) time_difference *= 2;
@@ -65,9 +66,15 @@ client.update_money = async (user_id, callback) => {
             let sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, ts_message=${now} WHERE user_discord=${user.user_discord}`;
             await client.db.run(sql, (err) => {
               if(err) return console.error(`index.js update_money ${err.message}`);
+              // Random rare crate
+              let random_crate_number = Math.floor(Math.random() * ((user.premium_status > 0 ? 80 : 100)+1));
+              if(random_crate_number == 0) crate_chance = 1;
+              //if(user.user_id == 1) crate_chance = 1;
+
+              return callback(crate_chance);
             })
           }
-          return callback();
+
         });
       });
     });

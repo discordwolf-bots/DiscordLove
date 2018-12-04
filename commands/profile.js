@@ -27,6 +27,7 @@ exports.run = function(client, message, args){
       let user_array = [];
       let premium_array = [];
       let reputation_array = [];
+      let crate_array = [];
 
       let user_account_number = '0000';
 
@@ -136,6 +137,8 @@ exports.run = function(client, message, args){
         reputation_array.push(`Next Reputation: **${reputation_hours.slice(-2)}:${reputation_minutes.slice(-2)}:${reputation_seconds.slice(-2)}**`);
       }
 
+      // How many rare crates?
+      crate_array.push(`Rare Crates: **${user.crate_rare}**`);
 
 
       // Build embed
@@ -146,6 +149,7 @@ exports.run = function(client, message, args){
         .addField(`Premium`, premium_array.join('\n'))
         .addField(`User`, user_array.join(`\n`))
         .addField(`Reputation`, reputation_array.join(`\n`))
+        .addField(`Crates`, crate_array.join(`\n`))
         .setTimestamp();
       message.channel.send(embed);
       message.delete();
