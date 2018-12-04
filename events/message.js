@@ -9,14 +9,14 @@ const moment = require('moment');
 const run_command = (client, message, params) => {
   // Check if the message is a command
   let command = "";
-  let foundCommand = false;
+  let prefixUsed = false;
   if(message.content.startsWith(config.prefix)){
     command = message.content.split(' ')[0].slice(config.prefix.length).toLowerCase();
-    foundCommand = true;
+    prefixUsed = true;
   }
 
   // If it started with the prefix, lets see if it was actually a valid command
-  if(foundCommand){
+  if(prefixUsed){
     let perms = client.elevation(message); // Gets the users permission level
     let cmd;
     if(client.commands.has(command)){ // Did they type the full command?
