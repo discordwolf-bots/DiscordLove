@@ -28,6 +28,7 @@ exports.run = function(client, message, args){
       let premium_array = [];
       let reputation_array = [];
       let crate_array = [];
+      let counter_array = [];
 
       let user_account_number = '0000';
 
@@ -92,6 +93,7 @@ exports.run = function(client, message, args){
       let account_length_days = '00';
       let account_length_hours = '00';
       let account_length_minutes = '00';
+      let account_length_seconds = '00';
 
       // How many days?
       if(account_length_display / day_millis >= 1){
@@ -106,8 +108,13 @@ exports.run = function(client, message, args){
       // How many minutes?
       if(account_length_display / minute_millis >= 1){
         account_length_minutes += Math.floor(account_length_display / minute_millis);
+        account_length_display = account_length_display - (minute_millis * account_length_minutes);
       }
-      user_array.push(`Account Length: **${account_length_days.slice(-2)}:${account_length_hours.slice(-2)}:${account_length_minutes.slice(-2)}**\n`);
+      // How many seconds?
+      if(account_length_display > 0){
+        account_length_seconds += Math.floor(account_length_display/1000);
+      }
+      user_array.push(`Account Length: **${account_length_days.slice(-2)}:${account_length_hours.slice(-2)}:${account_length_minutes.slice(-2)}:${account_length_seconds.slice(-2)}**\n`);
 
       // Get users Reputation
       let reputation_hours = '00';
@@ -140,6 +147,9 @@ exports.run = function(client, message, args){
       // How many rare crates?
       crate_array.push(`Rare Crates: **${user.crate_rare}**`);
 
+      // Get users messages sent
+      counter_array.push(`Messages: **${user.counter_messages.format(0)}**`)
+
 
       // Build embed
       let embed = new Discord.RichEmbed()
@@ -150,6 +160,7 @@ exports.run = function(client, message, args){
         .addField(`User`, user_array.join(`\n`))
         .addField(`Reputation`, reputation_array.join(`\n`))
         .addField(`Crates`, crate_array.join(`\n`))
+        .addField(`Counters`, counter_array.join(`\n`))
         .setTimestamp();
       message.channel.send(embed);
       message.delete();

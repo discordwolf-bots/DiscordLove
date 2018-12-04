@@ -63,18 +63,30 @@ client.update_money = async (user_id, callback) => {
             let time_difference = now - user.ts_message;
             if(user.premium_status > 0) time_difference *= 2;
             let money_to_add = Math.floor(time_difference/1000) * user.user_cps;
-            let sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, ts_message=${now} WHERE user_discord=${user.user_discord}`;
+            let sql = ``;
+
+            // Has their history never been logged?
+            if(user.user_money_history == 0){
+              sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, user_money_history = ${user.user_money + money_to_add}, ts_message=${now} WHERE user_discord=${user.user_discord}`;
+            } else {
+              sql = `UPDATE users SET user_money = ${user.user_money + money_to_add}, user_money_history = ${user.user_money_history + money_to_add}, ts_message=${now} WHERE user_discord=${user.user_discord}`;
+            }
             await client.db.run(sql, (err) => {
               if(err) return console.error(`index.js update_money ${err.message}`);
-              // Random rare crate
-              let random_crate_number = Math.floor(Math.random() * ((user.premium_status > 0 ? 80 : 100)+1));
-              if(random_crate_number == 0) crate_chance = 1;
-              //if(user.user_id == 1) crate_chance = 1;
-
+              // Update message counter
+              if(time_difference > 60 * 1000){
+                let sql_update_message = `UPDATE users SET counter_messages = ${user.counter_messages+1}, ts_message = ${now} WHERE user_discord = ${user.user_discord}`;
+                client.db.run(sql_update_message, (err) => {
+                  if(err) return console.error(`index.js update_counter_messages ${err.message}`);
+                });
+                // Random rare crate
+                let random_crate_number = Math.floor(Math.random() * (user.premium_status > 0 ? 80 : 100));
+                if(random_crate_number == 0) crate_chance = 1;
+                //if(user.user_id == 1) crate_chance = 1;
+              }
               return callback(crate_chance);
             })
           }
-
         });
       });
     });
