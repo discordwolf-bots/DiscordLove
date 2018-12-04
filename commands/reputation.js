@@ -29,9 +29,10 @@ exports.run = async function(client, message, args){
 
               let embed_colour = '#' + user.user_colour;
               if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+              let target_mentioned = message.guild.members.get(mentioned.id);
               let embed = new Discord.RichEmbed()
                 .setColor(embed_colour)
-                .setAuthor(`${message.author.username}#${message.author.discriminator} has given ${mentioned.username}#${mentioned.discriminator} a reputation point!`, message.author.avatarURL)
+                .setAuthor(`${message.member.displayName} has given ${target_mentioned.displayName} a reputation point!`, message.author.avatarURL)
                 .setTimestamp();
               message.channel.send(embed);
             });
@@ -54,7 +55,7 @@ exports.run = async function(client, message, args){
                 if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
                 let embed = new Discord.RichEmbed()
                   .setColor(embed_colour)
-                  .setAuthor(`${message.author.username}#${message.author.discriminator} has given ${mentioned.username}#${mentioned.discriminator} a reputation point!`, message.author.avatarURL)
+                  .setAuthor(`${message.member.displayName} has given ${target_mentioned.displayName} a reputation point!`, message.author.avatarURL)
                   .setTimestamp();
                 message.channel.send(embed);
               });

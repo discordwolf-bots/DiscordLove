@@ -65,7 +65,7 @@ module.exports = async message => {
             case 1:
               let embed = new Discord.RichEmbed()
                 .setColor(embed_colour)
-                .setTitle(`${message.author.username}#${message.author.discriminator} just found a Rare Crate!`)
+                .setAuthor(`${message.member.displayName} just found a Rare Crate!`, message.author.avatarURL)
                 .setTimestamp();
               message.channel.send(embed);
               let sql_add_rare_crate = `UPDATE users SET crate_rare = ${user.crate_rare + 1} WHERE user_discord = ${user.user_discord}`;
