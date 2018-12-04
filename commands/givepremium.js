@@ -32,14 +32,14 @@ exports.run = function(client, message, args){
           let sql = `UPDATE users SET premium_status = 1, premium_time = ${parseInt(now) + parseInt(premium_duration * 1000 * 60 * 60 * 24)} WHERE user_discord = ${target.id}`;
           client.db.run(sql, [], (err) => {
             if(err) return console.error(err.message);
-            message.reply(`${target} has been upgraded to premium for the next ${premium_duration} day ${premium_duration > 1 ? 's' : ''}`);
+            message.reply(`${target} has been upgraded to premium for the next ${premium_duration} day${premium_duration > 1 ? 's' : ''}`);
           });
         }
       } else {
         let sql = `UPDATE users SET premium_status = 1, premium_time = ${parseInt(now) + parseInt(premium_duration * 1000 * 60 * 60 * 24)} WHERE user_discord = ${target.id}`;
         client.db.run(sql, [], (err) => {
           if(err) return console.error(err.message);
-          message.reply(`${target} has been upgraded to premium for the next ${premium_duration} day ${premium_duration > 1 ? 's' : ''}`);
+          message.reply(`${target} has been upgraded to premium for the next ${premium_duration} day${premium_duration > 1 ? 's' : ''}`);
         });
       }
     });

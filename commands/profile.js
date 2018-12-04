@@ -74,7 +74,7 @@ exports.run = function(client, message, args){
         }
       } else {
         // User is not premium
-        premium_array.push(`Premium Status: **00:00:00:00**\n`);
+        premium_array.push(`Premium Status: **NaN**\n`);
       }
 
       // Get users account number
@@ -95,12 +95,12 @@ exports.run = function(client, message, args){
       // How many days?
       if(account_length_display / day_millis >= 1){
         account_length_days += Math.floor(account_length_display/day_millis);
-        account_length_display = account_length_display - (day_millis * premium_days);
+        account_length_display = account_length_display - (day_millis * account_length_days);
       }
       // How many hours?
       if(account_length_display / hour_millis >= 1){
         account_length_hours += Math.floor(account_length_display/hour_millis);
-        account_length_display = account_length_display - (hour_millis * premium_hours);
+        account_length_display = account_length_display - (hour_millis * account_length_hours);
       }
       // How many minutes?
       if(account_length_display / minute_millis >= 1){
