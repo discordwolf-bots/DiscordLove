@@ -1,0 +1,110 @@
+const chalk = require('chalk');
+const moment = require('moment');
+const Discord = require('discord.js');
+const config = require(`../config.json`);
+
+exports.run = function(client, message, args){
+  let sql_step_1 = `ALTER TABLE users RENAME TO users_old`;
+  let sql_step_2 = `CREATE TABLE IF NOT EXISTS users (
+    user_id INTEGER PRIMARY KEY ASC,
+    user_discord TEXT,
+    user_level INTEGER DEFAULT 0,
+    user_experience INTEGER DEFAULT 0,
+    user_money REAL DEFAULT 0.00,
+    user_money_history REAL DEFAULT 0.00,
+    user_cps REAL DEFAULT 0.10,
+    user_colour TEXT DEFAULT 'RAND',
+    user_start_ts TEXT DEFAULT 0,
+    user_premium_coins INTEGER DEFAULT 0,
+    user_amount_donated REAL DEFAULT 0.00,
+    user_title TEXT,
+
+    reputation_total INTEGER DEFAULT 0,
+    reputation_given INTEGER DEFAULT 0,
+    reputation_given_today INTEGER DEFAULT 0,
+
+    premium_status INTEGER DEFAULT 0,
+    premium_time TEXT DEFAULT 0,
+
+    ts_profile TEXT DEFAULT 0,
+    ts_reputation TEXT DEFAULT 0,
+    ts_fish TEXT DEFAULT 0,
+    ts_message TEXT DEFAULT 0,
+    ts_commands TEXT DEFAULT 0,
+    ts_crate_daily TEXT DEFAULT 0,
+    ts_crate_premium TEXT DEFAULT 0,
+
+    counter_messages INTEGER DEFAULT 0,
+    counter_commands INTEGER DEFAULT 0,
+    counter_fishing INTEGER DEFAULT 0,
+    counter_fish_caught INTEGER DEFAULT 0,
+    counter_money_spent REAL DEFAULT 0,
+    counter_crates_opened INTEGER DEFAULT 0,
+
+    list_fish_inventory TEXT DEFAULT '0,0,0,0,0,0',
+    list_fish_inventory_history TEXT DEFAULT '0,0,0,0,0,0',
+    list_user_inventory TEXT,
+
+    crate_daily INTEGER DEFAULT 1,
+    crate_premium INTEGER DEFAULT 0,
+    crate_rare INTEGER DEFAULT 0,
+
+    ach_premium INTEGER DEFAULT 0,
+    ach_total_spent INTEGER DEFAULT 0,
+    ach_commands_used INTEGER DEFAULT 0,
+    ach_spammer INTEGER DEFAULT 0,
+    ach_speading_love INTEGER DEFAULT 0,
+    ach_social INTEGER DEFAULT 0,
+    ach_fisher INTEGER DEFAULT 0,
+    ach_crate_opener INTEGER DEFAULT 0
+
+  )`;
+  let sql_step_3 = `INSERT INTO users
+    (
+      user_id,user_discord,user_level,user_experience,user_money,user_cps,user_colour,user_start_ts,
+      reputation_total,reputation_given,reputation_given_today,
+      premium_status,premium_time,
+      ts_profile,ts_reputation,ts_fish,ts_message,ts_commands,
+      counter_messages,counter_commands,counter_fishing,counter_fish_caught,counter_money_spent,
+      list_fish_inventory,list_fish_inventory_history,
+      ach_premium,ach_total_spent,ach_commands_used,ach_spammer,ach_speading_love,ach_social,ach_fisher
+    )
+    SELECT
+      user_id,user_discord,user_level,user_experience,user_money,user_cps,user_colour,user_start_ts,
+      reputation_total,reputation_given,reputation_given_today,
+      premium_status,premium_time,
+      ts_profile,ts_reputation,ts_fish,ts_message,ts_commands,
+      counter_messages,counter_commands,counter_fishing,counter_fish_caught,counter_money_spent,
+      list_fish_inventory,list_fish_inventory_history,
+      ach_premium,ach_total_spent,ach_commands_used,ach_spammer,ach_speading_love,ach_social,ach_fisher
+    FROM users_old
+      `;
+  let sql_step_4 = `DROP TABLE users_old`;
+  client.db.run(sql_step_1, (err) => {
+    if(err) return console.error(`tableupdate.js step 1 - ${err.message}`);
+    message.channel.send(`Table \`users\` has been renamed to \`users_old\``);
+    client.db.run(sql_step_2, (err) => {
+      if(err) return console.error(`tableupdate.js step 2 - ${err.message}`);
+      message.channel.send(`Table \`users\` has been created`);
+      client.db.run(sql_step_3, (err) => {
+        if(err) return console.error(`tableupdate.js step 3 - ${err.message}`);
+        message.channel.send(`Table \`users\` has been populated`);
+        client.db.run(sql_step_4, (err) => {
+          if(err) return console.error(`tableupdate.js step 4 - ${err.message}`);
+          message.channel.send(`Table \`users_old\` has been dropped`);
+        });
+      });
+    });
+  });
+};
+
+exports.conf = {
+  aliases: ['u'],
+  permLevel: 4
+};
+
+exports.help = {
+  name: "tableupdate",
+  description: "Updates Database",
+  usage: "tableupdate"
+}
