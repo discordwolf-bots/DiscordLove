@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 const config = require(`../config.json`);
 
 exports.run = function(client, message, args){
-  message.delete();
+
   client.guild_info(message.guild.id, '', (guild) => {
     client.user_info(message.author.id, '', (user) => {
 
@@ -22,12 +22,16 @@ exports.run = function(client, message, args){
           let sqlUpdateTS = `UPDATE users SET user_start_ts=${now}, ts_message=${now} WHERE user_discord=${message.author.id}`;
           client.db.run(sqlUpdateTS, [], (err) => {
             if(err) return console.error(err.message);
+            //message.member.setNickname(`[0] ${message.author.username}`);
           })
         });
+      } else {
+        //message.member.setNickname(`[${user.user_level}] ${message.author.username}`);
       }
       // Gives the member the DiscordLoved role
       message.member.addRole(discord_love_role.id);
       message.channel.send(`${message.author} has joined the party!`)
+
     });
   });
 };

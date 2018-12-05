@@ -43,9 +43,9 @@ exports.run = function(client, message, args){
         }
 
         // Format username
-        let display_name = message.member.displayName;
-        if(user.premium_status == 1) display_name = `~Premium~ ${message.member.displayName}`;
-        if(user.premium_status == 2) display_name = `~Lifetime~ ${message.member.displayName}`;
+        let display_name = message.author.username;
+        if(user.premium_status == 1) display_name = `~Premium~ ${message.author.username}`;
+        if(user.premium_status == 2) display_name = `~Lifetime~ ${message.author.username}`;
 
 
         // Get users Premium
@@ -82,7 +82,7 @@ exports.run = function(client, message, args){
             if(premium_time_display > 0){
               premium_seconds += Math.floor(premium_time_display/1000);
             }
-            premium_array.push(`Premium Status: **${premium_days.slice(-2)}:${premium_hours.slice(-2)}:${premium_minutes.slice(-2)}:${premium_seconds.slice(-2)}**\n`);
+            premium_array.push(`Premium Status: **${premium_days.slice(-2)}:${premium_hours.slice(-2)}:${premium_minutes.slice(-2)}:${premium_seconds.slice(-2)}**`);
           }
         } else {
           // User is not premium
