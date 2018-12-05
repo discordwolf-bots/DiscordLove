@@ -94,6 +94,9 @@ client.update_money = async (message, user_id, callback) => {
                     .setAuthor(`${message.member.displayName} has just reached level ${user.user_level + 1}`, message.author.avatarURL)
                     .setTimestamp();
                   message.channel.send(embed);
+                  
+                  if(message.guild.id == '513786798737195008')
+                    message.member.setNickname(`[${user.user_level+1}] ${message.author.username}`);
                 }
 
                 client.db.run(sql_update_message, (err) => {
