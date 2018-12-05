@@ -7,7 +7,8 @@ const log = (msg) => {
   console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${msg}`);
 }
 
-module.exports = client => {
+module.exports = async client => {
   client.user.setActivity(`on ${client.guilds.size.format(0)} servers`);
+  await client.getInfoValues(client);
   log(chalk.green(`Bot Started`));
 }

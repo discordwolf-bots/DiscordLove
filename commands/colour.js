@@ -22,7 +22,7 @@ exports.run = function(client, message, args){
 
       let now = moment().format('x');
 
-      if(args[0].includes('rand')){
+      if(args[0].toLowerCase().includes('rand')){
         let sql = `UPDATE users SET user_colour = 'RAND' WHERE user_discord = ${message.author.id}`;
         client.db.run(sql, [], (err) => {
           if(err) return console.error(err.message);
@@ -30,7 +30,7 @@ exports.run = function(client, message, args){
             .setColor('#' + Math.floor(Math.random()*16777215).toString(16))
             .setAuthor(`${message.member.displayName} will now have random colours`, message.author.avatarURL)
             .setTimestamp();
-          message.delete();
+          // message.delete();
           return message.channel.send(embed);
         });
       } else {
@@ -42,7 +42,7 @@ exports.run = function(client, message, args){
             .setColor(`#${args[0]}`)
             .setAuthor(`New colour set for ${message.member.displayName}`, message.author.avatarURL)
             .setTimestamp();
-          message.delete();
+          // message.delete();
           message.channel.send(embed);
         });
       }

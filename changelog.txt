@@ -1,0 +1,14 @@
+```
+**Version Alpha 0.3** - *5th December 2018*
+
+__Profile__
+- Premium coins are now displayed
+- Total amount donated is now displayed correctly
+
+__Commands__
+- **[Dev only]** =givecoins <@user> <amount> added
+- **[Dev only]** =givedonation <@user> <amount> added
+- =info command now added to display statistics about the bot
+
+__Features__
+- If one or more channels are missing from the server (DiscordLove Category, #discord-love or #discord-love-setup) then it will delete any that are remaining and re-create them

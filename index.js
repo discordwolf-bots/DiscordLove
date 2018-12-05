@@ -23,6 +23,16 @@ const log = (msg) => {
   console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${msg}`);
 }
 
+client.getInfoValues = async (client) => {
+  let sql_count_users = `SELECT count(*) AS count FROM users`;
+  let now = moment().format('x');
+  client.db.get(sql_count_users, async (err, row) => {
+    if(err) return console.error(`index.js getInfoValues ${err.message}`);
+    client.totalUsers = row.count;
+    client.timeInitiated = now;
+  });
+}
+
 client.set_up_server = async (client, guild) => {
   console.log(`Setting up server`);
   let role_name = `DiscordLoved`;
@@ -36,7 +46,6 @@ client.set_up_server = async (client, guild) => {
     });
   }
 }
-
 client.check_channels = async (client, guild_object, guild) => {
   let channel_missing = false;
   let setup_channel = guild_object.channels.find(channel => channel.name === `discord-love-setup`)
@@ -254,9 +263,6 @@ client.check_reputation_status = async (user_id, callback) => {
     return callback();
   })
 }
-client.counter_messages = async (user) => {
-
-}
 
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
@@ -264,6 +270,7 @@ client.aliases = new Discord.Collection();
 fs.readdir(`./commands/`, (err, files) => {
   if (err) console.error(err);
   log(chalk.bold.cyan(`Loading ${files.length} Commands`));
+  client.totalCommands = files.length;
   files.forEach(f => {
     let props = require(`./commands/${f}`);
     log(chalk.bold.cyan(`- ${props.help.name}`));
