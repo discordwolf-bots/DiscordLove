@@ -1,0 +1,65 @@
+[ User ]
+[X] Increase levels
+[X] Gain experience
+[X] Prevent users from gaining experience for EVERY message sent
+[X] Keep track of all-time money
+[X] Gain money based on CPS
+[] Find a way to increase CPS
+[X] Premium users can set a colour for all their embeds
+[X] Store timestamp for when they first did =start
+[] new command to give people premium_coins
+[] new command to add a persons donation
+[] Titles (?) [ Need title name ideas ]
+
+[ Reputation ]
+[X] Can give reputation
+[X] Premium users can give 2 reputation a day
+[X] Check to see whether it has been 24 hours since last reputation
+[X] Keep track of how much reputation you have given
+[X] Keep track of how much reputation you have received
+
+[ Premium ]
+[X] Premium status checker (lifetime, premium or regular)
+[X] Premium time checker [ has premium time run out? ]
+
+[ Timestamps ]
+[] Timestamp for how often you can show your profile
+[] Timestamp for how often you can give reputation
+[] Timestamp for how often you can fish
+[] Timestamp for how often it updates your message counter
+[] Timestamp for how often it updates your command counter
+[] Timestamp for daily crates
+[] Timestamp for premium crates
+
+[ Counters ]
+[X] Count messages sent [ limit to 1 every 1 minute to prevent flooding ]
+[X] Count commands used [ limit to 1 every 1 minute to prevent flooding ]
+[] Count times used =fish
+[] Count times caught a fish
+[] Count money spent
+[] Count crates opened
+
+[ Lists ]
+[] Keep a track of fish caught
+[] Keep a track of fish history [ how many of each type have they caught ]
+[] Add a fishing command
+[] Add a fishing sell command [ PREMIUM get double money when selling]
+[] Add a shop where you can use the money you gain [ competition for ideas? ]
+
+[ Crates ]
+[X] Gain Rare Crates randomly from chatting [ PREMIUM get better chance ]
+[] Command to open crates
+[] Random amount of cash (depending on CPS and Level) as reward from Crates
+[] Rare chance to get Premium Coins from Daily Crate
+[] Future possibility to add a Vote Crate (?)
+
+[ Achievements ]
+[] Achievement for getting premium (+0)
+[] Achievement for spending money (+0.1)
+[] Achievement for using commands (+0.1)
+[] Achievement for sending messages (+0.1)
+[] Achievement for giving rep (+0.1)
+[] Achievement for receiving rep (+0.1)
+[] Achievement for catching fish (+0.1)
+[] Achievement for opening crates (+0.1)
+[] Each "Achievement Point" can be used in a shop (with money) to buy CPS upgrades (?)

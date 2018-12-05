@@ -93,6 +93,7 @@ exports.run = function(client, message, args){
         let next_level_requirement = Math.floor(Math.pow(user.user_level+1, 1.8)*100);
         user_array.push(`Level: **${user.user_level.format(0)}** *${(next_level_requirement - user.user_experience).format(0)} XP Remaining*`)
 
+
         // Get users account number
         user_array.push(`Account Number: **#${(user_account_number + user.user_id).slice(((total_users_number_length-1)*-1))}**`);
 
@@ -167,7 +168,7 @@ exports.run = function(client, message, args){
         if(counter_message_display > 0){
           counter_message_seconds += Math.floor(counter_message_display/1000);
         } else {
-          counter_message_seconds = '0';
+          counter_message_seconds = '60';
         }
         counter_array.push(`Messages: **${user.counter_messages.format(0)}** (${counter_message_seconds}s)`)
 
@@ -177,9 +178,9 @@ exports.run = function(client, message, args){
         if(counter_commands_display > 0){
           counter_commands_seconds += Math.floor(counter_commands_display/1000);
         } else {
-          counter_commands_seconds = '0';
+          counter_commands_seconds = '60';
         }
-        counter_array.push(`Commands: **${user.counter_commands.format(0)}** (${counter_commands_seconds}s)`)
+        counter_array.push(`Commands: **${(user.counter_commands + (counter_commands_display <= 0 ? 1 : 0)).format(0)}** (${counter_commands_seconds}s)`)
 
 
         // Build embed

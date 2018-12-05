@@ -1,1 +1,61 @@
-Increased price of fish when selling larger amounts at once
+[X] Premium
+[X] Give Premium Status
+[X] Check Premium Status
+[X] Update Money
+
+
+
+
+
+CREATE TABLE IF NOT EXISTS users (
+  user_id INTEGER PRIMARY KEY ASC,
+  user_discord TEXT,
+  user_level INTEGER DEFAULT 0,
+  user_experience INTEGER DEFAULT 0,
+  user_money REAL DEFAULT 0.00,
+----->  user_money_history REAL DEFAULT 0.00,
+  user_cps REAL DEFAULT 0.10,
+  user_colour TEXT DEFAULT 'RAND',
+  user_start_ts TEXT DEFAULT 0,
+----->  user_premium_coins INTEGER DEFAULT 0,
+----->  user_amount_donated REAL DEFAULT 0.00,
+----->  user_title TEXT,
+
+  reputation_total INTEGER DEFAULT 0,
+  reputation_given INTEGER DEFAULT 0,
+  reputation_given_today INTEGER DEFAULT 0,
+
+  premium_status INTEGER DEFAULT 0,
+  premium_time TEXT DEFAULT 0,
+
+  ts_profile TEXT DEFAULT 0,
+  ts_reputation TEXT DEFAULT 0,
+  ts_fish TEXT DEFAULT 0,
+  ts_message TEXT DEFAULT 0,
+  ts_commands TEXT DEFAULT 0,
+----->  ts_crate_daily TEXT DEFAULT 0,
+----->  ts_crate_premium TEXT DEFAULT 0,
+
+  counter_messages INTEGER DEFAULT 0,
+  counter_commands INTEGER DEFAULT 0,
+  counter_fishing INTEGER DEFAULT 0,
+  counter_fish_caught INTEGER DEFAULT 0,
+  counter_money_spent REAL DEFAULT 0,
+----->  counter_crates_opened INTEGER DEFAULT 0,
+
+  list_fish_inventory TEXT DEFAULT '0,0,0,0,0,0',
+  list_fish_inventory_history TEXT DEFAULT '0,0,0,0,0,0',
+----->  list_user_inventory TEXT,
+
+----->  crate_daily INTEGER DEFAULT 1,
+----->  crate_premium INTEGER DEFAULT 0,
+----->  crate_rare INTEGER DEFAULT 0,
+
+  ach_premium INTEGER DEFAULT 0,
+  ach_total_spent INTEGER DEFAULT 0,
+  ach_commands_used INTEGER DEFAULT 0,
+  ach_spammer INTEGER DEFAULT 0,
+  ach_speading_love INTEGER DEFAULT 0,
+  ach_social INTEGER DEFAULT 0,
+  ach_fisher INTEGER DEFAULT 0,
+----->  ach_crate_opener INTEGER DEFAULT 0
