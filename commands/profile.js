@@ -12,6 +12,14 @@ exports.run = function(client, message, args){
   client.guild_info(message.guild.id, '', (guild) => {
     client.user_info(message.author.id, '', (user) => {
 
+      let check_channel = true;
+      if(user.user_discord == config.botowner) check_channel = false;
+      if(guild.channel_main != message.channel.id && check_channel){
+        message.delete();
+        return message.reply(`Please only use this command in <#${guild.channel_main}>`)
+      }
+
+
       let sql_count_users = `SELECT count(*) AS count FROM users`;
       client.db.get(sql_count_users, (err, total) => {
         if(err) return console.error(`profile.js select_count ${err.message}`);

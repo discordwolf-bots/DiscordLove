@@ -7,6 +7,14 @@ exports.run = async function(client, message, args){
 
   client.guild_info(message.guild.id, '', (guild) => {
     client.user_info(message.author.id, '', (user) => {
+
+      let check_channel = true;
+      if(user.user_discord == config.botowner) check_channel = false;
+      if(guild.channel_main != message.channel.id && check_channel){
+        message.delete();
+        return message.reply(`Please only use this command in <#${guild.channel_main}>`)
+      }
+
       let mentioned = message.mentions.users.first();
       if(!guild) return message.reply(`Please re-invite the bot`);
       if(!user) return message.reply(`Please start your account`);

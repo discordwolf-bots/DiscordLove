@@ -8,6 +8,14 @@ exports.run = function(client, message, args){
     client.user_info(message.author.id, '', (user) => {
       if(!guild) return message.reply(`Please re-invite the bot`);
       if(!user) return message.reply(`Please start your account`);
+
+      let check_channel = true;
+      if(user.user_discord == config.botowner) check_channel = false;
+      if(guild.channel_main != message.channel.id && check_channel){
+        message.delete();
+        return message.reply(`Please only use this command in <#${guild.channel_main}>`)
+      }
+
       if(user.premium_status == 0) return message.reply(`This is a **Premium Only** Command`);
       if(!args[0]) return message.reply(`Please state a colour hex-code (do not include the #)`);
       if(args[0].includes('#')) return message.reply(`Please state a colour hex-code (do not include the #)`);

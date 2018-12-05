@@ -8,8 +8,13 @@ exports.run = function(client, message, args){
   client.guild_info(message.guild.id, '', (guild) => {
     client.user_info(message.author.id, '', (user) => {
 
-      if(message.channel.name != 'discord-love-setup')
-        return message.channel.send(`Please do the command **${config.prefix}start** in **discord-love-setup** first!`);
+      let check_channel = true;
+      if(user.user_discord == config.botowner) check_channel = false;
+      if(message.channel.name != 'discord-love-setup' && check_channel){
+        message.delete();
+        return message.channel.send(`Please do the command **${config.prefix}start** in <#${guild.channel_setup}> first!`);
+      }
+
       let discord_love_role = message.guild.roles.find(role => role.name === "DiscordLoved");
       if(!discord_love_role) return message.channel.send(`Please create the role \`\`DiscordLoved\`\``)
       if(!guild) return message.reply(`Please re-invite the bot to this server!`);
