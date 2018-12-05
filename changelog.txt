@@ -1,5 +1,5 @@
-```
-**Version Alpha 0.3** - *5th December 2018*
+```````````````````````````````````````````````````````````````````````````````
+**Version Alpha 0.2.1** - *5th December 2018*
 
 __Profile__
 - Premium coins are now displayed
@@ -12,3 +12,8 @@ __Commands__
 
 __Features__
 - If one or more channels are missing from the server (DiscordLove Category, #discord-love or #discord-love-setup) then it will delete any that are remaining and re-create them
+- Bot now detects whether you are using commnads in the #discord-love channel created for that guild
+
+
+```````````````````````````````````````````````````````````````````````````````
+**Version Alpha 0.2** - * December 2018*
