@@ -92,6 +92,9 @@ exports.run = function(client, message, args){
         // Get users premium coins
         premium_array.push(`Premium Coins: **${user.user_premium_coins.format(0)}**`)
 
+        // Get users total donated
+        premium_array.push(`Total Donated: **£${user.user_amount_donated.format(2)}**`)
+
         // Show level and experience
         let next_level_requirement = Math.floor(Math.pow(user.user_level+1, 1.8)*100);
         user_array.push(`Level: **${user.user_level.format(0)}** *${(next_level_requirement - user.user_experience).format(0)} XP Remaining*`)
