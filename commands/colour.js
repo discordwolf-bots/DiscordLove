@@ -13,7 +13,7 @@ exports.run = function(client, message, args){
       if(user.user_discord == config.botowner) check_channel = false;
       if(guild.channel_main != message.channel.id && check_channel){
         message.delete();
-        return message.reply(`Please only use this command in <#${guild.channel_main}>`)
+        return message.reply(`Please only use this command in <#${guild.channel_main}>`).then(msg => msg.delete(5000));
       }
 
       if(user.premium_status == 0) return message.reply(`This is a **Premium Only** Command`);

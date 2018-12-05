@@ -16,14 +16,13 @@ exports.run = function(client, message, args){
       if(user.user_discord == config.botowner) check_channel = false;
       if(guild.channel_main != message.channel.id && check_channel){
         message.delete();
-        return message.reply(`Please only use this command in <#${guild.channel_main}>`)
+        return message.reply(`Please only use this command in <#${guild.channel_main}>`).then(msg => msg.delete(5000));
       }
 
 
       let sql_count_users = `SELECT count(*) AS count FROM users`;
       client.db.get(sql_count_users, (err, total) => {
         if(err) return console.error(`profile.js select_count ${err.message}`);
-
         let total_users = total.count;
         let now = moment().format('x'); // Current UNIX Timestamp
         if(!guild) return message.reply(`Please re-invite the bot`);

@@ -10,9 +10,9 @@ exports.run = function(client, message, args){
 
       let check_channel = true;
       if(user.user_discord == config.botowner) check_channel = false;
-      if(message.channel.name != 'discord-love-setup' && check_channel){
+      if(guild.channel_setup != message.channel.id && check_channel){
         message.delete();
-        return message.channel.send(`Please do the command **${config.prefix}start** in <#${guild.channel_setup}> first!`);
+        return message.channel.send(`Please do the command **${config.prefix}start** in <#${guild.channel_setup}> first!`).then(msg => msg.delete(5000));
       }
 
       let discord_love_role = message.guild.roles.find(role => role.name === "DiscordLoved");
