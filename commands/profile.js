@@ -94,7 +94,7 @@ exports.run = function(client, message, args){
           }
         } else {
           // User is not premium
-          premium_array.push(`Premium Status: **NaN**\n`);
+          premium_array.push(`Premium Status: **NaN**`);
         }
 
         // Get users premium coins

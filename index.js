@@ -23,6 +23,110 @@ const log = (msg) => {
   console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${msg}`);
 }
 
+client.set_up_server = async (client, guild) => {
+  console.log(`Setting up server`);
+  let role_name = `DiscordLoved`;
+  const role_check = guild.roles.find(role => role.name === 'DiscordLoved');
+  if(role_check){
+    role = role_check;
+    client.create_channels(role, client, guild);
+  } else {
+    client.create_role(guild).then(role => {
+      client.create_channels(role, client, guild);
+    });
+  }
+}
+
+client.check_channels = async (client, guild_object, guild) => {
+  let channel_missing = false;
+  let setup_channel = guild_object.channels.find(channel => channel.name === `discord-love-setup`)
+  let main_channel = guild_object.channels.find(channel => channel.name === `discord-love`)
+  let discordlove_category = guild_object.channels.find(channel => channel.name === `DiscordLove` && channel.type == `category`);
+  let setup_channel_database = guild_object.channels.find(channel => channel.id === guild.channel_setup)
+  let main_channel_database = guild_object.channels.find(channel => channel.id === guild.channel_main)
+  if(!setup_channel) channel_missing = true;
+  if(!main_channel) channel_missing = true;
+  if(!discordlove_category) channel_missing = true;
+  if(!setup_channel_database) channel_missing = true;
+  if(!main_channel_database) channel_missing = true;
+  if(channel_missing) client.set_up_server(client, guild_object);
+}
+client.remove_old_channels = async (guild) => {
+  let setup_channel = guild.channels.find(channel => channel.name === `discord-love-setup`)
+  let main_channel = guild.channels.find(channel => channel.name === `discord-love`)
+  let discordlove_category = guild.channels.find(channel => channel.name === `DiscordLove` && channel.type == `category`);
+  let discordlove_test = guild.channels.find(channel => channel.name === `discord-love-test`);
+  if(setup_channel) setup_channel.delete();
+  if(main_channel) main_channel.delete();
+  if(discordlove_category) discordlove_category.delete()
+  if(discordlove_test) discordlove_test.delete();
+}
+client.create_role = async (guild) => {
+  guild.createRole({
+    name: `DiscordLoved`
+  }).then(role => {
+    return role;
+  })
+}
+client.create_channels = async (role, client, guild) => {
+  await client.remove_old_channels(guild);
+  guild.createChannel(`DiscordLove`, `category`, [{
+    id: guild.id,
+  }])
+  .then(category => {
+    // Create Setup channel
+    guild.createChannel(`discord-love-setup`, `text`)
+      .then(channel => {
+        channel.setParent(category.id);
+        channel.overwritePermissions(role, {
+          VIEW_CHANNEL: false
+        });
+        channel.overwritePermissions(guild.id, {
+          VIEW_CHANNEL: true
+        });
+
+        // Create default channel
+        guild.createChannel(`discord-love`, `text`)
+          .then(channel_default => {
+            channel_default.setParent(category.id);
+            channel_default.overwritePermissions(role, {
+              VIEW_CHANNEL: true
+            });
+            channel_default.overwritePermissions(guild.id, {
+              VIEW_CHANNEL: false
+            });
+            // Check for old rows
+            let sql_check = `SELECT * FROM guilds WHERE guild_identifier = ${guild.id}`;
+            client.db.get(sql_check, (err, row) => {
+              if(err) return console.error(`index.js create_channels ${err.message}`);
+              let sql_guild = ``;
+              let new_guild = true;
+              if(row){
+                // Guild is already in the database, lets update the channels
+                sql = `UPDATE guilds SET channel_setup = ${channel.id}, channel_main = ${channel_default.id} WHERE guild_identifier = ${guild.id}`;
+                new_guild = false;
+              } else {
+                // New guild is being added
+                sql = `INSERT INTO guilds (guild_identifier, guild_owner, channel_setup, channel_main) VALUES(${guild.id},${guild.owner.id},${channel.id},${channel_default.id})`;
+              }
+              client.db.run(sql, (err) => {
+                if(err) return console.error(err.message);
+                if(new_guild){
+                  embed = new Discord.RichEmbed()
+                    .setColor("#00A30D")
+                    .setAuthor(`${guild.name} (${guild.memberCount.format(0)} members)`, guild.iconURL)
+                    .setFooter(`Owner: ${guild.owner.user.username}#${guild.owner.user.discriminator}`)
+                    .setTimestamp();
+                  client.channels.get(config.log_guild).send(embed);
+                }
+                client.user.setActivity(`on ${client.guilds.size.format(0)} servers`);
+              });
+            })
+          })
+      })
+    })
+}
+
 client.guild_info = async (guild, extras, callback) => {
   try {
     let sql = `SELECT * FROM guilds WHERE guild_identifier = ${guild}`;
@@ -94,9 +198,10 @@ client.update_money = async (message, user_id, callback) => {
                     .setAuthor(`${message.member.displayName} has just reached level ${user.user_level + 1}`, message.author.avatarURL)
                     .setTimestamp();
                   message.channel.send(embed);
-                  
-                  if(message.guild.id == '513786798737195008')
-                    message.member.setNickname(`[${user.user_level+1}] ${message.author.username}`);
+
+                  // Set users nickname on the Official DiscordLove Server
+                  // if(message.guild.id == '513786798737195008' && message.author.id != config.botowner)
+                  //   message.member.setNickname(`[${user.user_level+1}] ${message.author.username}`);
                 }
 
                 client.db.run(sql_update_message, (err) => {
@@ -118,7 +223,6 @@ client.update_money = async (message, user_id, callback) => {
     console.log(e.stack);
   }
 }
-
 client.check_premium_status = async (user_id, callback) => {
   let now = moment().format('x');
   await client.user_info(user_id, '', (user) => {
@@ -136,7 +240,6 @@ client.check_premium_status = async (user_id, callback) => {
     return callback();
   });
 }
-
 client.check_reputation_status = async (user_id, callback) => {
   let now = moment().format('x');
   await client.user_info(user_id, '', (user) => {
@@ -151,7 +254,6 @@ client.check_reputation_status = async (user_id, callback) => {
     return callback();
   })
 }
-
 client.counter_messages = async (user) => {
 
 }

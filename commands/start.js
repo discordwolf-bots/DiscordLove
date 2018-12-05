@@ -35,7 +35,15 @@ exports.run = function(client, message, args){
       }
       // Gives the member the DiscordLoved role
       message.member.addRole(discord_love_role.id);
-      message.channel.send(`${message.author} has joined the party!`)
+
+      let embed_colour = '#' + user.user_colour;
+      if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+      let embed = new Discord.RichEmbed()
+        .setColor(embed_colour)
+        .setAuthor(`${message.author} has joined the party!`, message.author.avatarURL)
+        .setTimestamp();
+        console.log(guild);
+      client.channels.get(guild.channel_main).send(embed);
 
     });
   });
