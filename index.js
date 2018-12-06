@@ -233,6 +233,8 @@ client.update_money = async (message, user_id, callback) => {
   }
 }
 client.check_premium_status = async (user_id, callback) => {
+  let discordlove_guild = client.guilds.find(guild => guild.id === '513786798737195008');
+  let discordlove_guild_member = discordlove_guild.members.find(member => member.id === user_id);
   let now = moment().format('x');
   await client.user_info(user_id, '', (user) => {
     if(user){
@@ -242,6 +244,13 @@ client.check_premium_status = async (user_id, callback) => {
           let sql = `UPDATE users SET premium_status = 0 WHERE user_discord = ${user_id}`;
           client.db.run(sql, [], (err) => {
             if(err) return console.error(`index.js check_premium_status ${err.message}`);
+            if(discordlove_guild_member){
+              discordlove_guild_member.removeRoles([
+                discordlove_guild.roles.find(role => role.name === "Lifetime Premium"),
+                discordlove_guild.roles.find(role => role.name === "Premium"),
+              ])
+
+            }
           });
         }
       }

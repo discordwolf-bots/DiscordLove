@@ -7,6 +7,8 @@ exports.run = function(client, message, args){
   message.delete();
   let now = moment().format('x'); // Current UNIX Timestamp
   let target = message.mentions.users.first();
+  let discordlove_guild = client.guilds.find(guild => guild.id === '513786798737195008');
+  let discordlove_guild_member = discordlove_guild.members.find(member => member.id === target.id);
   if(!target) return message.reply(`Please mention somebody to give premium status to`);
   client.guild_info(message.guild.id, '', (guild) => {
     // Has this server been added to the guild Database?
@@ -26,6 +28,12 @@ exports.run = function(client, message, args){
             client.db.run(sqlLife, [], (err) => {
               if(err) return console.error(err.message);
               message.reply(`${target} has been granted LIFETIME Premium Membership`);
+              if(discordlove_guild_member){
+                discordlove_guild_member.addRoles([
+                  discordlove_guild.roles.find(role => role.name === "Lifetime Premium"),
+                  discordlove_guild.roles.find(role => role.name === "Premium")
+                ]);
+              }
             });
         } else {
           premium_duration = parseInt(args[1]);
@@ -33,6 +41,9 @@ exports.run = function(client, message, args){
           client.db.run(sql, [], (err) => {
             if(err) return console.error(err.message);
             message.reply(`${target} has been upgraded to premium for the next ${premium_duration} day${premium_duration > 1 ? 's' : ''}`);
+            if(discordlove_guild_member){
+              discordlove_guild_member.addRole(discordlove_guild.roles.find(role => role.name === "Premium"));
+            }
           });
         }
       } else {
@@ -40,6 +51,9 @@ exports.run = function(client, message, args){
         client.db.run(sql, [], (err) => {
           if(err) return console.error(err.message);
           message.reply(`${target} has been upgraded to premium for the next ${premium_duration} day${premium_duration > 1 ? 's' : ''}`);
+          if(discordlove_guild_member){
+            discordlove_guild_member.addRole(discordlove_guild.roles.find(role => role.name === "Premium"));
+          }
         });
       }
     });
