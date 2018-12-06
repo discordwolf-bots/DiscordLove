@@ -7,8 +7,18 @@ const log = (msg) => {
   console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${msg}`);
 }
 
+Number.prototype.format = function(n, x) {
+  var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+  return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
+};
+
 module.exports = async client => {
-  client.user.setActivity(`on ${client.guilds.size.format(0)} servers`);
+  client.user.setPresence({
+    game : {
+      name : `on ${client.guilds.size.format(0)} servers`,
+      type: 0
+    }
+  });
   await client.getInfoValues(client);
   log(chalk.green(`Bot Started`));
 }
