@@ -9,7 +9,7 @@ exports.run = function(client, message, args){
     client.user_info(message.author.id, '', (user) => {
 
       let check_channel = true;
-      if(user.user_discord == config.botowner) check_channel = false;
+      if(message.author.id == config.botowner) check_channel = false;
       if(guild.channel_setup != message.channel.id && check_channel){
         message.delete();
         return message.channel.send(`Please do the command **${config.prefix}start** in <#${guild.channel_setup}> first!`).then(msg => msg.delete(5000));
@@ -36,11 +36,10 @@ exports.run = function(client, message, args){
       // Gives the member the DiscordLoved role
       message.member.addRole(discord_love_role.id);
 
-      let embed_colour = '#' + user.user_colour;
-      if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+      let embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
       let embed = new Discord.RichEmbed()
         .setColor(embed_colour)
-        .setAuthor(`${message.author} has joined the party!`, message.author.avatarURL)
+        .setAuthor(`${message.member.displayName} has joined the party!`, message.author.avatarURL)
         .setTimestamp();
         console.log(guild);
       client.channels.get(guild.channel_main).send(embed);

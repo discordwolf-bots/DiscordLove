@@ -19,7 +19,7 @@ const go_fishing = (client, user, message) => {
   let legendary_chance = 0;
   let magikarp_chance = 0;
 
-  let fishing_cost = 0;
+  let fishing_cost = 200;
 
   if(user.premium_status > 0){
     // User is a premium user, give them better odds in fishing
@@ -103,7 +103,7 @@ const go_fishing = (client, user, message) => {
     message.channel.send(embed);
   }
 
-  let sql_update_fish_inventory = `UPDATE users SET list_fish_inventory = '${inventory.join(',')}', list_fish_inventory_history = '${inventory_history.join(',')}', counter_fishing = ${user.counter_fishing + 1}, counter_fish_caught = ${user.counter_fish_caught + (caught_a_fish ? 1 : 0)}, ts_fish = ${now} WHERE user_discord = ${user.user_discord}`;
+  let sql_update_fish_inventory = `UPDATE users SET user_money = ${user.user_money - fishing_cost}, list_fish_inventory = '${inventory.join(',')}', list_fish_inventory_history = '${inventory_history.join(',')}', counter_fishing = ${user.counter_fishing + 1}, counter_fish_caught = ${user.counter_fish_caught + (caught_a_fish ? 1 : 0)}, ts_fish = ${now} WHERE user_discord = ${user.user_discord}`;
   // message.channel.send(sql_update_fish_inventory);
   client.db.run(sql_update_fish_inventory, (err) => {
     if(err) return console.error(`fish.js go_fishing() ${err.message}`);
