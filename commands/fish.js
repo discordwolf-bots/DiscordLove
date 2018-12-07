@@ -3,28 +3,174 @@ const moment = require('moment');
 const Discord = require('discord.js');
 const config = require(`../config.json`);
 
-const go_fishing = (user, message) => {
+Number.prototype.format = function(n, x) {
+  var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+  return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
+};
+
+const go_fishing = (client, user, message) => {
+  let now = moment().format('x'); // Current UNIX Timestamp
+
+  let fail_chance = 0;
+  let small_chance = 0;
+  let medium_chance = 0;
+  let large_chance = 0;
+  let super_chance = 0;
+  let legendary_chance = 0;
+  let magikarp_chance = 0;
+
+  let fishing_cost = 0;
+
+  if(user.premium_status > 0){
+    // User is a premium user, give them better odds in fishing
+    small_chance = 300;
+    medium_chance = 250;
+    large_chance = 250;
+    super_chance = 120;
+    legendary_chance = 78;
+    magikarp_chance = 2;
+  } else {
+    // User is not a premium user, they can suffer
+    fail_chance = 250;
+    small_chance = 300;
+    medium_chance = 200;
+    large_chance = 150;
+    super_chance = 60;
+    legendary_chance = 39;
+    magikarp_chance = 1;
+  }
+
+  let random_number_fishing = Math.floor(Math.random()*1000); // Random number [0-1000)
+
+  let fail_rate = fail_chance; // 0
+  let small_rate = fail_rate + small_chance; // 300
+  let medium_rate = small_rate + medium_chance; // 550
+  let large_rate = medium_rate + large_chance; // 800
+  let super_rate = large_rate + super_chance; // 920
+  let legendary_rate = super_rate + legendary_chance; // 998
+  let magikarp_rate = legendary_rate + magikarp_chance; // 1000
+
+  let inventory = user.list_fish_inventory.split(',');
+  let inventory_history = user.list_fish_inventory_history.split(',');
+  let caught_a_fish = true;
+  let fish_name = ``;
+  let fish_pun = ``;
+  if(random_number_fishing < fail_rate){
+    caught_a_fish = false;
+  } else if(random_number_fishing < small_rate){
+    fish_name = `Small Fish`;
+    fish_pun = `Oh? There was something there`;
+    inventory[0] = parseInt(inventory[0]) + 1;
+    inventory_history[0] = parseInt(inventory_history[0]) + 1;
+  } else if(random_number_fishing < medium_rate){
+    fish_name = `Medium Fish`;
+    fish_pun = `Dont be too disappointed, its still something`
+    inventory[1] = parseInt(inventory[1]) + 1;
+    inventory_history[1] = parseInt(inventory_history[1]) + 1;
+  } else if(random_number_fishing < large_rate){
+    fish_name = `Large Fish`;
+    fish_pun = `It took a bit of a fight, but you won!`
+    inventory[2] = parseInt(inventory[2]) + 1;
+    inventory_history[2] = parseInt(inventory_history[2]) + 1;
+  } else if(random_number_fishing < super_rate){
+    fish_name = `Super Fish`;
+    fish_pun = `Is it a bird? Is it a plane? I sure hope not, it was in the water.`
+    inventory[3] = parseInt(inventory[3]) + 1;
+    inventory_history[3] = parseInt(inventory_history[3]) + 1;
+  } else if(random_number_fishing < legendary_rate){
+    fish_name = `Legendary Fish`;
+    fish_pun = `People have spoke of this for decades, but now you have confirmed them to be true!`
+    inventory[4] = parseInt(inventory[4]) + 1;
+    inventory_history[4] = parseInt(inventory_history[4]) + 1;
+  } else if(random_number_fishing < magikarp_rate){
+    fish_name = `Magikarp`;
+    fish_pun = `Is this meant to be here?`;
+    inventory[5] = parseInt(inventory[5]) + 1;
+    inventory_history[5] = parseInt(inventory_history[5]) + 1;
+  } else {
+    message.delete();
+    return message.reply(`Something went wrong, please let an Admin know.`);
+  }
+
+  if(caught_a_fish){
+    // Tell them what fish they caught
+    let embed_colour = '#' + user.user_colour;
+    if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+    let embed = new Discord.RichEmbed()
+      .setColor(embed_colour)
+      .setAuthor(`${message.member.displayName} caught a ${fish_name}`, message.author.avatarURL)
+      .setFooter(fish_pun);
+    message.channel.send(embed);
+  }
+
+  let sql_update_fish_inventory = `UPDATE users SET list_fish_inventory = '${inventory.join(',')}', list_fish_inventory_history = '${inventory_history.join(',')}', counter_fishing = ${user.counter_fishing + 1}, counter_fish_caught = ${user.counter_fish_caught + (caught_a_fish ? 1 : 0)}, ts_fish = ${now} WHERE user_discord = ${user.user_discord}`;
+  // message.channel.send(sql_update_fish_inventory);
+  client.db.run(sql_update_fish_inventory, (err) => {
+    if(err) return console.error(`fish.js go_fishing() ${err.message}`);
+  })
 
 }
 
-const sell_fish = (user, message, type) => {
+const sell_fish = (client, user, message, type) => {
 
 }
 
-const view_inventory = (user, message) => {
+const view_inventory = (client, user, message) => {
+  let inventory = user.list_fish_inventory.split(',');
+
+  let small_fish_emoji = `:SmallFish:517449760349618206`;
+  let medium_fish_emoji = `:MediumFish:517449758940332053`;
+  let large_fish_emoji = `:LargeFish:517449759372607507`;
+  let super_fish_emoji = `:SuperFish:517449759963873302`;
+  let legendary_fish_emoji = `:LegendaryFish:517449759313887283`;
+  let magikarp_fish_emoji = `:Magikarp:517449753970212875`;
+
+  let embed_colour = '#' + user.user_colour;
+  if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+  let embed = new Discord.RichEmbed()
+    .setAuthor(`Fishing Inventory of ${message.member.displayName}`, message.author.avatarURL)
+    .setColor(embed_colour)
+    .addField(`<${small_fish_emoji}> Small Fish`, `\`\`\`${parseInt(inventory[0]).format(0)}\`\`\``, true)
+    .addField(`<${medium_fish_emoji}> Medium Fish`, `\`\`\`${parseInt(inventory[1]).format(0)}\`\`\``, true)
+    .addField(`<${large_fish_emoji}> Large Fish`, `\`\`\`${parseInt(inventory[2]).format(0)}\`\`\``, true)
+    .addField(`<${super_fish_emoji}> Super Fish`, `\`\`\`${parseInt(inventory[3]).format(0)}\`\`\``, true)
+    .addField(`<${legendary_fish_emoji}> Legendary Fish`, `\`\`\`${parseInt(inventory[4]).format(0)}\`\`\``, true)
+    .addField(`<${magikarp_fish_emoji}> Magikarp`, `\`\`\`${parseInt(inventory[5]).format(0)}\`\`\``, true)
+    .setTimestamp();
+  message.channel.send(embed);
+}
+
+const view_inventory_history = (client, user, message) => {
+  let inventory = user.list_fish_inventory_history.split(',');
+
+  let small_fish_emoji = `:SmallFish:517449760349618206`;
+  let medium_fish_emoji = `:MediumFish:517449758940332053`;
+  let large_fish_emoji = `:LargeFish:517449759372607507`;
+  let super_fish_emoji = `:SuperFish:517449759963873302`;
+  let legendary_fish_emoji = `:LegendaryFish:517449759313887283`;
+  let magikarp_fish_emoji = `:Magikarp:517449753970212875`;
+
+  let embed_colour = '#' + user.user_colour;
+  if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+  let embed = new Discord.RichEmbed()
+    .setAuthor(`Fishing Inventory (All-Time) of ${message.member.displayName}`, message.author.avatarURL)
+    .setColor(embed_colour)
+    .addField(`<${small_fish_emoji}> Small Fish`, `\`\`\`${parseInt(inventory[0]).format(0)}\`\`\``, true)
+    .addField(`<${medium_fish_emoji}> Medium Fish`, `\`\`\`${parseInt(inventory[1]).format(0)}\`\`\``, true)
+    .addField(`<${large_fish_emoji}> Large Fish`, `\`\`\`${parseInt(inventory[2]).format(0)}\`\`\``, true)
+    .addField(`<${super_fish_emoji}> Super Fish`, `\`\`\`${parseInt(inventory[3]).format(0)}\`\`\``, true)
+    .addField(`<${legendary_fish_emoji}> Legendary Fish`, `\`\`\`${parseInt(inventory[4]).format(0)}\`\`\``, true)
+    .addField(`<${magikarp_fish_emoji}> Magikarp`, `\`\`\`${parseInt(inventory[5]).format(0)}\`\`\``, true)
+    .setTimestamp();
+  message.channel.send(embed);
+}
+
+const fishing_help = (client, user, message) => {
 
 }
 
-const view_inventory_history = (user, message) => {
+const fishing_sell_help = (client, user, message) => {
 
-}
-
-const fishing_help = (user, message) => {
-
-}
-
-const fishing_sell_help = (user, message) => {
-  
 }
 
 
@@ -46,21 +192,29 @@ exports.run = function(client, message, args){
         return message.reply(`Please only use this command in <#${guild.channel_main}>`).then(msg => msg.delete(5000));
       }
 
-      message.delete();
-
       if(!args[0]){ // =fish
-        go_fishing(user, message);
+        if(now - user.ts_profile < 30 * 1000) {
+          message.delete();
+          return message.reply(`Please wait another **${Math.ceil(((now - (parseInt(user.ts_fish) + (30*1000)))*-1)/1000)} seconds** before going fishing again.`).then(msg => msg.delete(5000));
+        } else {
+          go_fishing(client, user, message);
+        }
       } else {
         switch(args[0].toLowerCase()){ // =fish <args[0]>
           default:
           case `fish`:
           case `catch`:
-            go_fishing(user, message);
+            if(now - user.ts_profile < 30 * 1000) {
+              message.delete();
+              return message.reply(`Please wait another **${Math.ceil(((now - (parseInt(user.ts_fish) + (30*1000)))*-1)/1000)} seconds** before going fishing again.`).then(msg => msg.delete(5000));
+            } else {
+              go_fishing(client, user, message);
+            }
             break;
 
           case `sell`:
             if(!args[1]){ // =fish sell
-                fishing_sell_help(user, message);
+                fishing_sell_help(client, user, message);
             } else { // =fish sell <args[1]>
               switch(args[1].toLowerCase()){
                 default:
@@ -72,7 +226,7 @@ exports.run = function(client, message, args){
                 case `legendary`:
                 case `magikarp`:
                 case `all`:
-                  sell_fish(user, message, args[1].toLowerCase());
+                  sell_fish(client, user, message, args[1].toLowerCase());
                   break;
               }
             }
@@ -81,21 +235,21 @@ exports.run = function(client, message, args){
           case `inventory`:
           case `invent`:
           case `inv`:
-            view_inventory(user, message);
+            view_inventory(client, user, message);
             break;
 
           case `history`:
           case `all-time`:
           case `alltime`:
           case `hist`:
-            view_inventory_history(user, message);
+            view_inventory_history(client, user, message);
             break;
 
           case `help`:
           case `halp`:
           case `info`:
           case `imstuck`:
-            fishing_help(user, message);
+            fishing_help(client, user, message);
             break;
         }
       }

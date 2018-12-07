@@ -202,6 +202,26 @@ exports.run = function(client, message, args){
         }
         counter_array.push(`Commands: **${(user.counter_commands + (counter_commands_display <= 0 ? 1 : 0)).format(0)}** (${counter_commands_seconds}s)`)
 
+        // Get users fish caught
+        let counter_fish_caught_display = (now - (parseInt(user.ts_fish) + (minute_millis/2))) * -1;
+        let counter_fish_caught_seconds = '';
+        if(counter_fish_caught_display > 0){
+          counter_fish_caught_seconds += Math.floor(counter_fish_caught_display/1000);
+        } else {
+          counter_fish_caught_seconds = '30';
+        }
+        counter_array.push(`Fish Caught: **${(user.counter_fish_caught + (counter_fish_caught_display <= 0 ? 1 : 0)).format(0)}** (${counter_fish_caught_seconds}s)`)
+
+        // Get users fish attempts
+        let counter_fish_attempts_caught_display = (now - (parseInt(user.ts_fish) + (minute_millis/2))) * -1;
+        let counter_fish_attempts_seconds = '';
+        if(counter_fish_attempts_caught_display > 0){
+          counter_fish_attempts_seconds += Math.floor(counter_fish_attempts_caught_display/1000);
+        } else {
+          counter_fish_attempts_seconds = '60';
+        }
+        counter_array.push(`Fishing Attempts: **${(user.counter_fishing + (counter_fish_attempts_caught_display <= 0 ? 1 : 0)).format(0)}** (${counter_fish_attempts_seconds}s)`)
+
 
         // Build embed
         let embed = new Discord.RichEmbed()
