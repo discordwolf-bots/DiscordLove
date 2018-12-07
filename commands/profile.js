@@ -24,12 +24,10 @@ exports.run = function(client, message, args){
         return message.reply(`Please only use this command in <#${guild.channel_main}>`).then(msg => msg.delete(5000));
       }
 
-
-      if(now - user.ts_profile < 30 * 1000) {
+      if(now - user.ts_profile < 30 * 1000 && check_channel) {
         message.delete();
         return message.reply(`Please wait another **${Math.ceil(((now - (parseInt(user.ts_profile) + (30*1000)))*-1)/1000)} seconds** before viewing your profile again.`).then(msg => msg.delete(5000));
       }
-
 
       let sql_count_users = `SELECT count(*) AS count FROM users`;
       client.db.get(sql_count_users, (err, total) => {
@@ -203,24 +201,22 @@ exports.run = function(client, message, args){
         counter_array.push(`Commands: **${(user.counter_commands + (counter_commands_display <= 0 ? 1 : 0)).format(0)}** (${counter_commands_seconds}s)`)
 
         // Get users fish caught
-        let counter_fish_caught_display = (now - (parseInt(user.ts_fish) + (minute_millis/2))) * -1;
-        let counter_fish_caught_seconds = '';
-        if(counter_fish_caught_display > 0){
-          counter_fish_caught_seconds += Math.floor(counter_fish_caught_display/1000);
-        } else {
-          counter_fish_caught_seconds = '30';
+        let counter_fish_caught_display = (now - (parseInt(user.ts_fish) + (minute_millis * 5))) * -1;
+        let counter_fish_caught_minutes = `00`;
+        let counter_fish_caught_seconds = '00';
+
+        if(counter_fish_caught_display / minute_millis >= 1){
+          counter_fish_caught_minutes += Math.floor(counter_fish_caught_display / minute_millis);
+          counter_fish_caught_display -= (minute_millis * counter_fish_caught_minutes);
         }
-        counter_array.push(`Fish Caught: **${(user.counter_fish_caught + (counter_fish_caught_display <= 0 ? 1 : 0)).format(0)}** (${counter_fish_caught_seconds}s)`)
+        // How many seconds?
+        if(counter_fish_caught_display > 0){
+          counter_fish_caught_seconds += Math.ceil(counter_fish_caught_display/1000);
+        }
+        counter_array.push(`Fish Caught: **${user.counter_fish_caught.format(0)}** *${counter_fish_caught_minutes.slice(-2)}:${counter_fish_caught_seconds.slice(-2)}*`)
 
         // Get users fish attempts
-        let counter_fish_attempts_caught_display = (now - (parseInt(user.ts_fish) + (minute_millis/2))) * -1;
-        let counter_fish_attempts_seconds = '';
-        if(counter_fish_attempts_caught_display > 0){
-          counter_fish_attempts_seconds += Math.floor(counter_fish_attempts_caught_display/1000);
-        } else {
-          counter_fish_attempts_seconds = '60';
-        }
-        counter_array.push(`Fishing Attempts: **${(user.counter_fishing + (counter_fish_attempts_caught_display <= 0 ? 1 : 0)).format(0)}** (${counter_fish_attempts_seconds}s)`)
+        counter_array.push(`Fishing Attempts: **${(user.counter_fishing).format(0)}**`)
 
 
         // Build embed

@@ -192,10 +192,25 @@ exports.run = function(client, message, args){
         return message.reply(`Please only use this command in <#${guild.channel_main}>`).then(msg => msg.delete(5000));
       }
 
+      let fishing_time_display = (now - (parseInt(user.ts_fish) + (minute_millis * 5))) * -1;
+      let fishing_minutes = ``;
+      let fishing_seconds = ``;
+      let fishing_timer = ``;
+
       if(!args[0]){ // =fish
-        if(now - user.ts_profile < 30 * 1000) {
+        if(now - user.ts_fish < 5 * 60 * 1000) {
           message.delete();
-          return message.reply(`Please wait another **${Math.ceil(((now - (parseInt(user.ts_fish) + (30*1000)))*-1)/1000)} seconds** before going fishing again.`).then(msg => msg.delete(5000));
+          if(fishing_time_display / minute_millis >= 1){
+            fishing_minutes = Math.floor(fishing_time_display / minute_millis);
+            fishing_timer += `${fishing_minutes} minute${fishing_minutes > 1 ? 's' : ''} `;
+            fishing_time_display = fishing_time_display - (minute_millis * fishing_minutes);
+          }
+          // How many seconds?
+          if(fishing_time_display > 0){
+            fishing_seconds = Math.ceil(fishing_time_display/1000);
+            fishing_timer += `${fishing_seconds} second${fishing_seconds > 1 ? 's' : ''}`;
+          }
+          return message.reply(`Please wait another **${fishing_timer}** before going fishing again.`).then(msg => msg.delete(5000));
         } else {
           go_fishing(client, user, message);
         }
@@ -204,12 +219,22 @@ exports.run = function(client, message, args){
           default:
           case `fish`:
           case `catch`:
-            if(now - user.ts_profile < 30 * 1000) {
-              message.delete();
-              return message.reply(`Please wait another **${Math.ceil(((now - (parseInt(user.ts_fish) + (30*1000)))*-1)/1000)} seconds** before going fishing again.`).then(msg => msg.delete(5000));
-            } else {
-              go_fishing(client, user, message);
+          if(now - user.ts_fish < 5 * 60 * 1000) {
+            message.delete();
+            if(fishing_time_display / minute_millis >= 1){
+              fishing_minutes = Math.floor(fishing_time_display / minute_millis);
+              fishing_timer += `${fishing_minutes} minute${fishing_minutes > 1 ? 's' : ''} `;
+              fishing_time_display = fishing_time_display - (minute_millis * fishing_minutes);
             }
+            // How many seconds?
+            if(fishing_time_display > 0){
+              fishing_seconds = Math.ceil(fishing_time_display/1000);
+              fishing_timer += `${fishing_seconds} second${fishing_seconds > 1 ? 's' : ''}`;
+            }
+            return message.reply(`Please wait another **${fishing_timer}** before going fishing again.`).then(msg => msg.delete(5000));
+          } else {
+            go_fishing(client, user, message);
+          }
             break;
 
           case `sell`:
