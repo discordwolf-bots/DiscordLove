@@ -121,6 +121,9 @@ exports.run = function(client, message, args){
         // Get users CPS
         user_array.push(`BPS: **${user.user_cps.format(1)}** *(bank per second)*`)
 
+        // Get users money spent
+        user_array.push(`Money Spent: **$${user.counter_money_spent.format(2)}**`);
+
         // Get account length
         let account_length_display = (parseInt(user.user_start_ts) - now) * -1;
         let account_length_days = '00';
@@ -244,10 +247,7 @@ exports.run = function(client, message, args){
             if(err) return console.error(`profile.js sql_update_command_counter ${err.message}`);
           })
         }
-
-
       })
-
     });
   });
 };

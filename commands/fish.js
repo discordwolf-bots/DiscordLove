@@ -40,6 +40,8 @@ const go_fishing = (client, user, message) => {
     magikarp_chance = 1;
   }
 
+  if(user.user_money < fishing_cost) return message.reply(`You need **$${fishing_cost}** to fish`);
+
   let random_number_fishing = Math.floor(Math.random()*1000); // Random number [0-1000)
 
   let fail_rate = fail_chance; // 0
@@ -103,7 +105,7 @@ const go_fishing = (client, user, message) => {
     message.channel.send(embed);
   }
 
-  let sql_update_fish_inventory = `UPDATE users SET user_money = ${user.user_money - fishing_cost}, list_fish_inventory = '${inventory.join(',')}', list_fish_inventory_history = '${inventory_history.join(',')}', counter_fishing = ${user.counter_fishing + 1}, counter_fish_caught = ${user.counter_fish_caught + (caught_a_fish ? 1 : 0)}, ts_fish = ${now} WHERE user_discord = ${user.user_discord}`;
+  let sql_update_fish_inventory = `UPDATE users SET user_money = ${user.user_money - fishing_cost}, list_fish_inventory = '${inventory.join(',')}', list_fish_inventory_history = '${inventory_history.join(',')}', counter_fishing = ${user.counter_fishing + 1}, counter_fish_caught = ${user.counter_fish_caught + (caught_a_fish ? 1 : 0)}, ts_fish = ${now}, counter_money_spent = ${user.counter_money_spent + 200} WHERE user_discord = ${user.user_discord}`;
   // message.channel.send(sql_update_fish_inventory);
   client.db.run(sql_update_fish_inventory, (err) => {
     if(err) return console.error(`fish.js go_fishing() ${err.message}`);
@@ -112,7 +114,7 @@ const go_fishing = (client, user, message) => {
 }
 
 const sell_fish = (client, user, message, type) => {
-
+  message.reply(`This feature is coming soon!`);
 }
 
 const view_inventory = (client, user, message) => {
@@ -166,11 +168,33 @@ const view_inventory_history = (client, user, message) => {
 }
 
 const fishing_help = (client, user, message) => {
-
+  message.reply(`This feature is coming soon!`);
 }
 
 const fishing_sell_help = (client, user, message) => {
+  let embed_colour = '#' + user.user_colour;
+  if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
 
+  let small_fish_emoji = `:SmallFish:517449760349618206`;
+  let medium_fish_emoji = `:MediumFish:517449758940332053`;
+  let large_fish_emoji = `:LargeFish:517449759372607507`;
+  let super_fish_emoji = `:SuperFish:517449759963873302`;
+  let legendary_fish_emoji = `:LegendaryFish:517449759313887283`;
+  let magikarp_fish_emoji = `:Magikarp:517449753970212875`;
+
+  let command_array = [];
+  command_array.push(`<${small_fish_emoji}> Small Fish \`\`300\`\``);
+  command_array.push(`<${medium_fish_emoji}> Medium Fish \`\`450\`\``);
+  command_array.push(`<${large_fish_emoji}> Large Fish \`\`600\`\``);
+  command_array.push(`<${super_fish_emoji}> Super Fish \`\`1,500\`\``);
+  command_array.push(`<${legendary_fish_emoji}> Legendary Fish \`\`2,500\`\``);
+  command_array.push(`<${magikarp_fish_emoji}> Magikarp \`\`25,000\`\``);
+
+  let embed = new Discord.RichEmbed()
+    .setColor(embed_colour)
+    .setAuthor(`Fishing Help - Selling`, client.user.avatarURL)
+    .addField(`Current Costs`, command_array.join(`\n`));
+  message.channel.send(embed);
 }
 
 
@@ -277,6 +301,13 @@ exports.run = function(client, message, args){
             fishing_help(client, user, message);
             break;
         }
+      }
+
+      if(now - user.ts_commands > 60 * 1000){
+        let sql_update_command_counter = `UPDATE users SET counter_commands = ${user.counter_commands+1}, ts_commands = ${now} WHERE user_discord = ${user.user_discord}`;
+        client.db.run(sql_update_command_counter, (err) => {
+          if(err) return console.error(`profile.js sql_update_command_counter ${err.message}`);
+        })
       }
 
 
