@@ -249,8 +249,8 @@ exports.run = function(client, message, args){
                 case `large`:
                 case `super`:
                 case `legendary`:
-                case `magikarp`:
-                case `all`:
+                case `magikarp`: // =fish sell magikarp
+                case `all`: // =fish sell all
                   sell_fish(client, user, message, args[1].toLowerCase());
                   break;
               }
@@ -286,7 +286,7 @@ exports.run = function(client, message, args){
 
 exports.conf = {
   aliases: [],
-  permLevel: 4
+  permLevel: 0
 };
 
 exports.help = {
