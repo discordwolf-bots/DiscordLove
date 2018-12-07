@@ -10,7 +10,6 @@
 [X] new command to give people premium_coins
 [X] new command to add a persons donation
 [] Titles (?) [ Need title name ideas ]
-[X] Display users level next to their name on Official DiscordLove server
 
 [ Reputation ]
 [X] Can give reputation
@@ -24,7 +23,7 @@
 [X] Premium time checker [ has premium time run out? ]
 
 [ Timestamps ]
-[] Timestamp for how often you can show your profile
+[X] Timestamp for how often you can show your profile
 [X] Timestamp for how often you can give reputation
 [] Timestamp for how often you can fish
 [] Timestamp for how often it updates your message counter

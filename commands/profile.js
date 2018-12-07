@@ -12,6 +12,11 @@ exports.run = function(client, message, args){
   client.guild_info(message.guild.id, '', (guild) => {
     client.user_info(message.author.id, '', (user) => {
 
+      let now = moment().format('x'); // Current UNIX Timestamp
+      let day_millis = 1000 * 60 * 60 * 24;
+      let hour_millis = 1000 * 60 * 60;
+      let minute_millis = 1000 * 60;
+
       let check_channel = true;
       if(user.user_discord == config.botowner) check_channel = false;
       if(guild.channel_main != message.channel.id && check_channel){
@@ -20,17 +25,19 @@ exports.run = function(client, message, args){
       }
 
 
+      if(now - user.ts_profile < 30 * 1000) {
+        message.delete();
+        return message.reply(`Please wait another **${Math.ceil(((now - (parseInt(user.ts_profile) + (30*1000)))*-1)/1000)} seconds** before viewing your profile again.`).then(msg => msg.delete(5000));
+      }
+
+
       let sql_count_users = `SELECT count(*) AS count FROM users`;
       client.db.get(sql_count_users, (err, total) => {
         if(err) return console.error(`profile.js select_count ${err.message}`);
         let total_users = total.count;
-        let now = moment().format('x'); // Current UNIX Timestamp
         if(!guild) return message.reply(`Please re-invite the bot`);
         if(!user) return message.reply(`Please start your account`);
 
-        let day_millis = 1000 * 60 * 60 * 24;
-        let hour_millis = 1000 * 60 * 60;
-        let minute_millis = 1000 * 60;
         // Function to get a users profile colour
         // let embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
         let embed_colour = '#' + user.user_colour;
@@ -209,6 +216,11 @@ exports.run = function(client, message, args){
           .setTimestamp();
         message.channel.send(embed);
         message.delete();
+
+        let sql_update_profile_timer = `UPDATE users set ts_profile = ${now} WHERE user_discord = ${user.user_discord}`;
+        client.db.run(sql_update_profile_timer, (err) => {
+          if(err) return console.error(`profile.js sql_update_profile_timer ${err.message}`);
+        });
 
         if(now - user.ts_commands > 60 * 1000){
           let sql_update_command_counter = `UPDATE users SET counter_commands = ${user.counter_commands+1}, ts_commands = ${now} WHERE user_discord = ${user.user_discord}`;
