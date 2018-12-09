@@ -114,7 +114,127 @@ const go_fishing = (client, user, message) => {
 }
 
 const sell_fish = (client, user, message, type) => {
-  message.reply(`This feature is coming soon!`);
+  let inventory = user.list_fish_inventory.split(',');
+
+  let small_fish_emoji = `:SmallFish:517449760349618206`;
+  let medium_fish_emoji = `:MediumFish:517449758940332053`;
+  let large_fish_emoji = `:LargeFish:517449759372607507`;
+  let super_fish_emoji = `:SuperFish:517449759963873302`;
+  let legendary_fish_emoji = `:LegendaryFish:517449759313887283`;
+  let magikarp_fish_emoji = `:Magikarp:517449753970212875`;
+
+  let small_price = 1;
+  let medium_price = 2;
+  let large_price = 3;
+  let super_price = 5;
+  let legendary_price = 7;
+  let magikarp_price = 25;
+
+  let fish_to_sell = false;
+  let money_to_add = 0;
+
+  let small_sold = 0;
+  let medium_sold = 0;
+  let large_sold = 0;
+  let super_sold = 0;
+  let legendary_sold = 0;
+  let magikarp_sold = 0;
+
+  switch(type){
+    default:
+      break;
+    case 'small':
+      if(parseInt(inventory[0]) > 0){
+        fish_to_sell = true;
+        money_to_add = parseInt(inventory[0]) * small_price;
+        small_sold += parseInt(inventory[0]);
+        inventory[0] = 0;
+      }
+      break;
+    case 'medium':
+      if(parseInt(inventory[1]) > 0){
+        fish_to_sell = true;
+        money_to_add = parseInt(inventory[1]) * medium_price;
+        medium_sold += parseInt(inventory[1]);
+        inventory[1] = 0;
+      }
+      break;
+    case 'large':
+      if(parseInt(inventory[2]) > 0){
+        fish_to_sell = true;
+        money_to_add = parseInt(inventory[2]) * large_price;
+        large_sold += parseInt(inventory[2]);
+        inventory[2] = 0;
+      }
+      break;
+    case 'super':
+      if(parseInt(inventory[3]) > 0){
+        fish_to_sell = true;
+        money_to_add = parseInt(inventory[3]) * super_price;
+        super_sold += parseInt(inventory[3]);
+        inventory[3] = 0;
+      }
+      break;
+    case 'legendary':
+      if(parseInt(inventory[4]) > 0){
+        fish_to_sell = true;
+        money_to_add = parseInt(inventory[4]) * legendary_price;
+        legendary_sold += parseInt(inventory[4]);
+        inventory[4] = 0;
+      }
+      break;
+    case 'magikarp':
+      if(parseInt(inventory[5]) > 0){
+        fish_to_sell = true;
+        money_to_add = parseInt(inventory[5]) * magikarp_price;
+        magikarp_sold += parseInt(inventory[5]);
+        inventory[5] = 0;
+      }
+      break;
+    case 'all':
+      if(parseInt(inventory[0]) > 0 || parseInt(inventory[1]) > 0 || parseInt(inventory[2]) > 0 || parseInt(inventory[3]) > 0 || parseInt(inventory[4]) > 0 || parseInt(inventory[5]) > 0){
+        fish_to_sell = true;
+        money_to_add = parseInt(inventory[0]) * small_price;
+        money_to_add += parseInt(inventory[1]) * medium_price;
+        money_to_add += parseInt(inventory[2]) * large_price;
+        money_to_add += parseInt(inventory[3]) * super_price;
+        money_to_add += parseInt(inventory[4]) * legendary_price;
+        money_to_add += parseInt(inventory[5]) * magikarp_price;
+        small_sold += parseInt(inventory[0]);
+        medium_sold += parseInt(inventory[1]);
+        large_sold += parseInt(inventory[2]);
+        super_sold += parseInt(inventory[3]);
+        legendary_sold += parseInt(inventory[4]);
+        magikarp_sold += parseInt(inventory[5]);
+        for(let i=0; i<=5; i++){
+          inventory[i] = 0;
+        }
+      }
+      break;
+  }
+
+  if(fish_to_sell){
+    let embed_colour = '#' + user.user_colour;
+    if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+    let embed = new Discord.RichEmbed()
+      .setColor(embed_colour)
+      .setAuthor(`Sale Receipt for ${message.member.displayName}`, message.author.avatarURL)
+      .addField(`<${small_fish_emoji}> Small x ${small_sold}`, `\`\`\`${small_sold * small_price}\`\`\``, true)
+      .addField(`<${medium_fish_emoji}> Medium x ${medium_sold}`, `\`\`\`${medium_sold * medium_price}\`\`\``, true)
+      .addField(`<${large_fish_emoji}> Large x ${large_sold}`, `\`\`\`${large_sold * large_price}\`\`\``, true)
+      .addField(`<${super_fish_emoji}> Super x ${super_sold}`, `\`\`\`${super_sold * super_price}\`\`\``, true)
+      .addField(`<${legendary_fish_emoji}> Legendary x ${legendary_sold}`, `\`\`\`${legendary_sold * legendary_price}\`\`\``, true)
+      .addField(`<${magikarp_fish_emoji}> Magikarp x ${magikarp_sold}`, `\`\`\`${magikarp_sold * magikarp_price}\`\`\``, true)
+      .addField(`Total Fish`, `${small_sold + medium_sold + large_sold + super_sold + legendary_sold + magikarp_sold}`, true)
+      .addField(`Tokens Gained`, `<${config.fishing_token}> ${money_to_add.format(0)}`, true);
+    message.channel.send(embed)
+
+    let sql_sell_fish = `UPDATE users SET list_fish_inventory = '${inventory.join(',')}', gathering_fish = ${user.gathering_fish + money_to_add} WHERE user_discord = ${user.user_discord}`;
+    client.db.run(sql_sell_fish, (err) => {
+      if(err) return console.error(`fish.js sell_fish() ${err.message}`);
+    })
+  }
+
 }
 
 const view_inventory = (client, user, message) => {
@@ -168,7 +288,28 @@ const view_inventory_history = (client, user, message) => {
 }
 
 const fishing_help = (client, user, message) => {
-  message.reply(`This feature is coming soon!`);
+  let embed_colour = '#' + user.user_colour;
+  if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+
+  let command_array = [];
+  command_array.push(`**=fish** - Go Fishing. *Aliases: =fish fish, =fish catch* ***COST: 200***`);
+  command_array.push(`**=fish inventory** - Display all your current fish. *Aliases: =fish inv*`);
+  command_array.push(`**=fish history** - Display all the fish you have caught. *Aliases: =fish all, =fish hist*`);
+  command_array.push(`**=fish sell <options>** - Turn all your current fish into Fishing Tokens **Do *=fish sell* to view options and prices**`);
+
+  let embed = new Discord.RichEmbed()
+    .setColor(embed_colour)
+    .setAuthor(`Fishing Help - General`, message.author.avatarURL)
+
+    .setTitle(`Current Commands`)
+
+    .addField(`${config.prefix}fish`, `\`\`\`Catch a fish for $200\`\`\``)
+    .addField(`${config.prefix}fish inventory`, `\`\`\`Display all your current fish\`\`\``)
+    .addField(`${config.prefix}fish history`, `\`\`\`Display all fish youve caught\`\`\``)
+    .addField(`${config.prefix}fish sell`, `\`\`\`Display the help menu for selling\`\`\``)
+    .addField(`${config.prefix}fish sell <options>`, `\`\`\`Turn all your fish into Fishing Tokens\`\`\` \`\`\`Options: 'all', 'small', 'medium', 'large', 'super', 'legendary', 'magikarp'\`\`\``);
+
+  message.channel.send(embed)
 }
 
 const fishing_sell_help = (client, user, message) => {
@@ -182,143 +323,139 @@ const fishing_sell_help = (client, user, message) => {
   let legendary_fish_emoji = `:LegendaryFish:517449759313887283`;
   let magikarp_fish_emoji = `:Magikarp:517449753970212875`;
 
-  let command_array = [];
-  command_array.push(`<${small_fish_emoji}> Small Fish \`\`300\`\``);
-  command_array.push(`<${medium_fish_emoji}> Medium Fish \`\`450\`\``);
-  command_array.push(`<${large_fish_emoji}> Large Fish \`\`600\`\``);
-  command_array.push(`<${super_fish_emoji}> Super Fish \`\`1,500\`\``);
-  command_array.push(`<${legendary_fish_emoji}> Legendary Fish \`\`2,500\`\``);
-  command_array.push(`<${magikarp_fish_emoji}> Magikarp \`\`25,000\`\``);
-
   let embed = new Discord.RichEmbed()
     .setColor(embed_colour)
-    .setAuthor(`Fishing Help - Selling`, client.user.avatarURL)
-    .addField(`Current Costs`, command_array.join(`\n`));
+    .setAuthor(`Fishing Help - Selling`, message.author.avatarURL)
+
+    .addField(`<${small_fish_emoji}> Small Fish`, `\`\`\`1\`\`\``, true)
+    .addField(`<${medium_fish_emoji}> Medium Fish`, `\`\`\`2\`\`\``, true)
+    .addField(`<${large_fish_emoji}> Large Fish`, `\`\`\`3\`\`\``, true)
+    .addField(`<${super_fish_emoji}> Super Fish`, `\`\`\`5\`\`\``, true)
+    .addField(`<${legendary_fish_emoji}> Legendary Fish`, `\`\`\`7\`\`\``, true)
+    .addField(`<${magikarp_fish_emoji}> Magikarp`, `\`\`\`25\`\`\``, true)
+    .addField(`Sell Command`, `\`\`\`=fish sell <options> \nOptions: 'all', 'small', 'medium', 'large', 'super', 'legendary', 'magikarp'\`\`\``)
+    .setFooter(`All prices are how many FIshing Tokens you will receive`);
   message.channel.send(embed);
 }
 
 
-exports.run = function(client, message, args){
-  client.guild_info(message.guild.id, '', (guild) => {
-    client.user_info(message.author.id, '', (user) => {
-      if(!guild) return message.reply(`Please re-invite the bot`);
-      if(!user) return message.reply(`Please start your account`);
+exports.run = function(client, message, args, user, guild){
+  if(!user) return message.reply(`Please start your profile in <#${guild.channel_setup}>`)
+  if(!guild) return message.reply(`Please tell an admin to re-invite the bot to the server.`)
 
-      let now = moment().format('x'); // Current UNIX Timestamp
-      let day_millis = 1000 * 60 * 60 * 24;
-      let hour_millis = 1000 * 60 * 60;
-      let minute_millis = 1000 * 60;
+  let now = moment().format('x'); // Current UNIX Timestamp
+  let day_millis = 1000 * 60 * 60 * 24;
+  let hour_millis = 1000 * 60 * 60;
+  let minute_millis = 1000 * 60;
 
-      let check_channel = true;
-      if(user.user_discord == config.botowner) check_channel = false;
-      if(guild.channel_main != message.channel.id && check_channel){
+  let check_channel = true;
+  if(user.user_discord == config.botowner) check_channel = false;
+  if(guild.channel_main != message.channel.id && check_channel){
+    message.delete();
+    return message.reply(`Please only use this command in <#${guild.channel_main}>`).then(msg => msg.delete(5000));
+  }
+
+  let fishing_time_display = (now - (parseInt(user.ts_fish) + (minute_millis * 5))) * -1;
+  let fishing_minutes = ``;
+  let fishing_seconds = ``;
+  let fishing_timer = ``;
+
+  if(!args[0]){ // =fish
+    if(now - user.ts_fish < 5 * 60 * 1000) {
+      message.delete();
+      if(fishing_time_display / minute_millis >= 1){
+        fishing_minutes = Math.floor(fishing_time_display / minute_millis);
+        fishing_timer += `${fishing_minutes} minute${fishing_minutes > 1 ? 's' : ''} `;
+        fishing_time_display = fishing_time_display - (minute_millis * fishing_minutes);
+      }
+      // How many seconds?
+      if(fishing_time_display > 0){
+        fishing_seconds = Math.ceil(fishing_time_display/1000);
+        fishing_timer += `${fishing_seconds} second${fishing_seconds > 1 ? 's' : ''}`;
+      }
+      return message.reply(`Please wait another **${fishing_timer}** before going fishing again.`).then(msg => msg.delete(5000));
+    } else {
+      go_fishing(client, user, message);
+    }
+  } else {
+    switch(args[0].toLowerCase()){ // =fish <args[0]>
+      default:
+      case `fish`:
+      case `catch`:
+      if(now - user.ts_fish < 5 * 60 * 1000) {
         message.delete();
-        return message.reply(`Please only use this command in <#${guild.channel_main}>`).then(msg => msg.delete(5000));
-      }
-
-      let fishing_time_display = (now - (parseInt(user.ts_fish) + (minute_millis * 5))) * -1;
-      let fishing_minutes = ``;
-      let fishing_seconds = ``;
-      let fishing_timer = ``;
-
-      if(!args[0]){ // =fish
-        if(now - user.ts_fish < 5 * 60 * 1000) {
-          message.delete();
-          if(fishing_time_display / minute_millis >= 1){
-            fishing_minutes = Math.floor(fishing_time_display / minute_millis);
-            fishing_timer += `${fishing_minutes} minute${fishing_minutes > 1 ? 's' : ''} `;
-            fishing_time_display = fishing_time_display - (minute_millis * fishing_minutes);
-          }
-          // How many seconds?
-          if(fishing_time_display > 0){
-            fishing_seconds = Math.ceil(fishing_time_display/1000);
-            fishing_timer += `${fishing_seconds} second${fishing_seconds > 1 ? 's' : ''}`;
-          }
-          return message.reply(`Please wait another **${fishing_timer}** before going fishing again.`).then(msg => msg.delete(5000));
-        } else {
-          go_fishing(client, user, message);
+        if(fishing_time_display / minute_millis >= 1){
+          fishing_minutes = Math.floor(fishing_time_display / minute_millis);
+          fishing_timer += `${fishing_minutes} minute${fishing_minutes > 1 ? 's' : ''} `;
+          fishing_time_display = fishing_time_display - (minute_millis * fishing_minutes);
         }
+        // How many seconds?
+        if(fishing_time_display > 0){
+          fishing_seconds = Math.ceil(fishing_time_display/1000);
+          fishing_timer += `${fishing_seconds} second${fishing_seconds > 1 ? 's' : ''}`;
+        }
+        return message.reply(`Please wait another **${fishing_timer}** before going fishing again.`).then(msg => msg.delete(5000));
       } else {
-        switch(args[0].toLowerCase()){ // =fish <args[0]>
-          default:
-          case `fish`:
-          case `catch`:
-          if(now - user.ts_fish < 5 * 60 * 1000) {
-            message.delete();
-            if(fishing_time_display / minute_millis >= 1){
-              fishing_minutes = Math.floor(fishing_time_display / minute_millis);
-              fishing_timer += `${fishing_minutes} minute${fishing_minutes > 1 ? 's' : ''} `;
-              fishing_time_display = fishing_time_display - (minute_millis * fishing_minutes);
-            }
-            // How many seconds?
-            if(fishing_time_display > 0){
-              fishing_seconds = Math.ceil(fishing_time_display/1000);
-              fishing_timer += `${fishing_seconds} second${fishing_seconds > 1 ? 's' : ''}`;
-            }
-            return message.reply(`Please wait another **${fishing_timer}** before going fishing again.`).then(msg => msg.delete(5000));
-          } else {
-            go_fishing(client, user, message);
+        go_fishing(client, user, message);
+      }
+        break;
+
+      case `sell`:
+        if(!args[1]){ // =fish sell
+            fishing_sell_help(client, user, message);
+        } else { // =fish sell <args[1]>
+          switch(args[1].toLowerCase()){
+            default:
+              fishing_sell_help(client, user, message);
+              break;
+            case `small`:
+            case `medium`:
+            case `large`:
+            case `super`:
+            case `legendary`:
+            case `magikarp`: // =fish sell magikarp
+            case `all`: // =fish sell all
+              sell_fish(client, user, message, args[1].toLowerCase());
+              break;
           }
-            break;
-
-          case `sell`:
-            if(!args[1]){ // =fish sell
-                fishing_sell_help(client, user, message);
-            } else { // =fish sell <args[1]>
-              switch(args[1].toLowerCase()){
-                default:
-                  fishing_sell_help(client, user, message);
-                  break;
-                case `small`:
-                case `medium`:
-                case `large`:
-                case `super`:
-                case `legendary`:
-                case `magikarp`: // =fish sell magikarp
-                case `all`: // =fish sell all
-                  sell_fish(client, user, message, args[1].toLowerCase());
-                  break;
-              }
-            }
-            break;
-
-          case `inventory`:
-          case `invent`:
-          case `inv`:
-            view_inventory(client, user, message);
-            break;
-
-          case `history`:
-          case `all-time`:
-          case `alltime`:
-          case `hist`:
-            view_inventory_history(client, user, message);
-            break;
-
-          case `help`:
-          case `halp`:
-          case `info`:
-          case `imstuck`:
-            fishing_help(client, user, message);
-            break;
         }
-      }
+        break;
 
-      if(now - user.ts_commands > 60 * 1000){
-        let sql_update_command_counter = `UPDATE users SET counter_commands = ${user.counter_commands+1}, ts_commands = ${now} WHERE user_discord = ${user.user_discord}`;
-        client.db.run(sql_update_command_counter, (err) => {
-          if(err) return console.error(`profile.js sql_update_command_counter ${err.message}`);
-        })
-      }
+      case `inventory`:
+      case `invent`:
+      case `inv`:
+        view_inventory(client, user, message);
+        break;
 
+      case `history`:
+      case `all-time`:
+      case `alltime`:
+      case `all`:
+      case `hist`:
+        view_inventory_history(client, user, message);
+        break;
 
-    });
-  });
+      case `help`:
+      case `halp`:
+      case `info`:
+      case `imstuck`:
+        fishing_help(client, user, message);
+        break;
+    }
+  }
+
+  if(now - user.ts_commands > 60 * 1000){
+    let sql_update_command_counter = `UPDATE users SET counter_commands = ${user.counter_commands+1}, ts_commands = ${now} WHERE user_discord = ${user.user_discord}`;
+    client.db.run(sql_update_command_counter, (err) => {
+      if(err) return console.error(`profile.js sql_update_command_counter ${err.message}`);
+    })
+  }
+
 };
 
 exports.conf = {
   aliases: [],
-  permLevel: 0
+  permLevel: 4
 };
 
 exports.help = {

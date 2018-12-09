@@ -187,7 +187,7 @@ client.update_money = async (message, user_id, callback) => {
             await client.db.run(sql, (err) => {
               if(err) return console.error(`index.js update_money ${err.message}`);
               // Update message counter
-              if(time_difference > 60 * 1000){
+              if(time_difference > 60 * 1000 && !message.content.startsWith(config.prefix)){
                 let sql_update_message;
                 let level_up = false;
                 let experience_random = (user.premium_status > 0 ? 2 : 1) * (Math.floor(Math.random() * 10)+1);

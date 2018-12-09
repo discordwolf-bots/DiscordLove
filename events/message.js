@@ -79,7 +79,7 @@ module.exports = async message => {
             return run_command(client, message, params, user, guild);
           });
         } else {
-          return run_command(client, message, params);
+          return run_command(client, message, params, user, guild);
         }
       });
     });

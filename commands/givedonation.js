@@ -8,7 +8,7 @@ Number.prototype.format = function(n, x) {
   return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
 };
 
-exports.run = function(client, message, args){
+exports.run = function(client, message, args, user, guild){
   message.delete();
   let now = moment().format('x'); // Current UNIX Timestamp
   let target = message.mentions.users.first();
@@ -17,12 +17,12 @@ exports.run = function(client, message, args){
   client.guild_info(message.guild.id, '', (guild) => {
     // Has this server been added to the guild Database?
     if(!guild) return message.reply(`Please re-invite the bot`);
-    client.user_info(target.id, '', (user) => {
+    client.user_info(target.id, '', (user_target) => {
       // Does this user have a profile?
-      if(!user){
+      if(!user_target){
         return message.reply(`This user has not started their DiscordLove profile`);
       }
-      let sql_add_coins = `UPDATE users SET user_amount_donated = ${user.user_amount_donated + parseFloat(args[1])} WHERE user_discord = ${target.id}`;
+      let sql_add_coins = `UPDATE users SET user_amount_donated = ${user_target.user_amount_donated + parseFloat(args[1])} WHERE user_discord = ${target.id}`;
       client.db.run(sql_add_coins, [], (err) => {
         if(err) return console.error(err.message);
         message.reply(`${target} has had their donation amount increased by **£${Math.floor(args[1]).format(2)}**`);
