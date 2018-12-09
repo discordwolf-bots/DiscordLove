@@ -32,8 +32,25 @@ client.getInfoValues = async (client) => {
   emoji_fish.push(`:SuperFish:517449759963873302`);
   emoji_fish.push(`:LegendaryFish:517449759313887283`);
   emoji_fish.push(`:Magikarp:517449753970212875`);
-
   client.fish_emoji = emoji_fish;
+  
+  let emoji_mine = [];
+  emoji_mine.push(`:Copper:521464980336541699`);
+  emoji_mine.push(`:Nickel:521465405886169088`);
+  emoji_mine.push(`:Lead:521465783969251348`);
+  emoji_mine.push(`:Amethyst:521466117298978822`);
+  emoji_mine.push(`:Gold:521465161807167490`);
+  emoji_mine.push(`:Uranium:521464981968125963`);
+  client.mine_emoji = emoji_mine;
+
+  let emoji_chop = [];
+  emoji_chop.push(`:SmallFish:517449760349618206`);
+  emoji_chop.push(`:MediumFish:517449758940332053`);
+  emoji_chop.push(`:LargeFish:517449759372607507`);
+  emoji_chop.push(`:SuperFish:517449759963873302`);
+  emoji_chop.push(`:LegendaryFish:517449759313887283`);
+  emoji_chop.push(`:Magikarp:517449753970212875`);
+  client.chop_emoji = emoji_chop;
 
   let sql_count_users = `SELECT count(*) AS count FROM users`;
   let now = moment().format('x');

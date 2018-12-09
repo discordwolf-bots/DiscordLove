@@ -136,6 +136,11 @@ const go_fishing = (client, user, message) => {
   let next_level_requirement = Math.floor(Math.pow(user.experience_fishing_level+1, 1.8)*100);
   if(user.experience_fishing + experience_gained >= next_level_requirement) level_up = true;
 
+  if(user.experience_fishing_level >= ((user.prestige_level+1)*20) && user.prestige_level < 5){
+    level_up = false;
+    experience_gained = 0;
+  }
+
   let new_level = user.experience_fishing_level;
   if(level_up) {
     new_level++;
