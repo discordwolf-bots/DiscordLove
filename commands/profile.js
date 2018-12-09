@@ -45,6 +45,7 @@ exports.run = function(client, message, args, user, guild){
     // Build embed field
     let user_array = [];
     let premium_array = [];
+    let level_array = [];
     let reputation_array = [];
     let crate_array = [];
     let counter_array = [];
@@ -103,21 +104,31 @@ exports.run = function(client, message, args, user, guild){
     }
 
     // Get users premium coins
-    premium_array.push(`Premium Coins: **${user.user_premium_coins.format(0)}**`)
+    premium_array.push(`<${config.premium_token}> Premium Coins: **${user.user_premium_coins.format(0)}**`)
 
     // Get users total donated
     premium_array.push(`Total Donated: **£${user.user_amount_donated.format(2)}**`)
 
     // Show level and experience
     let next_level_requirement = Math.floor(Math.pow(user.user_level+1, 1.8)*100);
-    user_array.push(`Level: **${user.user_level.format(0)}** *${(next_level_requirement - user.user_experience).format(0)} XP Remaining*`)
+    level_array.push(`<${config.chatting_badge}> Chatting Level: **${user.user_level.format(0)}** *${(next_level_requirement - user.user_experience).format(0)} XP Remaining*`)
 
+    // Show gathering levels and experience
+    let next_level_requirement_fishing = Math.floor(Math.pow(user.experience_fishing_level+1, 1.8)*100);
+    level_array.push(`<${config.fishing_token}> Fishing Level: **${user.experience_fishing_level.format(0)}** *${(next_level_requirement_fishing - user.experience_fishing).format(0)} XP Remaining*`)
+    let next_level_requirement_woodcutting = Math.floor(Math.pow(user.experience_woodcutting_level+1, 1.8)*100);
+    level_array.push(`<${config.woodcutting_token}> Woodcutting Level: **${user.experience_woodcutting_level.format(0)}** *${(next_level_requirement_woodcutting - user.experience_woodcutting).format(0)} XP Remaining*`)
+    let next_level_requirement_mining = Math.floor(Math.pow(user.experience_mining_level+1, 1.8)*100);
+    level_array.push(`<${config.mining_token}> Mining Level: **${user.experience_mining_level.format(0)}** *${(next_level_requirement_mining - user.experience_mining).format(0)} XP Remaining*`)
 
     // Get users account number
     user_array.push(`Account Number: **#${(user_account_number + user.user_id).slice(((total_users_number_length-1)*-1))}**`);
 
     // Get users money
-    user_array.push(`Bank: **$${user.user_money.format(2)}**`);
+    user_array.push(`<${config.banker}> Bank: **$${user.user_money.format(2)}**`);
+
+    // Get users diamonds
+    user_array.push(`<${config.diamond}> Diamonds : **${user.user_diamonds.format(0)}**`);
 
     // Get users CPS
     user_array.push(`BPS: **${user.user_cps.format(1)}** *(bank per second)*`)
@@ -230,6 +241,7 @@ exports.run = function(client, message, args, user, guild){
       .setThumbnail(message.author.avatarURL)
       .addField(`Premium`, premium_array.join('\n'))
       .addField(`User`, user_array.join(`\n`))
+      .addField(`Levels`, level_array.join(`\n`))
       .addField(`Reputation`, reputation_array.join(`\n`))
       .addField(`Crates`, crate_array.join(`\n`))
       .addField(`Counters`, counter_array.join(`\n`))

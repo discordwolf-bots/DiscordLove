@@ -21,8 +21,8 @@ exports.run = function(client, message, args, user, guild){
     .setAuthor(`Currencies for ${message.member.displayName}`)
     .setTimestamp()
 
-    .addField(`Bank (${user.user_cps})`, `\`\`\`$${user.user_money.format(2)}\`\`\``, true)
-    .addField(`Premium Coins`, `\`\`\`${user.user_premium_coins.format(0)}\`\`\``, true)
+    .addField(`<${config.banker}> Bank (${user.user_cps} BPS)`, `\`\`\`$${user.user_money.format(2)}\`\`\``, true)
+    .addField(`<${config.premium_token}> Premium Coins`, `\`\`\`${user.user_premium_coins.format(0)}\`\`\``, true)
     .addField(`<${config.diamond}> Diamonds`, `\`\`\`${user.user_diamonds.format(0)}\`\`\``, true)
     .addField(`<${config.fishing_token}> Fishing Tokens`, `\`\`\`${user.gathering_fish.format(0)}\`\`\``, true)
     .addField(`<${config.woodcutting_token}> Woodcutting Tokens`, `\`\`\`${user.gathering_logs.format(0)}\`\`\``, true)

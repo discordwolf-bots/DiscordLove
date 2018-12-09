@@ -498,11 +498,11 @@ exports.run = function(client, message, args, user, guild){
 
 exports.conf = {
   aliases: [],
-  permLevel: 0
+  permLevel: 4
 };
 
 exports.help = {
-  name: "fish",
-  description: "Starts fishing",
-  usage: "fish"
+  name: "chop",
+  description: "Starts woodcutting",
+  usage: "chop"
 }
