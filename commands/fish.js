@@ -40,7 +40,7 @@ const go_fishing = (client, user, message) => {
     magikarp_chance = 1;
   }
 
-  if(user.user_money < fishing_cost) return message.reply(`You need **$${fishing_cost}** to fish`);
+  if(user.user_money < fishing_cost) return message.reply(`You need **$${fishing_cost}** to fish *(currently have $${user.user_money})*`);
 
   let random_number_fishing = Math.floor(Math.random()*1000); // Random number [0-1000)
 
@@ -267,6 +267,7 @@ exports.run = function(client, message, args){
             } else { // =fish sell <args[1]>
               switch(args[1].toLowerCase()){
                 default:
+                  fishing_sell_help(client, user, message);
                   break;
                 case `small`:
                 case `medium`:

@@ -8,9 +8,9 @@ Number.prototype.format = function(n, x) {
   return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
 };
 
-exports.run = function(client, message, args){
-  client.guild_info(message.guild.id, '', (guild) => {
-    client.user_info(message.author.id, '', (user) => {
+exports.run = function(client, message, args, user, guild){
+  // client.guild_info(message.guild.id, '', (guild) => {
+  //   client.user_info(message.author.id, '', (user) => {
 
       let now = moment().format('x'); // Current UNIX Timestamp
       let day_millis = 1000 * 60 * 60 * 24;
@@ -248,8 +248,8 @@ exports.run = function(client, message, args){
           })
         }
       })
-    });
-  });
+  //   });
+  // });
 };
 
 exports.conf = {

@@ -16,8 +16,22 @@ exports.run = function(client, message, args){
     user_colour TEXT DEFAULT 'RAND',
     user_start_ts TEXT DEFAULT 0,
     user_premium_coins INTEGER DEFAULT 0,
+    user_diamonds INTEGER DEFAULT 0,
     user_amount_donated REAL DEFAULT 0.00,
     user_title TEXT,
+
+    prestige_level INTEGER DEFAULT 0,
+
+    experience_fishing INTEGER DEFAULT 0,
+    experience_fishing_level INTEGER DEFAULT 0,
+    experience_woodcutting INTEGER DEFAULT 0,
+    experience_woodcutting_level INTEGER DEFAULT 0,
+    experience_mining INTEGER DEFAULT 0,
+    experience_mining_level INTEGER DEFAULT 0,
+
+    gathering_fish INTEGER DEFAULT 0,
+    gathering_logs INTEGER DEFAULT 0,
+    gathering_ore INTEGER DEFAULT 0,
 
     reputation_total INTEGER DEFAULT 0,
     reputation_given INTEGER DEFAULT 0,
@@ -43,6 +57,10 @@ exports.run = function(client, message, args){
 
     list_fish_inventory TEXT DEFAULT '0,0,0,0,0,0',
     list_fish_inventory_history TEXT DEFAULT '0,0,0,0,0,0',
+    list_logs_inventory TEXT DEFAULT '0,0,0,0,0,0',
+    list_logs_inventory_history TEXT DEFAULT '0,0,0,0,0,0',
+    list_ore_inventory TEXT DEFAULT '0,0,0,0,0,0',
+    list_ore_inventory_history TEXT DEFAULT '0,0,0,0,0,0',
     list_user_inventory TEXT,
 
     crate_daily INTEGER DEFAULT 1,
@@ -56,27 +74,30 @@ exports.run = function(client, message, args){
     ach_speading_love INTEGER DEFAULT 0,
     ach_social INTEGER DEFAULT 0,
     ach_fisher INTEGER DEFAULT 0,
-    ach_crate_opener INTEGER DEFAULT 0
+    ach_crate_opener INTEGER DEFAULT 0,
+    ach_prestige INTEGER DEFAULT 0
 
   )`;
   let sql_step_3 = `INSERT INTO users
     (
-      user_id,user_discord,user_level,user_experience,user_money,user_cps,user_colour,user_start_ts,
+      user_id,user_discord,user_level,user_experience,user_money,user_cps,user_colour,user_start_ts,user_premium_coins,user_amount_donated,user_title,
       reputation_total,reputation_given,reputation_given_today,
       premium_status,premium_time,
-      ts_profile,ts_reputation,ts_fish,ts_message,ts_commands,
-      counter_messages,counter_commands,counter_fishing,counter_fish_caught,counter_money_spent,
-      list_fish_inventory,list_fish_inventory_history,
-      ach_premium,ach_total_spent,ach_commands_used,ach_spammer,ach_speading_love,ach_social,ach_fisher
+      ts_profile,ts_reputation,ts_fish,ts_message,ts_commands,ts_crate_daily,ts_crate_premium,
+      counter_messages,counter_commands,counter_fishing,counter_fish_caught,counter_money_spent,counter_crates_opened,
+      list_fish_inventory,list_fish_inventory_history,list_user_inventory,
+      crate_daily,crate_premium,crate_rare,
+      ach_premium,ach_total_spent,ach_commands_used,ach_spammer,ach_speading_love,ach_social,ach_fisher,ach_crate_opener
     )
     SELECT
-      user_id,user_discord,user_level,user_experience,user_money,user_cps,user_colour,user_start_ts,
-      reputation_total,reputation_given,reputation_given_today,
-      premium_status,premium_time,
-      ts_profile,ts_reputation,ts_fish,ts_message,ts_commands,
-      counter_messages,counter_commands,counter_fishing,counter_fish_caught,counter_money_spent,
-      list_fish_inventory,list_fish_inventory_history,
-      ach_premium,ach_total_spent,ach_commands_used,ach_spammer,ach_speading_love,ach_social,ach_fisher
+    user_id,user_discord,user_level,user_experience,user_money,user_cps,user_colour,user_start_ts,user_premium_coins,user_amount_donated,user_title,
+    reputation_total,reputation_given,reputation_given_today,
+    premium_status,premium_time,
+    ts_profile,ts_reputation,ts_fish,ts_message,ts_commands,ts_crate_daily,ts_crate_premium,
+    counter_messages,counter_commands,counter_fishing,counter_fish_caught,counter_money_spent,counter_crates_opened,
+    list_fish_inventory,list_fish_inventory_history,list_user_inventory,
+    crate_daily,crate_premium,crate_rare,
+    ach_premium,ach_total_spent,ach_commands_used,ach_spammer,ach_speading_love,ach_social,ach_fisher,ach_crate_opener
     FROM users_old
       `;
   let sql_step_4 = `DROP TABLE users_old`;

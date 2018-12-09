@@ -59,7 +59,7 @@ exports.run = function(client, message, args){
         .addField(`Total Servers`, `\`\`\`${client.guilds.size.format(0)}\`\`\``, true)
         .addField(`Total Users`, `\`\`\`${client.totalUsers.format(0)}\`\`\``, true)
         .addField(`Time Since Last Update`, `\`\`\`${init_format}\`\`\``, true)
-        .addField(`Current Version`, `\`\`\`Alpha 0.2\`\`\``, true);
+        .addField(`Current Version`, `\`\`\`Alpha 0.3\`\`\``, true);
       message.channel.send(embed);
     });
   });

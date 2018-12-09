@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const ms = require('ms');
 const moment = require('moment');
 
-const run_command = (client, message, params) => {
+const run_command = (client, message, params, user, guild) => {
   // Check if the message is a command
   let command = "";
   let prefixUsed = false;
@@ -36,7 +36,7 @@ const run_command = (client, message, params) => {
         return message.channel.send({embed : embed});
       }
       // Okay, they can use this command, lets run it
-      cmd.run(client, message, params, perms);
+      cmd.run(client, message, params, user, guild, perms);
     }
   } else {
     // Not a valid command (wrong spelling or just regular chat, do something else)
@@ -76,7 +76,7 @@ module.exports = async message => {
                 });
                 break;
             }
-            return run_command(client, message, params);
+            return run_command(client, message, params, user, guild);
           });
         } else {
           return run_command(client, message, params);
