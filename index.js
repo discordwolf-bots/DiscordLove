@@ -33,7 +33,7 @@ client.getInfoValues = async (client) => {
   emoji_fish.push(`:LegendaryFish:517449759313887283`);
   emoji_fish.push(`:Magikarp:517449753970212875`);
   client.fish_emoji = emoji_fish;
-  
+
   let emoji_mine = [];
   emoji_mine.push(`:Copper:521464980336541699`);
   emoji_mine.push(`:Nickel:521465405886169088`);
@@ -220,6 +220,10 @@ client.update_money = async (message, user_id, callback) => {
                 let level_up = false;
                 let experience_random = ((user.premium_status > 0 ? 2 : 1) * (Math.floor(Math.random() * 10))+1);
                 let next_level_requirement = Math.floor(Math.pow(user.user_level+1, 1.8)*100);
+                if(user.user_level >= ((user.prestige_level+1)*20) && user.prestige_level < 5){
+                  level_up = false;
+                  experience_random = 0;
+                }
                 if(user.user_experience + experience_random >= next_level_requirement){
                   sql_update_message = `UPDATE users SET user_experience = ${user.user_experience + experience_random}, user_level = ${user.user_level + 1}, counter_messages = ${user.counter_messages+1}, ts_message = ${now} WHERE user_discord = ${user.user_discord}`;
                   level_up = true;
@@ -234,6 +238,9 @@ client.update_money = async (message, user_id, callback) => {
                     .setColor(embed_colour)
                     .setAuthor(`${message.member.displayName} has just reached level ${user.user_level + 1}`, message.author.avatarURL)
                     .setTimestamp();
+                  if(user.user_level == ((user.prestige_level+1)*20)){
+                    embed.setFooter(`This is the max level you can reach right now. You need to prestige.`);
+                  }
                   message.channel.send(embed);
 
                   // Set users nickname on the Official DiscordLove Server
