@@ -24,6 +24,17 @@ const log = (msg) => {
 }
 
 client.getInfoValues = async (client) => {
+
+  let emoji_fish = [];
+  emoji_fish.push(`:SmallFish:517449760349618206`);
+  emoji_fish.push(`:MediumFish:517449758940332053`);
+  emoji_fish.push(`:LargeFish:517449759372607507`);
+  emoji_fish.push(`:SuperFish:517449759963873302`);
+  emoji_fish.push(`:LegendaryFish:517449759313887283`);
+  emoji_fish.push(`:Magikarp:517449753970212875`);
+
+  client.fish_emoji = emoji_fish;
+
   let sql_count_users = `SELECT count(*) AS count FROM users`;
   let now = moment().format('x');
   client.db.get(sql_count_users, async (err, row) => {
@@ -190,7 +201,7 @@ client.update_money = async (message, user_id, callback) => {
               if(time_difference > 60 * 1000 && !message.content.startsWith(config.prefix)){
                 let sql_update_message;
                 let level_up = false;
-                let experience_random = (user.premium_status > 0 ? 2 : 1) * (Math.floor(Math.random() * 10)+1);
+                let experience_random = ((user.premium_status > 0 ? 2 : 1) * (Math.floor(Math.random() * 10))+1);
                 let next_level_requirement = Math.floor(Math.pow(user.user_level+1, 1.8)*100);
                 if(user.user_experience + experience_random >= next_level_requirement){
                   sql_update_message = `UPDATE users SET user_experience = ${user.user_experience + experience_random}, user_level = ${user.user_level + 1}, counter_messages = ${user.counter_messages+1}, ts_message = ${now} WHERE user_discord = ${user.user_discord}`;

@@ -157,13 +157,6 @@ const go_fishing = (client, user, message) => {
 const sell_fish = (client, user, message, type) => {
   let inventory = user.list_fish_inventory.split(',');
 
-  let small_fish_emoji = `:SmallFish:517449760349618206`;
-  let medium_fish_emoji = `:MediumFish:517449758940332053`;
-  let large_fish_emoji = `:LargeFish:517449759372607507`;
-  let super_fish_emoji = `:SuperFish:517449759963873302`;
-  let legendary_fish_emoji = `:LegendaryFish:517449759313887283`;
-  let magikarp_fish_emoji = `:Magikarp:517449753970212875`;
-
   let small_price = 1;
   let medium_price = 2;
   let large_price = 3;
@@ -260,12 +253,12 @@ const sell_fish = (client, user, message, type) => {
     let embed = new Discord.RichEmbed()
       .setColor(embed_colour)
       .setAuthor(`Sale Receipt for ${message.member.displayName}`, message.author.avatarURL)
-      .addField(`<${small_fish_emoji}> Small x ${small_sold}`, `\`\`\`${small_sold * small_price}\`\`\``, true)
-      .addField(`<${medium_fish_emoji}> Medium x ${medium_sold}`, `\`\`\`${medium_sold * medium_price}\`\`\``, true)
-      .addField(`<${large_fish_emoji}> Large x ${large_sold}`, `\`\`\`${large_sold * large_price}\`\`\``, true)
-      .addField(`<${super_fish_emoji}> Super x ${super_sold}`, `\`\`\`${super_sold * super_price}\`\`\``, true)
-      .addField(`<${legendary_fish_emoji}> Legendary x ${legendary_sold}`, `\`\`\`${legendary_sold * legendary_price}\`\`\``, true)
-      .addField(`<${magikarp_fish_emoji}> Magikarp x ${magikarp_sold}`, `\`\`\`${magikarp_sold * magikarp_price}\`\`\``, true)
+      .addField(`<${client.fish_emoji[0]}> Small x ${small_sold}`, `\`\`\`${small_sold * small_price}\`\`\``, true)
+      .addField(`<${client.fish_emoji[1]}> Medium x ${medium_sold}`, `\`\`\`${medium_sold * medium_price}\`\`\``, true)
+      .addField(`<${client.fish_emoji[2]}> Large x ${large_sold}`, `\`\`\`${large_sold * large_price}\`\`\``, true)
+      .addField(`<${client.fish_emoji[3]}> Super x ${super_sold}`, `\`\`\`${super_sold * super_price}\`\`\``, true)
+      .addField(`<${client.fish_emoji[4]}> Legendary x ${legendary_sold}`, `\`\`\`${legendary_sold * legendary_price}\`\`\``, true)
+      .addField(`<${client.fish_emoji[5]}> Magikarp x ${magikarp_sold}`, `\`\`\`${magikarp_sold * magikarp_price}\`\`\``, true)
       .addField(`Total Fish`, `${small_sold + medium_sold + large_sold + super_sold + legendary_sold + magikarp_sold}`, true)
       .addField(`Tokens Gained`, `<${config.fishing_token}> ${money_to_add.format(0)}`, true);
     message.channel.send(embed)
@@ -281,24 +274,17 @@ const sell_fish = (client, user, message, type) => {
 const view_inventory = (client, user, message) => {
   let inventory = user.list_fish_inventory.split(',');
 
-  let small_fish_emoji = `:SmallFish:517449760349618206`;
-  let medium_fish_emoji = `:MediumFish:517449758940332053`;
-  let large_fish_emoji = `:LargeFish:517449759372607507`;
-  let super_fish_emoji = `:SuperFish:517449759963873302`;
-  let legendary_fish_emoji = `:LegendaryFish:517449759313887283`;
-  let magikarp_fish_emoji = `:Magikarp:517449753970212875`;
-
   let embed_colour = '#' + user.user_colour;
   if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
   let embed = new Discord.RichEmbed()
     .setAuthor(`Fishing Inventory of ${message.member.displayName}`, message.author.avatarURL)
     .setColor(embed_colour)
-    .addField(`<${small_fish_emoji}> Small Fish`, `\`\`\`${parseInt(inventory[0]).format(0)}\`\`\``, true)
-    .addField(`<${medium_fish_emoji}> Medium Fish`, `\`\`\`${parseInt(inventory[1]).format(0)}\`\`\``, true)
-    .addField(`<${large_fish_emoji}> Large Fish`, `\`\`\`${parseInt(inventory[2]).format(0)}\`\`\``, true)
-    .addField(`<${super_fish_emoji}> Super Fish`, `\`\`\`${parseInt(inventory[3]).format(0)}\`\`\``, true)
-    .addField(`<${legendary_fish_emoji}> Legendary Fish`, `\`\`\`${parseInt(inventory[4]).format(0)}\`\`\``, true)
-    .addField(`<${magikarp_fish_emoji}> Magikarp`, `\`\`\`${parseInt(inventory[5]).format(0)}\`\`\``, true)
+    .addField(`<${client.fish_emoji[0]}> Small Fish`, `\`\`\`${parseInt(inventory[0]).format(0)}\`\`\``, true)
+    .addField(`<${client.fish_emoji[1]}> Medium Fish`, `\`\`\`${parseInt(inventory[1]).format(0)}\`\`\``, true)
+    .addField(`<${client.fish_emoji[2]}> Large Fish`, `\`\`\`${parseInt(inventory[2]).format(0)}\`\`\``, true)
+    .addField(`<${client.fish_emoji[3]}> Super Fish`, `\`\`\`${parseInt(inventory[3]).format(0)}\`\`\``, true)
+    .addField(`<${client.fish_emoji[4]}> Legendary Fish`, `\`\`\`${parseInt(inventory[4]).format(0)}\`\`\``, true)
+    .addField(`<${client.fish_emoji[5]}> Magikarp`, `\`\`\`${parseInt(inventory[5]).format(0)}\`\`\``, true)
     .setTimestamp();
   message.channel.send(embed);
 }
@@ -306,24 +292,17 @@ const view_inventory = (client, user, message) => {
 const view_inventory_history = (client, user, message) => {
   let inventory = user.list_fish_inventory_history.split(',');
 
-  let small_fish_emoji = `:SmallFish:517449760349618206`;
-  let medium_fish_emoji = `:MediumFish:517449758940332053`;
-  let large_fish_emoji = `:LargeFish:517449759372607507`;
-  let super_fish_emoji = `:SuperFish:517449759963873302`;
-  let legendary_fish_emoji = `:LegendaryFish:517449759313887283`;
-  let magikarp_fish_emoji = `:Magikarp:517449753970212875`;
-
   let embed_colour = '#' + user.user_colour;
   if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
   let embed = new Discord.RichEmbed()
     .setAuthor(`Fishing Inventory (All-Time) of ${message.member.displayName}`, message.author.avatarURL)
     .setColor(embed_colour)
-    .addField(`<${small_fish_emoji}> Small Fish`, `\`\`\`${parseInt(inventory[0]).format(0)}\`\`\``, true)
-    .addField(`<${medium_fish_emoji}> Medium Fish`, `\`\`\`${parseInt(inventory[1]).format(0)}\`\`\``, true)
-    .addField(`<${large_fish_emoji}> Large Fish`, `\`\`\`${parseInt(inventory[2]).format(0)}\`\`\``, true)
-    .addField(`<${super_fish_emoji}> Super Fish`, `\`\`\`${parseInt(inventory[3]).format(0)}\`\`\``, true)
-    .addField(`<${legendary_fish_emoji}> Legendary Fish`, `\`\`\`${parseInt(inventory[4]).format(0)}\`\`\``, true)
-    .addField(`<${magikarp_fish_emoji}> Magikarp`, `\`\`\`${parseInt(inventory[5]).format(0)}\`\`\``, true)
+    .addField(`<${client.fish_emoji[0]}> Small Fish`, `\`\`\`${parseInt(inventory[0]).format(0)}\`\`\``, true)
+    .addField(`<${client.fish_emoji[1]}> Medium Fish`, `\`\`\`${parseInt(inventory[1]).format(0)}\`\`\``, true)
+    .addField(`<${client.fish_emoji[2]}> Large Fish`, `\`\`\`${parseInt(inventory[2]).format(0)}\`\`\``, true)
+    .addField(`<${client.fish_emoji[3]}> Super Fish`, `\`\`\`${parseInt(inventory[3]).format(0)}\`\`\``, true)
+    .addField(`<${client.fish_emoji[4]}> Legendary Fish`, `\`\`\`${parseInt(inventory[4]).format(0)}\`\`\``, true)
+    .addField(`<${client.fish_emoji[5]}> Magikarp`, `\`\`\`${parseInt(inventory[5]).format(0)}\`\`\``, true)
     .setTimestamp();
   message.channel.send(embed);
 }
@@ -357,23 +336,16 @@ const fishing_sell_help = (client, user, message) => {
   let embed_colour = '#' + user.user_colour;
   if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
 
-  let small_fish_emoji = `:SmallFish:517449760349618206`;
-  let medium_fish_emoji = `:MediumFish:517449758940332053`;
-  let large_fish_emoji = `:LargeFish:517449759372607507`;
-  let super_fish_emoji = `:SuperFish:517449759963873302`;
-  let legendary_fish_emoji = `:LegendaryFish:517449759313887283`;
-  let magikarp_fish_emoji = `:Magikarp:517449753970212875`;
-
   let embed = new Discord.RichEmbed()
     .setColor(embed_colour)
     .setAuthor(`Fishing Help - Selling`, message.author.avatarURL)
 
-    .addField(`<${small_fish_emoji}> Small Fish`, `\`\`\`1\`\`\``, true)
-    .addField(`<${medium_fish_emoji}> Medium Fish`, `\`\`\`2\`\`\``, true)
-    .addField(`<${large_fish_emoji}> Large Fish`, `\`\`\`3\`\`\``, true)
-    .addField(`<${super_fish_emoji}> Super Fish`, `\`\`\`5\`\`\``, true)
-    .addField(`<${legendary_fish_emoji}> Legendary Fish`, `\`\`\`7\`\`\``, true)
-    .addField(`<${magikarp_fish_emoji}> Magikarp`, `\`\`\`25\`\`\``, true)
+    .addField(`<${client.fish_emoji[0]}> Small Fish`, `\`\`\`1\`\`\``, true)
+    .addField(`<${client.fish_emoji[1]}> Medium Fish`, `\`\`\`2\`\`\``, true)
+    .addField(`<${client.fish_emoji[2]}> Large Fish`, `\`\`\`3\`\`\``, true)
+    .addField(`<${client.fish_emoji[3]}> Super Fish`, `\`\`\`5\`\`\``, true)
+    .addField(`<${client.fish_emoji[4]}> Legendary Fish`, `\`\`\`7\`\`\``, true)
+    .addField(`<${client.fish_emoji[5]}> Magikarp`, `\`\`\`25\`\`\``, true)
     .addField(`Sell Command`, `\`\`\`=fish sell <options> \nOptions: 'all', 'small', 'medium', 'large', 'super', 'legendary', 'magikarp'\`\`\``)
     .setFooter(`All prices are how many FIshing Tokens you will receive`);
   message.channel.send(embed);
