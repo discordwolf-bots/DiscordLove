@@ -109,6 +109,9 @@ exports.run = function(client, message, args, user, guild){
     // Get users total donated
     premium_array.push(`Total Donated: **£${user.user_amount_donated.format(2)}**`)
 
+    // Get users prestige level
+    level_array.push(`Prestige Level: **${user.prestige_level}**`);
+
     // Show level and experience
     let next_level_requirement = Math.floor(Math.pow(user.user_level+1, 1.8)*100);
     level_array.push(`<${config.chatting_badge}> Chatting Level: **${user.user_level.format(0)} ${user.prestige_level == 5 ? '' : ` / ${(user.prestige_level+1)*20}`}** *${(next_level_requirement - user.user_experience).format(0)} XP Remaining*`)
