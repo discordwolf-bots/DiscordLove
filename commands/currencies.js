@@ -25,8 +25,8 @@ exports.run = function(client, message, args, user, guild){
     .addField(`<${config.premium_token}> Premium Coins`, `\`\`\`${user.user_premium_coins.format(0)}\`\`\``, true)
     .addField(`<${config.diamond}> Diamonds`, `\`\`\`${user.user_diamonds.format(0)}\`\`\``, true)
     .addField(`<${config.fishing_token}> Fishing Tokens`, `\`\`\`${user.gathering_fish.format(0)}\`\`\``, true)
-    .addField(`<${config.woodcutting_token}> Woodcutting Tokens`, `\`\`\`${user.gathering_logs.format(0)}\`\`\``, true)
-    .addField(`<${config.mining_token}> Mining Tokens`, `\`\`\`${user.gathering_ore.format(0)}\`\`\``, true);
+    .addField(`<${config.mining_token}> Mining Tokens`, `\`\`\`${user.gathering_ore.format(0)}\`\`\``, true)
+    .addField(`<${config.woodcutting_token}> Woodcutting Tokens`, `\`\`\`${user.gathering_logs.format(0)}\`\`\``, true);
 
   message.channel.send(embed);
 

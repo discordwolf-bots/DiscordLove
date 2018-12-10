@@ -59,7 +59,7 @@ exports.run = function(client, message, args, user, guild){
     .addField(`Total Servers`, `\`\`\`${client.guilds.size.format(0)}\`\`\``, true)
     .addField(`Total Users`, `\`\`\`${client.totalUsers.format(0)}\`\`\``, true)
     .addField(`Time Since Last Update`, `\`\`\`${init_format}\`\`\``, true)
-    .addField(`Current Version`, `\`\`\`Alpha 0.3\`\`\``, true);
+    .addField(`Current Version`, `\`\`\`Alpha 0.4\`\`\``, true);
   message.channel.send(embed);
 };
 
