@@ -10,6 +10,9 @@
 [X] new command to give people premium_coins
 [X] new command to add a persons donation
 [] Titles (?) [ Need title name ideas ]
+[] Prestige system [ when user reaches prestige level + 1 * 20 cannot level more ]
+[] Way of increasing prestige
+[] Prestige benefits for skills
 
 [ Reputation ]
 [X] Can give reputation
@@ -25,26 +28,48 @@
 [ Timestamps ]
 [X] Timestamp for how often you can show your profile
 [X] Timestamp for how often you can give reputation
-[] Timestamp for how often you can fish
-[] Timestamp for how often it updates your message counter
-[] Timestamp for how often it updates your command counter
+[X] Timestamp for how often you can fish
+[] Timestamp for how often you can mine
+[] Timestamp for how often you can chop
+[X] Timestamp for how often it updates your message counter
+[X] Timestamp for how often it updates your command counter
 [] Timestamp for daily crates
 [] Timestamp for premium crates
 
 [ Counters ]
 [X] Count messages sent [ limit to 1 every 1 minute to prevent flooding ]
 [X] Count commands used [ limit to 1 every 1 minute to prevent flooding ]
-[] Count times used =fish
-[] Count times caught a fish
-[] Count money spent
+[X] Count times used =fish
+[X] Count times caught a fish
+[] Count times used =mine
+[] Count times mined an ore
+[] Count times used =chop
+[] Count times chopped a log
+[X] Count money spent
 [] Count crates opened
 
 [ Lists ]
-[] Keep a track of fish caught
-[] Keep a track of fish history [ how many of each type have they caught ]
-[] Add a fishing command
-[] Add a fishing sell command [ PREMIUM get double money when selling]
-[] Add a shop where you can use the money you gain [ competition for ideas? ]
+[X] =fish
+[X] =fish inv
+[X] =fish history
+[X] =fish help
+[X] =fish sell [ help command ]
+[X] =fish sell <options>
+[X] Fishing Experience and Levels
+[] =mine
+[X] =mine inv
+[] =mine history
+[] =mine help
+[] =mine sell [ help command ]
+[] =mine sell <options>
+[] Mining Experience and Levels
+[] =chop
+[] =chop inv
+[] =chop history
+[] =chop help
+[] =chop sell [ help command ]
+[] =chop sell <options>
+[] Woodcutting Experience and Levels
 
 [ Crates ]
 [X] Gain Rare Crates randomly from chatting [ PREMIUM get better chance ]
@@ -61,5 +86,8 @@
 [] Achievement for giving rep (+0.1)
 [] Achievement for receiving rep (+0.1)
 [] Achievement for catching fish (+0.1)
+[] Achievement for mining ore (+0.1)
+[] Achievement for chopping logs (+0.1)
 [] Achievement for opening crates (+0.1)
+[] Achievement for prestiging (+0.1)
 [] Each "Achievement Point" can be used in a shop (with money) to buy CPS upgrades (?)

@@ -111,15 +111,15 @@ exports.run = function(client, message, args, user, guild){
 
     // Show level and experience
     let next_level_requirement = Math.floor(Math.pow(user.user_level+1, 1.8)*100);
-    level_array.push(`<${config.chatting_badge}> Chatting Level: **${user.user_level.format(0)}** *${(next_level_requirement - user.user_experience).format(0)} XP Remaining*`)
+    level_array.push(`<${config.chatting_badge}> Chatting Level: **${user.user_level.format(0)} ${user.prestige_level == 5 ? '' : ` / ${(user.prestige_level+1)*20}`}** *${(next_level_requirement - user.user_experience).format(0)} XP Remaining*`)
 
     // Show gathering levels and experience
     let next_level_requirement_fishing = Math.floor(Math.pow(user.experience_fishing_level+1, 1.8)*100);
-    level_array.push(`<${config.fishing_token}> Fishing Level: **${user.experience_fishing_level.format(0)}** *${(next_level_requirement_fishing - user.experience_fishing).format(0)} XP Remaining*`)
+    level_array.push(`<${config.fishing_token}> Fishing Level: **${user.experience_fishing_level.format(0)} ${user.prestige_level == 5 ? '' : `/ ${(user.prestige_level+1)*20}`}** *${(next_level_requirement_fishing - user.experience_fishing).format(0)} XP Remaining*`)
     let next_level_requirement_woodcutting = Math.floor(Math.pow(user.experience_woodcutting_level+1, 1.8)*100);
-    level_array.push(`<${config.woodcutting_token}> Woodcutting Level: **${user.experience_woodcutting_level.format(0)}** *${(next_level_requirement_woodcutting - user.experience_woodcutting).format(0)} XP Remaining*`)
+    level_array.push(`<${config.woodcutting_token}> Woodcutting Level: **${user.experience_woodcutting_level.format(0)} ${user.prestige_level == 5 ? '' : `/ ${(user.prestige_level+1)*20}`}** *${(next_level_requirement_woodcutting - user.experience_woodcutting).format(0)} XP Remaining*`)
     let next_level_requirement_mining = Math.floor(Math.pow(user.experience_mining_level+1, 1.8)*100);
-    level_array.push(`<${config.mining_token}> Mining Level: **${user.experience_mining_level.format(0)}** *${(next_level_requirement_mining - user.experience_mining).format(0)} XP Remaining*`)
+    level_array.push(`<${config.mining_token}> Mining Level: **${user.experience_mining_level.format(0)} ${user.prestige_level == 5 ? '' : ` / ${(user.prestige_level+1)*20}`}** *${(next_level_requirement_mining - user.experience_mining).format(0)} XP Remaining*`)
 
     // Get users account number
     user_array.push(`Account Number: **#${(user_account_number + user.user_id).slice(((total_users_number_length-1)*-1))}**`);
