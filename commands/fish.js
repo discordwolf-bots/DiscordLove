@@ -401,21 +401,22 @@ exports.run = function(client, message, args, user, guild){
   let fishing_seconds = ``;
   let fishing_timer = ``;
 
+  if(fishing_time_display / minute_millis >= 1){
+    fishing_minutes = Math.floor(fishing_time_display / minute_millis);
+    fishing_timer += `${fishing_minutes} minute${fishing_minutes > 1 ? 's' : ''} `;
+    fishing_time_display = fishing_time_display - (minute_millis * fishing_minutes);
+  }
+  // How many seconds?
+  if(fishing_time_display > 0){
+    fishing_seconds = Math.ceil(fishing_time_display/1000);
+    fishing_timer += `${fishing_seconds} second${fishing_seconds > 1 ? 's' : ''}`;
+  }
+
   if(!args[0]){ // =fish
     if(now - user.ts_fish < 3 * 60 * 1000
     // && user.user_id != 1
     ) {
       message.delete();
-      if(fishing_time_display / minute_millis >= 1){
-        fishing_minutes = Math.floor(fishing_time_display / minute_millis);
-        fishing_timer += `${fishing_minutes} minute${fishing_minutes > 1 ? 's' : ''} `;
-        fishing_time_display = fishing_time_display - (minute_millis * fishing_minutes);
-      }
-      // How many seconds?
-      if(fishing_time_display > 0){
-        fishing_seconds = Math.ceil(fishing_time_display/1000);
-        fishing_timer += `${fishing_seconds} second${fishing_seconds > 1 ? 's' : ''}`;
-      }
       return message.reply(`Please wait another **${fishing_timer}** before going fishing again.`).then(msg => msg.delete(5000));
     } else {
       go_fishing(client, user, message);
@@ -427,16 +428,6 @@ exports.run = function(client, message, args, user, guild){
       case `catch`:
       if(now - user.ts_fish < 3 * 60 * 1000) {
         message.delete();
-        if(fishing_time_display / minute_millis >= 1){
-          fishing_minutes = Math.floor(fishing_time_display / minute_millis);
-          fishing_timer += `${fishing_minutes} minute${fishing_minutes > 1 ? 's' : ''} `;
-          fishing_time_display = fishing_time_display - (minute_millis * fishing_minutes);
-        }
-        // How many seconds?
-        if(fishing_time_display > 0){
-          fishing_seconds = Math.ceil(fishing_time_display/1000);
-          fishing_timer += `${fishing_seconds} second${fishing_seconds > 1 ? 's' : ''}`;
-        }
         return message.reply(`Please wait another **${fishing_timer}** before going fishing again.`).then(msg => msg.delete(5000));
       } else {
         go_fishing(client, user, message);
