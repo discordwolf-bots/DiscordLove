@@ -120,15 +120,18 @@ const go_fishing = (client, user, message) => {
 
   let embed_colour = '#' + user.user_colour;
   if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+  let embed = new Discord.RichEmbed()
+    .setColor(embed_colour);
   if(caught_a_fish){
     // Tell them what fish they caught
-    let embed = new Discord.RichEmbed()
-      .setColor(embed_colour)
-      .setAuthor(`${message.member.displayName} caught a ${fish_name} (+${experience_gained.format(0)} exp)`, message.author.avatarURL)
+    embed.setAuthor(`${message.member.displayName} caught a ${fish_name} (+${experience_gained.format(0)} exp)`, message.author.avatarURL)
       .setFooter(fish_pun);
     message.channel.send(embed);
   } else {
     // They didnt catch a fish, but they still got experience
+    embed.setAuthor(`${message.member.displayName} failed to catch a fish (+${experience_gained.format(0)} exp)`, message.author.avatarURL)
+      .setFooter(`Better luck next time`);
+    message.channel.send(embed);
   }
 
   let level_up = false;
@@ -373,13 +376,13 @@ exports.run = function(client, message, args, user, guild){
     return message.reply(`Please only use this command in <#${guild.channel_main}>`).then(msg => msg.delete(5000));
   }
 
-  let fishing_time_display = (now - (parseInt(user.ts_fish) + (minute_millis * 5))) * -1;
+  let fishing_time_display = (now - (parseInt(user.ts_fish) + (minute_millis * 3))) * -1;
   let fishing_minutes = ``;
   let fishing_seconds = ``;
   let fishing_timer = ``;
 
   if(!args[0]){ // =fish
-    if(now - user.ts_fish < 5 * 60 * 1000
+    if(now - user.ts_fish < 3 * 60 * 1000
     // && user.user_id != 1
     ) {
       message.delete();
@@ -402,7 +405,7 @@ exports.run = function(client, message, args, user, guild){
       default:
       case `fish`:
       case `catch`:
-      if(now - user.ts_fish < 5 * 60 * 1000) {
+      if(now - user.ts_fish < 3 * 60 * 1000) {
         message.delete();
         if(fishing_time_display / minute_millis >= 1){
           fishing_minutes = Math.floor(fishing_time_display / minute_millis);

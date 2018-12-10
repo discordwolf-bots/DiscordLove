@@ -58,7 +58,7 @@
 [X] Fishing Experience and Levels
 [] =mine
 [X] =mine inv
-[] =mine history
+[X] =mine history
 [] =mine help
 [] =mine sell [ help command ]
 [] =mine sell <options>

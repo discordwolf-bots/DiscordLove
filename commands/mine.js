@@ -120,15 +120,18 @@ const go_fishing = (client, user, message) => {
 
   let embed_colour = '#' + user.user_colour;
   if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+  let embed = new Discord.RichEmbed()
+    .setColor(embed_colour);
   if(caught_a_fish){
     // Tell them what fish they caught
-    let embed = new Discord.RichEmbed()
-      .setColor(embed_colour)
-      .setAuthor(`${message.member.displayName} caught a ${fish_name} (+${experience_gained.format(0)} exp)`, message.author.avatarURL)
+    embed.setAuthor(`${message.member.displayName} caught a ${fish_name} (+${experience_gained.format(0)} exp)`, message.author.avatarURL)
       .setFooter(fish_pun);
     message.channel.send(embed);
   } else {
     // They didnt catch a fish, but they still got experience
+    embed.setAuthor(`${message.member.displayName} failed to catch a fish (+${experience_gained.format(0)} exp)`, message.author.avatarURL)
+      .setFooter(`Better luck next time`);
+    message.channel.send(embed);
   }
 
   let level_up = false;
@@ -297,26 +300,19 @@ const view_inventory = (client, user, message) => {
 }
 
 const view_inventory_history = (client, user, message) => {
-  let inventory = user.list_fish_inventory_history.split(',');
-
-  let small_fish_emoji = `:SmallFish:517449760349618206`;
-  let medium_fish_emoji = `:MediumFish:517449758940332053`;
-  let large_fish_emoji = `:LargeFish:517449759372607507`;
-  let super_fish_emoji = `:SuperFish:517449759963873302`;
-  let legendary_fish_emoji = `:LegendaryFish:517449759313887283`;
-  let magikarp_fish_emoji = `:Magikarp:517449753970212875`;
+  let inventory = user.list_ore_inventory_history.split(',');
 
   let embed_colour = '#' + user.user_colour;
   if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
   let embed = new Discord.RichEmbed()
-    .setAuthor(`Fishing Inventory (All-Time) of ${message.member.displayName}`, message.author.avatarURL)
+    .setAuthor(`Mining Inventory (All-Time) of ${message.member.displayName}`, message.author.avatarURL)
     .setColor(embed_colour)
-    .addField(`<${small_fish_emoji}> Small Fish`, `\`\`\`${parseInt(inventory[0]).format(0)}\`\`\``, true)
-    .addField(`<${medium_fish_emoji}> Medium Fish`, `\`\`\`${parseInt(inventory[1]).format(0)}\`\`\``, true)
-    .addField(`<${large_fish_emoji}> Large Fish`, `\`\`\`${parseInt(inventory[2]).format(0)}\`\`\``, true)
-    .addField(`<${super_fish_emoji}> Super Fish`, `\`\`\`${parseInt(inventory[3]).format(0)}\`\`\``, true)
-    .addField(`<${legendary_fish_emoji}> Legendary Fish`, `\`\`\`${parseInt(inventory[4]).format(0)}\`\`\``, true)
-    .addField(`<${magikarp_fish_emoji}> Magikarp`, `\`\`\`${parseInt(inventory[5]).format(0)}\`\`\``, true)
+    .addField(`<${client.mine_emoji[0]}> Copper Ore`, `\`\`\`${parseInt(inventory[0]).format(0)}\`\`\``, true)
+    .addField(`<${client.mine_emoji[1]}> Nickel Ore`, `\`\`\`${parseInt(inventory[1]).format(0)}\`\`\``, true)
+    .addField(`<${client.mine_emoji[2]}> Lead Ore`, `\`\`\`${parseInt(inventory[2]).format(0)}\`\`\``, true)
+    .addField(`<${client.mine_emoji[3]}> Amethyst Ore`, `\`\`\`${parseInt(inventory[3]).format(0)}\`\`\``, true)
+    .addField(`<${client.mine_emoji[4]}> Gold Ore`, `\`\`\`${parseInt(inventory[4]).format(0)}\`\`\``, true)
+    .addField(`<${client.mine_emoji[5]}> Uranium Ore`, `\`\`\`${parseInt(inventory[5]).format(0)}\`\`\``, true)
     .setTimestamp();
   message.channel.send(embed);
 }

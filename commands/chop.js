@@ -120,15 +120,18 @@ const go_fishing = (client, user, message) => {
 
   let embed_colour = '#' + user.user_colour;
   if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
+  let embed = new Discord.RichEmbed()
+    .setColor(embed_colour);
   if(caught_a_fish){
     // Tell them what fish they caught
-    let embed = new Discord.RichEmbed()
-      .setColor(embed_colour)
-      .setAuthor(`${message.member.displayName} caught a ${fish_name} (+${experience_gained.format(0)} exp)`, message.author.avatarURL)
+    embed.setAuthor(`${message.member.displayName} caught a ${fish_name} (+${experience_gained.format(0)} exp)`, message.author.avatarURL)
       .setFooter(fish_pun);
     message.channel.send(embed);
   } else {
     // They didnt catch a fish, but they still got experience
+    embed.setAuthor(`${message.member.displayName} failed to catch a fish (+${experience_gained.format(0)} exp)`, message.author.avatarURL)
+      .setFooter(`Better luck next time`);
+    message.channel.send(embed);
   }
 
   let level_up = false;
