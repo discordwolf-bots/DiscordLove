@@ -23,10 +23,10 @@ exports.run = function(client, message, args, user, guild){
 
     .addField(`Prestige Level`, `\`\`\`${user.prestige_level}\`\`\``, true)
     .addField(`Max Level`, `\`\`\`${user.prestige_level < 5 ? `${(user.prestige_level+1)*20}` : `No Max`}\`\`\``, true)
-    .addField(`<${config.chatting_badge}> Chatting Level`, `\`\`\`${user.user_level.format(0)}\`\`\``, true)
-    .addField(`<${config.fishing_token}> Fishing Level`, `\`\`\`${user.experience_fishing_level.format(0)}\`\`\``, true)
-    .addField(`<${config.mining_token}> Mining Level`, `\`\`\`${user.experience_mining_level.format(0)}\`\`\``, true)
-    .addField(`<${config.woodcutting_token}> Woodcutting Level`, `\`\`\`${user.experience_woodcutting_level.format(0)}\`\`\``, true);
+    .addField(`<${config.chatting_badge}> Chatting Level`, `\`\`\`${user.user_level.format(0)} (${user.user_experience.format(0)} XP)\`\`\``, true)
+    .addField(`<${config.fishing_token}> Fishing Level`, `\`\`\`${user.experience_fishing_level.format(0)} (${user.experience_fishing.format(0)} XP)\`\`\``, true)
+    .addField(`<${config.mining_token}> Mining Level`, `\`\`\`${user.experience_mining_level.format(0)} (${user.experience_mining.format(0)} XP)\`\`\``, true)
+    .addField(`<${config.woodcutting_token}> Woodcutting Level`, `\`\`\`${user.experience_woodcutting_level.format(0)} (${user.experience_woodcutting.format(0)} XP)\`\`\``, true);
 
   message.channel.send(embed);
 
