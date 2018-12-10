@@ -20,16 +20,22 @@ const go_fishing = (client, user, message) => {
   let magikarp_chance = 0;
 
   let fail_experience_max = 0;
+
   let small_experience_min = 5;
   let small_experience_max = 10;
+
   let medium_experience_min = 10;
   let medium_experience_max = 20;
+
   let large_experience_min = 20;
   let large_experience_max = 30;
+
   let super_experience_min = 30;
   let super_experience_max = 50;
+
   let legendary_experience_min = 50;
   let legendary_experience_max = 70;
+
   let magikarp_experience_min = 70;
   let magikarp_experience_max = 250;
 
@@ -71,6 +77,8 @@ const go_fishing = (client, user, message) => {
   let caught_a_fish = true;
   let fish_name = ``;
   let fish_pun = ``;
+  let fish_emoji = ``;
+  let fish_emoji_part = ``;
 
   let experience_gained = 0;
 
@@ -79,35 +87,47 @@ const go_fishing = (client, user, message) => {
     experience_gained = ((user.premium_status > 0 ? 2 : 1) * (Math.floor(Math.random() * fail_experience_max))+1);
   } else if(random_number_fishing < small_rate){
     fish_name = `Small Fish`;
+    fish_emoji_part = client.fish_emoji[0].slice(1, client.fish_emoji[0].length);
+    fish_emoji = fish_emoji_part.slice(fish_emoji_part.indexOf(`:`)+1, fish_emoji_part.length);
     fish_pun = `Oh? There was something there`;
     inventory[0] = parseInt(inventory[0]) + 1;
     inventory_history[0] = parseInt(inventory_history[0]) + 1;
     experience_gained = ((user.premium_status > 0 ? 2 : 1) * (Math.floor(Math.random() * ((small_experience_max - small_experience_min) + 1) + small_experience_min)));
   } else if(random_number_fishing < medium_rate){
+    fish_emoji_part = client.fish_emoji[1].slice(1, client.fish_emoji[1].length);
+    fish_emoji = fish_emoji_part.slice(fish_emoji_part.indexOf(`:`)+1, fish_emoji_part.length);
     fish_name = `Medium Fish`;
     fish_pun = `Dont be too disappointed, its still something`
     inventory[1] = parseInt(inventory[1]) + 1;
     inventory_history[1] = parseInt(inventory_history[1]) + 1;
     experience_gained = ((user.premium_status > 0 ? 2 : 1) * (Math.floor(Math.random() * ((medium_experience_max - medium_experience_min) + 1) + medium_experience_min)));
   } else if(random_number_fishing < large_rate){
+    fish_emoji_part = client.fish_emoji[2].slice(1, client.fish_emoji[2].length);
+    fish_emoji = fish_emoji_part.slice(fish_emoji_part.indexOf(`:`)+1, fish_emoji_part.length);
     fish_name = `Large Fish`;
     fish_pun = `It took a bit of a fight, but you won!`
     inventory[2] = parseInt(inventory[2]) + 1;
     inventory_history[2] = parseInt(inventory_history[2]) + 1;
     experience_gained = ((user.premium_status > 0 ? 2 : 1) * (Math.floor(Math.random() * ((large_experience_max - large_experience_min) + 1) + large_experience_min)));
   } else if(random_number_fishing < super_rate){
+    fish_emoji_part = client.fish_emoji[3].slice(1, client.fish_emoji[3].length);
+    fish_emoji = fish_emoji_part.slice(fish_emoji_part.indexOf(`:`)+1, fish_emoji_part.length);
     fish_name = `Super Fish`;
     fish_pun = `Is it a bird? Is it a plane? I sure hope not, it was in the water.`
     inventory[3] = parseInt(inventory[3]) + 1;
     inventory_history[3] = parseInt(inventory_history[3]) + 1;
     experience_gained = ((user.premium_status > 0 ? 2 : 1) * (Math.floor(Math.random() * ((super_experience_max - super_experience_min) + 1) + super_experience_min)));
   } else if(random_number_fishing < legendary_rate){
+    fish_emoji_part = client.fish_emoji[4].slice(1, client.fish_emoji[4].length);
+    fish_emoji = fish_emoji_part.slice(fish_emoji_part.indexOf(`:`)+1, fish_emoji_part.length);
     fish_name = `Legendary Fish`;
     fish_pun = `People have spoke of this for decades, but now you have confirmed them to be true!`
     inventory[4] = parseInt(inventory[4]) + 1;
     inventory_history[4] = parseInt(inventory_history[4]) + 1;
     experience_gained = ((user.premium_status > 0 ? 2 : 1) * (Math.floor(Math.random() * ((legendary_experience_max - legendary_experience_min) + 1) + legendary_experience_min)));
   } else if(random_number_fishing < magikarp_rate){
+    fish_emoji_part = client.fish_emoji[5].slice(1, client.fish_emoji[5].length);
+    fish_emoji = fish_emoji_part.slice(fish_emoji_part.indexOf(`:`)+1, fish_emoji_part.length);
     fish_name = `Magikarp`;
     fish_pun = `Is this meant to be here?`;
     inventory[5] = parseInt(inventory[5]) + 1;
@@ -124,7 +144,7 @@ const go_fishing = (client, user, message) => {
     .setColor(embed_colour);
   if(caught_a_fish){
     // Tell them what fish they caught
-    embed.setAuthor(`${message.member.displayName} caught a ${fish_name} (+${experience_gained.format(0)} exp)`, message.author.avatarURL)
+    embed.setAuthor(`${message.member.displayName} caught a ${fish_name} (+${experience_gained.format(0)} exp)`, `${fish_emoji == '' ? `${message.author.avatarURL}` : `https://cdn.discordapp.com/emojis/${fish_emoji}.png`}`)
       .setFooter(fish_pun);
     message.channel.send(embed);
   } else {
@@ -154,7 +174,7 @@ const go_fishing = (client, user, message) => {
     message.channel.send({embed : embed_level_up});
   }
 
-  let sql_update_fish_inventory = `UPDATE users SET experience_fishing_level = ${new_level}, experience_fishing = ${user.experience_fishing + experience_gained}, user_money = ${user.user_money - fishing_cost}, list_fish_inventory = '${inventory.join(',')}', list_fish_inventory_history = '${inventory_history.join(',')}', counter_fishing = ${user.counter_fishing + 1}, counter_fish_caught = ${user.counter_fish_caught + (caught_a_fish ? 1 : 0)}, ts_fish = ${now}, counter_money_spent = ${user.counter_money_spent + 200} WHERE user_discord = ${user.user_discord}`;
+  let sql_update_fish_inventory = `UPDATE users SET experience_fishing_level = ${new_level}, experience_fishing = ${user.experience_fishing + experience_gained}, user_money = ${user.user_money - fishing_cost}, list_fish_inventory = '${inventory.join(',')}', list_fish_inventory_history = '${inventory_history.join(',')}', counter_fishing = ${user.counter_fishing + 1}, counter_fish_caught = ${user.counter_fish_caught + (caught_a_fish ? 1 : 0)}, ts_fish = ${now}, counter_money_spent = ${parseFloat(user.counter_money_spent) + fishing_cost} WHERE user_discord = ${user.user_discord}`;
   // message.channel.send(sql_update_fish_inventory);
   client.db.run(sql_update_fish_inventory, (err) => {
     if(err) return console.error(`fish.js go_fishing() ${err.message}`);

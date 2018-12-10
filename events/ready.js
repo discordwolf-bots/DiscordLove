@@ -13,10 +13,17 @@ Number.prototype.format = function(n, x) {
 };
 
 module.exports = async client => {
+  // client.user.setPresence({
+  //   game : {
+  //     name : `on ${client.guilds.size.format(0)} servers`,
+  //     type: 0
+  //   }
+  // });
   client.user.setPresence({
     game : {
-      name : `on ${client.guilds.size.format(0)} servers`,
-      type: 0
+      name : `Live Coding for ${client.guilds.size.format(0)} servers`,
+      type: `STREAMING`,
+      url: `https://twitch.tv/discordwolf`
     }
   });
   await client.getInfoValues(client);

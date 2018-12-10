@@ -47,7 +47,7 @@ client.getInfoValues = async (client) => {
   emoji_chop.push(`:SmallFish:517449760349618206`);
   emoji_chop.push(`:MediumFish:517449758940332053`);
   emoji_chop.push(`:LargeFish:517449759372607507`);
-  emoji_chop.push(`:SuperFish:517449759963873302`);
+  emoji_chop.push(`:SuperFish:517449759963873302`); // https://cdn.discordapp.com/emojis/517449760349618206.png
   emoji_chop.push(`:LegendaryFish:517449759313887283`);
   emoji_chop.push(`:Magikarp:517449753970212875`);
   client.chop_emoji = emoji_chop;
@@ -219,6 +219,11 @@ client.update_money = async (message, user_id, callback) => {
                 let sql_update_message;
                 let level_up = false;
                 let experience_random = ((user.premium_status > 0 ? 2 : 1) * (Math.floor(Math.random() * 10))+1);
+
+                if(message.content.length >= 250) experience_random *= 2;
+                if(message.content.length >= 1000) experience_random *= 2;
+                if(message.content.length >= 1500) experience_random *= 1.5;
+
                 let next_level_requirement = Math.floor(Math.pow(user.user_level+1, 1.8)*100);
                 if(user.user_level >= ((user.prestige_level+1)*20) && user.prestige_level < 5){
                   level_up = false;
