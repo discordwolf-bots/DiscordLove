@@ -353,10 +353,6 @@ const mining_help = (client, user, message) => {
 }
 
 const fishing_sell_help = (client, user, message) => {
-  if(user.user_id != 1){
-    message.delete();
-    return message.channel.send(`This function is still being worked on. Please try again soon.`).then(msg => msg.delete(5000))
-  }
   let embed_colour = '#' + user.user_colour;
   if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
 

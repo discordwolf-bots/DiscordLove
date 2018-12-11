@@ -192,6 +192,20 @@ client.user_info = async (user, extras, callback) => {
     console.error(e);
   }
 }
+client.title_info = async (title, extras, callback) => {
+  try{
+    let sql = `SELECT * FROM titles WHERE title_id = ${title}`;
+    if(extras != '') sql = `SELECT * FROM titles WHERE title_id = ${title} ${extras}`;
+    await client.db.get(sql, (err, row) => {
+      if(err) return console.error(`index.js - ${err.message}`);
+      // console.log(chalk.bold.red(`client.user_info index.js`));
+      // console.log(row);
+      return callback(row);
+    });
+  } catch(e) {
+    console.error(e);
+  }
+}
 
 client.update_money = async (message, user_id, callback) => {
   try {

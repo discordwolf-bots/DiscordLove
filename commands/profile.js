@@ -8,10 +8,14 @@ Number.prototype.format = function(n, x) {
   return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
 };
 
-exports.run = function(client, message, args, user, guild){
+exports.run = function(client, message, args, user, guild, title){
 
   if(!user) return message.reply(`Please start your profile in <#${guild.channel_setup}>`)
   if(!guild) return message.reply(`Please tell an admin to re-invite the bot to the server.`)
+
+  let title_text = ``;
+  if(title) title_text = title.title_text;
+  console.log(title);
 
   let now = moment().format('x'); // Current UNIX Timestamp
   let day_millis = 1000 * 60 * 60 * 24;
@@ -57,10 +61,7 @@ exports.run = function(client, message, args, user, guild){
     }
 
     // Format username
-    let display_name = message.author.username;
-    if(user.premium_status == 1) display_name = `~Premium~ ${message.author.username}`;
-    if(user.premium_status == 2) display_name = `~Lifetime~ ${message.author.username}`;
-
+    let display_name = `${title_text != `` ? `[${title_text}]` : ``} ${message.author.username}`;
 
     // Get users Premium
     if(user.premium_status > 0){
@@ -219,7 +220,7 @@ exports.run = function(client, message, args, user, guild){
     counter_array.push(`Commands: **${(user.counter_commands + (counter_commands_display <= 0 ? 1 : 0)).format(0)}** (${counter_commands_seconds}s)`)
 
     // Get users fish caught
-    let counter_fish_caught_display = (now - (parseInt(user.ts_fish) + (minute_millis * 5))) * -1;
+    let counter_fish_caught_display = (now - (parseInt(user.ts_fish) + (minute_millis * 3))) * -1;
     let counter_fish_caught_minutes = `00`;
     let counter_fish_caught_seconds = '00';
 
@@ -237,7 +238,7 @@ exports.run = function(client, message, args, user, guild){
     counter_array.push(`Fishing Attempts: **${(user.counter_fishing).format(0)}**`)
 
     // Get users ore mined
-    let counter_mining_display = (now - (parseInt(user.ts_mine) + (minute_millis * 5))) * -1;
+    let counter_mining_display = (now - (parseInt(user.ts_mine) + (minute_millis * 3))) * -1;
     let counter_mine_minutes = `00`;
     let counter_mine_seconds = '00';
 
