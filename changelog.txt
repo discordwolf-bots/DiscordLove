@@ -16,4 +16,76 @@ __Features__
 
 
 ```````````````````````````````````````````````````````````````````````````````
-**Version Alpha 0.2** - * December 2018*
+**Version Alpha 0.3** - *7th December 2018*
+
+__Profile__
+- Fish Caught and Fish Attempts are now displayed
+- A timer next to the Fish Caught has been added to quickly show how long you need to wait before you can fish again
+
+__Commands__
+- **=fish** has been added. *Further information is below*
+- **=fish inventory** has been added
+- **=fish history** has been added
+- **=fish sell help**
+
+__Fishing__
+- Different chances for each fish has been added depending on your premium status
+- Fishing inventory shows the total of each fish
+- Fishing history shows the total of each fish, of all time
+- Fishing costs 200
+
+__Features__
+- Profile can only be viewed once every 30 seconds (bot will tell you how long until you can use it again)
+- Fishing can only be attempted once every 5 minutes (bot will tell you how long until you can use it again)
+
+__Upcoming__
+- **=fish sell <options>** will be coming soon
+   + Small = 300, Medium = 450, Large = 600, Super = 1500, Legendary = 2500, Magikarp = 25000
+- **=mining**
+- **=woodcutting**
+
+```````````````````````````````````````````````````````````````````````````````
+**Version Alpha 0.4** - *9th December 2018*
+
+__Profile__
+- Can now see your fishing level (and experience required until next level)
+- Can now see your woodcutting level (and experience required until next level)
+- Can now see your mining level (and experience until next level)
+- Can now see how many Diamonds you have
+- All levels have been put into their own category
+- Max levels are now displayed on profile (depending on prestige level)
+- Prestige Level is now displayed on your profile
+
+__Commands__
+- **=currencies** has been added so you can now easily see all the different currencies
+- **=fish sell <options>** has been added. You can now sell your fish for **Fishing Tokens**. (please read **=fish sell** for information about this)
+- **=fish help** can now be used to see all the commands within the fishing command
+- **=levels** has been added so you can easily see all info about your levels
+
+__Features__
+- Bot has been optimised so it should run faster than previously
+- Optimised the bot to load emojis faster throughout commands
+- No longer gain experience for using commands
+
+__Upcoming__
+- **=mining** is going to be worked on next (this will be just like **=fish** but more expensive)
+- **=woodcutting** is going to be worked on shortly after **=mining** (this will be the most expensive of all the gathering)
+- Profile is going to be split into 2 different categories (=profile, =profile advanced)
+   + **=profile** will only show Premium Status, Premium Coins, Bank, Diamonds, Account Length, Reputation Gained
+   + **=profile advanced** will show everything that is currently on =profile
+
+```````````````````````````````````````````````````````````````````````````````
+**Version Alpha 0.4** - *10th December 2018*
+
+__Profile__
+
+__Fishing__
+- When fishing, the fish icon will now be displayed
+
+__Mining__
+- Mining has now been added. This costs $400 per attempt and has the same odds as fishing
+- You can now view your mining inventory with **=mine inventory**
+- You can now view your mining history with **=mine history**
+
+__Features__
+- Chatting experience is now a bit more optimised

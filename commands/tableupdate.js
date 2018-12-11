@@ -18,7 +18,8 @@ exports.run = function(client, message, args){
     user_premium_coins INTEGER DEFAULT 0,
     user_diamonds INTEGER DEFAULT 0,
     user_amount_donated REAL DEFAULT 0.00,
-    user_title TEXT,
+    user_titles TEXT DEFAULT '',
+    user_current_title INTEGER DEFAULT 0,
 
     prestige_level INTEGER DEFAULT 0,
 
@@ -88,30 +89,30 @@ exports.run = function(client, message, args){
   )`;
   let sql_step_3 = `INSERT INTO users
     (
-      user_id,user_discord,user_level,user_experience,user_money,user_money_history,user_cps,user_colour,user_start_ts,user_premium_coins,user_amount_donated,user_title,user_diamonds,
+      user_id,user_discord,user_level,user_experience,user_money,user_money_history,user_cps,user_colour,user_start_ts,user_premium_coins,user_amount_donated,user_titles,user_diamonds,
       prestige_level,
       experience_fishing,experience_fishing_level,experience_woodcutting,experience_woodcutting_level,experience_mining,experience_mining_level,
       gathering_fish,gathering_logs,gathering_ore,
       reputation_total,reputation_given,reputation_given_today,
       premium_status,premium_time,
-      ts_profile,ts_reputation,ts_fish,ts_message,ts_commands,ts_crate_daily,ts_crate_premium,
-      counter_messages,counter_commands,counter_fishing,counter_fish_caught,counter_money_spent,counter_crates_opened,
+      ts_profile,ts_reputation,ts_fish,ts_mine,ts_chop,ts_message,ts_commands,ts_crate_daily,ts_crate_premium,
+      counter_messages,counter_commands,counter_fishing,counter_fish_caught,counter_woodcutting,counter_woodcutting_chop,counter_mining,counter_mining_ore,counter_money_spent,counter_crates_opened,
       list_fish_inventory,list_fish_inventory_history,list_user_inventory,list_logs_inventory,list_logs_inventory_history,list_ore_inventory,list_ore_inventory_history,
       crate_daily,crate_premium,crate_rare,
-      ach_premium,ach_total_spent,ach_commands_used,ach_spammer,ach_speading_love,ach_social,ach_fisher,ach_crate_opener,ach_prestige
+      ach_premium,ach_total_spent,ach_commands_used,ach_spammer,ach_speading_love,ach_social,ach_fisher,ach_crate_opener,ach_prestige,ach_woodcutter,ach_miner
     )
     SELECT
-      user_id,user_discord,user_level,user_experience,user_money,user_money_history,user_cps,user_colour,user_start_ts,user_premium_coins,user_amount_donated,user_title,user_diamonds,
-      prestige_level,
-      experience_fishing,experience_fishing_level,experience_woodcutting,experience_woodcutting_level,experience_mining,experience_mining_level,
-      gathering_fish,gathering_logs,gathering_ore,
-      reputation_total,reputation_given,reputation_given_today,
-      premium_status,premium_time,
-      ts_profile,ts_reputation,ts_fish,ts_message,ts_commands,ts_crate_daily,ts_crate_premium,
-      counter_messages,counter_commands,counter_fishing,counter_fish_caught,counter_money_spent,counter_crates_opened,
-      list_fish_inventory,list_fish_inventory_history,list_user_inventory,list_logs_inventory,list_logs_inventory_history,list_ore_inventory,list_ore_inventory_history,
-      crate_daily,crate_premium,crate_rare,
-      ach_premium,ach_total_spent,ach_commands_used,ach_spammer,ach_speading_love,ach_social,ach_fisher,ach_crate_opener,ach_prestige
+    user_id,user_discord,user_level,user_experience,user_money,user_money_history,user_cps,user_colour,user_start_ts,user_premium_coins,user_amount_donated,user_title,user_diamonds,
+    prestige_level,
+    experience_fishing,experience_fishing_level,experience_woodcutting,experience_woodcutting_level,experience_mining,experience_mining_level,
+    gathering_fish,gathering_logs,gathering_ore,
+    reputation_total,reputation_given,reputation_given_today,
+    premium_status,premium_time,
+    ts_profile,ts_reputation,ts_fish,ts_mine,ts_chop,ts_message,ts_commands,ts_crate_daily,ts_crate_premium,
+    counter_messages,counter_commands,counter_fishing,counter_fish_caught,counter_woodcutting,counter_woodcutting_chop,counter_mining,counter_mining_ore,counter_money_spent,counter_crates_opened,
+    list_fish_inventory,list_fish_inventory_history,list_user_inventory,list_logs_inventory,list_logs_inventory_history,list_ore_inventory,list_ore_inventory_history,
+    crate_daily,crate_premium,crate_rare,
+    ach_premium,ach_total_spent,ach_commands_used,ach_spammer,ach_speading_love,ach_social,ach_fisher,ach_crate_opener,ach_prestige,ach_woodcutter,ach_miner
     FROM users_old
       `;
   let sql_step_4 = `DROP TABLE users_old`;

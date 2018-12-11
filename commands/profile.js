@@ -236,6 +236,24 @@ exports.run = function(client, message, args, user, guild){
     // Get users fish attempts
     counter_array.push(`Fishing Attempts: **${(user.counter_fishing).format(0)}**`)
 
+    // Get users ore mined
+    let counter_mining_display = (now - (parseInt(user.ts_mine) + (minute_millis * 5))) * -1;
+    let counter_mine_minutes = `00`;
+    let counter_mine_seconds = '00';
+
+    if(counter_mining_display / minute_millis >= 1){
+      counter_mine_minutes += Math.floor(counter_mining_display / minute_millis);
+      counter_mining_display -= (minute_millis * counter_mine_minutes);
+    }
+    // How many seconds?
+    if(counter_mining_display > 0){
+      counter_mine_seconds += Math.ceil(counter_mining_display/1000);
+    }
+    counter_array.push(`Ores Mined: **${user.counter_mining_ore.format(0)}** *${counter_mine_minutes.slice(-2)}:${counter_mine_seconds.slice(-2)}*`)
+
+    // Get users fish attempts
+    counter_array.push(`Mining Attempts: **${(user.counter_mining).format(0)}**`)
+
 
     // Build embed
     let embed = new Discord.RichEmbed()

@@ -351,11 +351,11 @@ const fishing_help = (client, user, message) => {
 
     .setTitle(`Current Commands`)
 
-    .addField(`${config.prefix}fish`, `\`\`\`Catch a fish for $200\`\`\``)
-    .addField(`${config.prefix}fish inventory`, `\`\`\`Display all your current fish\`\`\``)
-    .addField(`${config.prefix}fish history`, `\`\`\`Display all fish youve caught\`\`\``)
-    .addField(`${config.prefix}fish sell`, `\`\`\`Display the help menu for selling\`\`\``)
-    .addField(`${config.prefix}fish sell <options>`, `\`\`\`Turn all your fish into Fishing Tokens\`\`\` \`\`\`Options: 'all', 'small', 'medium', 'large', 'super', 'legendary', 'magikarp'\`\`\``);
+    .addField(`${config.prefix}fish`, `\`\`\`Spend 200$ to go fishing.\`\`\``)
+    .addField(`${config.prefix}fish inventory`, `\`\`\`Displays all current fish a user has.\`\`\``)
+    .addField(`${config.prefix}fish history`, `\`\`\`Displays all fish that a user has mined.\`\`\``)
+    .addField(`${config.prefix}fish sell`, `\`\`\`Display the help menu for selling fish.\`\`\``)
+    .addField(`${config.prefix}fish sell <options>`, `\`\`\`Sells fish in exchange for Fishing Tokens.\`\`\` \`\`\`Options: 'all', 'small', 'medium', 'large', 'super', 'legendary', 'magikarp'\`\`\``);
 
   message.channel.send(embed)
 }
@@ -375,7 +375,7 @@ const fishing_sell_help = (client, user, message) => {
     .addField(`<${client.fish_emoji[4]}> Legendary Fish`, `\`\`\`7\`\`\``, true)
     .addField(`<${client.fish_emoji[5]}> Magikarp`, `\`\`\`25\`\`\``, true)
     .addField(`Sell Command`, `\`\`\`=fish sell <options> \nOptions: 'all', 'small', 'medium', 'large', 'super', 'legendary', 'magikarp'\`\`\``)
-    .setFooter(`All prices are how many FIshing Tokens you will receive`);
+    .setFooter(`All prices are how many Fishing Tokens you will receive`);
   message.channel.send(embed);
 }
 

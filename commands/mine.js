@@ -168,7 +168,7 @@ const go_mining = (client, user, message) => {
     message.channel.send({embed : embed_level_up});
   }
 
-  let sql_update_mining_inventory = `UPDATE users SET experience_mining_level = ${new_level}, experience_mining = ${user.experience_mining + experience_gained}, user_money = ${user.user_money - mining_cost}, list_ore_inventory = '${inventory.join(',')}', list_fish_inventory_history = '${inventory_history.join(',')}', counter_fishing = ${user.counter_fishing + 1}, counter_fish_caught = ${user.counter_fish_caught + (mined_an_ore ? 1 : 0)}, ts_mine = ${now}, counter_money_spent = ${parseFloat(user.counter_money_spent) + mining_cost} WHERE user_discord = ${user.user_discord}`;
+  let sql_update_mining_inventory = `UPDATE users SET experience_mining_level = ${new_level}, experience_mining = ${user.experience_mining + experience_gained}, user_money = ${user.user_money - mining_cost}, list_ore_inventory = '${inventory.join(',')}', list_ore_inventory_history = '${inventory_history.join(',')}', counter_mining = ${user.counter_mining > user.counter_mining_ore ? user.counter_mining_ore + 1 : user.counter_mining + 1}, counter_mining_ore = ${user.counter_mining_ore + (mined_an_ore ? 1 : 0)}, ts_mine = ${now}, counter_money_spent = ${parseFloat(user.counter_money_spent) + mining_cost} WHERE user_discord = ${user.user_discord}`;
   // message.channel.send(sql_update_fish_inventory);
   client.db.run(sql_update_mining_inventory, (err) => {
     if(err) return console.error(`fish.js go_mining() ${err.message}`);
@@ -177,95 +177,92 @@ const go_mining = (client, user, message) => {
 }
 
 const sell_ore = (client, user, message, type) => {
-  if(user.user_id != 1){
-    message.delete();
-    return message.channel.send(`This function is still being worked on. Please try again soon.`).then(msg => msg.delete(5000))
-  }
+
   let inventory = user.list_ore_inventory.split(',');
 
-  let small_price = 1;
-  let medium_price = 2;
-  let large_price = 3;
-  let super_price = 5;
-  let legendary_price = 7;
-  let magikarp_price = 25;
+  let copper_price = 1;
+  let nickel_price = 2;
+  let lead_price = 3;
+  let amethyst_price = 5;
+  let gold_price = 7;
+  let uranium_price = 25;
 
-  let fish_to_sell = false;
+  let ore_to_sell = false;
   let money_to_add = 0;
 
-  let small_sold = 0;
-  let medium_sold = 0;
-  let large_sold = 0;
-  let super_sold = 0;
-  let legendary_sold = 0;
-  let magikarp_sold = 0;
+  let copper_sold = 0;
+  let nickel_sold = 0;
+  let lead_sold = 0;
+  let amethyst_sold = 0;
+  let gold_sold = 0;
+  let uranium_sold = 0;
 
   switch(type){
     default:
       break;
-    case 'small':
+    case 'copper':
       if(parseInt(inventory[0]) > 0){
-        fish_to_sell = true;
-        money_to_add = parseInt(inventory[0]) * small_price;
-        small_sold += parseInt(inventory[0]);
+        ore_to_sell = true;
+        money_to_add = parseInt(inventory[0]) * copper_price;
+        copper_sold += parseInt(inventory[0]);
         inventory[0] = 0;
       }
       break;
-    case 'medium':
+    case 'nickel':
       if(parseInt(inventory[1]) > 0){
-        fish_to_sell = true;
-        money_to_add = parseInt(inventory[1]) * medium_price;
-        medium_sold += parseInt(inventory[1]);
+        ore_to_sell = true;
+        money_to_add = parseInt(inventory[1]) * nickel_price;
+        nickel_sold += parseInt(inventory[1]);
         inventory[1] = 0;
       }
       break;
-    case 'large':
+    case 'lead':
       if(parseInt(inventory[2]) > 0){
-        fish_to_sell = true;
-        money_to_add = parseInt(inventory[2]) * large_price;
-        large_sold += parseInt(inventory[2]);
+        ore_to_sell = true;
+        money_to_add = parseInt(inventory[2]) * lead_price;
+        lead_sold += parseInt(inventory[2]);
         inventory[2] = 0;
       }
       break;
-    case 'super':
+    case 'amethyst':
       if(parseInt(inventory[3]) > 0){
-        fish_to_sell = true;
-        money_to_add = parseInt(inventory[3]) * super_price;
-        super_sold += parseInt(inventory[3]);
+        ore_to_sell = true;
+        money_to_add = parseInt(inventory[3]) * amethyst_price;
+        amethyst_sold += parseInt(inventory[3]);
         inventory[3] = 0;
       }
       break;
-    case 'legendary':
+    case 'gold':
       if(parseInt(inventory[4]) > 0){
-        fish_to_sell = true;
-        money_to_add = parseInt(inventory[4]) * legendary_price;
-        legendary_sold += parseInt(inventory[4]);
+        ore_to_sell = true;
+        money_to_add = parseInt(inventory[4]) * gold_price;
+        gold_sold += parseInt(inventory[4]);
         inventory[4] = 0;
       }
       break;
-    case 'magikarp':
+    case 'uranium':
       if(parseInt(inventory[5]) > 0){
-        fish_to_sell = true;
-        money_to_add = parseInt(inventory[5]) * magikarp_price;
-        magikarp_sold += parseInt(inventory[5]);
+        ore_to_sell = true;
+        money_to_add = parseInt(inventory[5]) * uranium_price;
+        uranium_sold += parseInt(inventory[5]);
         inventory[5] = 0;
       }
       break;
     case 'all':
       if(parseInt(inventory[0]) > 0 || parseInt(inventory[1]) > 0 || parseInt(inventory[2]) > 0 || parseInt(inventory[3]) > 0 || parseInt(inventory[4]) > 0 || parseInt(inventory[5]) > 0){
-        fish_to_sell = true;
-        money_to_add = parseInt(inventory[0]) * small_price;
-        money_to_add += parseInt(inventory[1]) * medium_price;
-        money_to_add += parseInt(inventory[2]) * large_price;
-        money_to_add += parseInt(inventory[3]) * super_price;
-        money_to_add += parseInt(inventory[4]) * legendary_price;
-        money_to_add += parseInt(inventory[5]) * magikarp_price;
-        small_sold += parseInt(inventory[0]);
-        medium_sold += parseInt(inventory[1]);
-        large_sold += parseInt(inventory[2]);
-        super_sold += parseInt(inventory[3]);
-        legendary_sold += parseInt(inventory[4]);
-        magikarp_sold += parseInt(inventory[5]);
+        ore_to_sell = true;
+        money_to_add = parseInt(inventory[0]) * copper_price;
+        money_to_add += parseInt(inventory[1]) * nickel_price;
+        money_to_add += parseInt(inventory[2]) * lead_price;
+        money_to_add += parseInt(inventory[3]) * amethyst_price;
+        money_to_add += parseInt(inventory[4]) * gold_price;
+        money_to_add += parseInt(inventory[5]) * uranium_price;
+        copper_sold += parseInt(inventory[0]);
+        nickel_sold += parseInt(inventory[1]);
+        lead_sold += parseInt(inventory[2]);
+        amethyst_sold += parseInt(inventory[3]);
+        gold_sold += parseInt(inventory[4]);
+        uranium_sold += parseInt(inventory[5]);
         for(let i=0; i<=5; i++){
           inventory[i] = 0;
         }
@@ -273,26 +270,29 @@ const sell_ore = (client, user, message, type) => {
       break;
   }
 
-  if(fish_to_sell){
+  if(ore_to_sell){
     let embed_colour = '#' + user.user_colour;
     if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
     let embed = new Discord.RichEmbed()
       .setColor(embed_colour)
       .setAuthor(`Sale Receipt for ${message.member.displayName}`, message.author.avatarURL)
-      .addField(`<${small_fish_emoji}> Small x ${small_sold}`, `\`\`\`${small_sold * small_price}\`\`\``, true)
-      .addField(`<${medium_fish_emoji}> Medium x ${medium_sold}`, `\`\`\`${medium_sold * medium_price}\`\`\``, true)
-      .addField(`<${large_fish_emoji}> Large x ${large_sold}`, `\`\`\`${large_sold * large_price}\`\`\``, true)
-      .addField(`<${super_fish_emoji}> Super x ${super_sold}`, `\`\`\`${super_sold * super_price}\`\`\``, true)
-      .addField(`<${legendary_fish_emoji}> Legendary x ${legendary_sold}`, `\`\`\`${legendary_sold * legendary_price}\`\`\``, true)
-      .addField(`<${magikarp_fish_emoji}> Magikarp x ${magikarp_sold}`, `\`\`\`${magikarp_sold * magikarp_price}\`\`\``, true)
-      .addField(`Total Fish`, `${small_sold + medium_sold + large_sold + super_sold + legendary_sold + magikarp_sold}`, true)
-      .addField(`Tokens Gained`, `<${config.fishing_token}> ${money_to_add.format(0)}`, true);
+      .addField(`<${client.mine_emoji[0]}> Copper Ore x ${copper_sold}`, `\`\`\`${copper_sold * copper_price}\`\`\``, true)
+      .addField(`<${client.mine_emoji[1]}> Nickel Ore x ${nickel_sold}`, `\`\`\`${nickel_sold * nickel_price}\`\`\``, true)
+      .addField(`<${client.mine_emoji[2]}> Lead Ore x ${lead_sold}`, `\`\`\`${lead_sold * lead_price}\`\`\``, true)
+      .addField(`<${client.mine_emoji[3]}> Amethyst Geode x ${amethyst_sold}`, `\`\`\`${amethyst_sold * amethyst_price}\`\`\``, true)
+      .addField(`<${client.mine_emoji[4]}> Gold Ore x ${gold_sold}`, `\`\`\`${gold_sold * gold_price}\`\`\``, true)
+      .addField(`<${client.mine_emoji[5]}> Uranium Essence x ${uranium_sold}`, `\`\`\`${uranium_sold * uranium_price}\`\`\``, true)
+      .addField(`Total Ore`, `${copper_sold + nickel_sold + lead_sold + amethyst_sold + gold_sold + uranium_sold}`, true)
+      .addField(`Tokens Gained`, `<${config.mining_token}> ${money_to_add.format(0)}`, true);
     message.channel.send(embed)
 
-    let sql_sell_fish = `UPDATE users SET list_ore_inventory = '${inventory.join(',')}', gathering_ore = ${user.gathering_ore + money_to_add} WHERE user_discord = ${user.user_discord}`;
-    client.db.run(sql_sell_fish, (err) => {
-      if(err) return console.error(`fish.js sell_ore() ${err.message}`);
+    let sql_sell_ore = `UPDATE users SET list_ore_inventory = '${inventory.join(',')}', gathering_ore = ${user.gathering_ore + money_to_add} WHERE user_discord = ${user.user_discord}`;
+    client.db.run(sql_sell_ore, (err) => {
+      if(err) return console.error(`mine.js sell_ore() ${err.message}`);
     })
+  } else {
+    message.delete();
+    message.reply(`You do not have any of those ores to sell`).then(msg => msg.delete(5000));
   }
 
 }
@@ -333,31 +333,21 @@ const view_inventory_history = (client, user, message) => {
   message.channel.send(embed);
 }
 
-const fishing_help = (client, user, message) => {
-  if(user.user_id != 1){
-    message.delete();
-    return message.channel.send(`This function is still being worked on. Please try again soon.`).then(msg => msg.delete(5000))
-  }
+const mining_help = (client, user, message) => {
   let embed_colour = '#' + user.user_colour;
   if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
 
-  let command_array = [];
-  command_array.push(`**=fish** - Go Fishing. *Aliases: =fish fish, =fish catch* ***COST: 200***`);
-  command_array.push(`**=fish inventory** - Display all your current fish. *Aliases: =fish inv*`);
-  command_array.push(`**=fish history** - Display all the fish you have caught. *Aliases: =fish all, =fish hist*`);
-  command_array.push(`**=fish sell <options>** - Turn all your current fish into Fishing Tokens **Do *=fish sell* to view options and prices**`);
-
   let embed = new Discord.RichEmbed()
     .setColor(embed_colour)
-    .setAuthor(`Fishing Help - General`, message.author.avatarURL)
+    .setAuthor(`Mining Help - General`, message.author.avatarURL)
 
     .setTitle(`Current Commands`)
 
-    .addField(`${config.prefix}fish`, `\`\`\`Catch a fish for $200\`\`\``)
-    .addField(`${config.prefix}fish inventory`, `\`\`\`Display all your current fish\`\`\``)
-    .addField(`${config.prefix}fish history`, `\`\`\`Display all fish youve caught\`\`\``)
-    .addField(`${config.prefix}fish sell`, `\`\`\`Display the help menu for selling\`\`\``)
-    .addField(`${config.prefix}fish sell <options>`, `\`\`\`Turn all your fish into Fishing Tokens\`\`\` \`\`\`Options: 'all', 'small', 'medium', 'large', 'super', 'legendary', 'magikarp'\`\`\``);
+    .addField(`${config.prefix}mine`, `\`\`\`Spend 400$ to mine a rock.\`\`\``)
+    .addField(`${config.prefix}mine inventory`, `\`\`\`Displays all current ores a user has.\`\`\``)
+    .addField(`${config.prefix}mine history`, `\`\`\`Displays all ores that a user has mined.\`\`\``)
+    .addField(`${config.prefix}mine sell`, `\`\`\`Display the help menu for selling ores.\`\`\``)
+    .addField(`${config.prefix}mine sell <options>`, `\`\`\`Sells all ores in exchange for Mining Tokens.\`\`\` \`\`\`Options: 'all', 'copper', 'nickel', 'lead', 'amethyst', 'gold', 'uranium'\`\`\``);
 
   message.channel.send(embed)
 }
@@ -370,25 +360,18 @@ const fishing_sell_help = (client, user, message) => {
   let embed_colour = '#' + user.user_colour;
   if(user.user_colour == 'RAND') embed_colour = '#' + Math.floor(Math.random()*16777215).toString(16);
 
-  let small_fish_emoji = `:SmallFish:517449760349618206`;
-  let medium_fish_emoji = `:MediumFish:517449758940332053`;
-  let large_fish_emoji = `:LargeFish:517449759372607507`;
-  let super_fish_emoji = `:SuperFish:517449759963873302`;
-  let legendary_fish_emoji = `:LegendaryFish:517449759313887283`;
-  let magikarp_fish_emoji = `:Magikarp:517449753970212875`;
-
   let embed = new Discord.RichEmbed()
     .setColor(embed_colour)
-    .setAuthor(`Fishing Help - Selling`, message.author.avatarURL)
+    .setAuthor(`Mining Help - Selling`, message.author.avatarURL)
 
-    .addField(`<${small_fish_emoji}> Small Fish`, `\`\`\`1\`\`\``, true)
-    .addField(`<${medium_fish_emoji}> Medium Fish`, `\`\`\`2\`\`\``, true)
-    .addField(`<${large_fish_emoji}> Large Fish`, `\`\`\`3\`\`\``, true)
-    .addField(`<${super_fish_emoji}> Super Fish`, `\`\`\`5\`\`\``, true)
-    .addField(`<${legendary_fish_emoji}> Legendary Fish`, `\`\`\`7\`\`\``, true)
-    .addField(`<${magikarp_fish_emoji}> Magikarp`, `\`\`\`25\`\`\``, true)
-    .addField(`Sell Command`, `\`\`\`=fish sell <options> \nOptions: 'all', 'small', 'medium', 'large', 'super', 'legendary', 'magikarp'\`\`\``)
-    .setFooter(`All prices are how many FIshing Tokens you will receive`);
+    .addField(`<${client.mine_emoji[0]}> Copper Ore`, `\`\`\`1\`\`\``, true)
+    .addField(`<${client.mine_emoji[1]}> Nickel Ore`, `\`\`\`2\`\`\``, true)
+    .addField(`<${client.mine_emoji[2]}> Lead Ore`, `\`\`\`3\`\`\``, true)
+    .addField(`<${client.mine_emoji[3]}> Amethyst Ore`, `\`\`\`5\`\`\``, true)
+    .addField(`<${client.mine_emoji[4]}> Gold Ore`, `\`\`\`7\`\`\``, true)
+    .addField(`<${client.mine_emoji[5]}> Uranium Essence`, `\`\`\`25\`\`\``, true)
+    .addField(`Sell Command`, `\`\`\`=mine sell <options> \nOptions: 'all', 'copper', 'nickel', 'lead', 'amethyst', 'gold', 'uranium'\`\`\``)
+    .setFooter(`All prices are how many Mining Tokens you will receive`);
   message.channel.send(embed);
 }
 
@@ -409,39 +392,39 @@ exports.run = function(client, message, args, user, guild){
     return message.reply(`Please only use this command in <#${guild.channel_main}>`).then(msg => msg.delete(5000));
   }
 
-  let fishing_time_display = (now - (parseInt(user.ts_mine) + (minute_millis * 5))) * -1;
-  let fishing_minutes = ``;
-  let fishing_seconds = ``;
-  let fishing_timer = ``;
+  let mining_time_display = (now - (parseInt(user.ts_mine) + (minute_millis * 3))) * -1;
+  let mining_minutes = ``;
+  let mining_seconds = ``;
+  let mining_timer = ``;
 
-  if(fishing_time_display / minute_millis >= 1){
-    fishing_minutes = Math.floor(fishing_time_display / minute_millis);
-    fishing_timer += `${fishing_minutes} minute${fishing_minutes > 1 ? 's' : ''} `;
-    fishing_time_display = fishing_time_display - (minute_millis * fishing_minutes);
+  if(mining_time_display / minute_millis >= 1){
+    mining_minutes = Math.floor(mining_time_display / minute_millis);
+    mining_timer += `${mining_minutes} minute${mining_minutes > 1 ? 's' : ''} `;
+    mining_time_display = mining_time_display - (minute_millis * mining_minutes);
   }
   // How many seconds?
-  if(fishing_time_display > 0){
-    fishing_seconds = Math.ceil(fishing_time_display/1000);
-    fishing_timer += `${fishing_seconds} second${fishing_seconds > 1 ? 's' : ''}`;
+  if(mining_time_display > 0){
+    mining_seconds = Math.ceil(mining_time_display/1000);
+    mining_timer += `${mining_seconds} second${mining_seconds > 1 ? 's' : ''}`;
   }
 
   if(!args[0]){ // =mine
-    if(now - user.ts_mine < 5 * 60 * 1000
-    && user.user_id != 1
+    if(now - user.ts_mine < 3 * 60 * 1000
+    // && user.user_id != 1
     ) {
       message.delete();
-      return message.reply(`Please wait another **${fishing_timer}** before going mining again.`).then(msg => msg.delete(5000));
+      return message.reply(`Please wait another **${mining_timer}** before going mining again.`).then(msg => msg.delete(5000));
     } else {
       go_mining(client, user, message);
     }
   } else {
     switch(args[0].toLowerCase()){ // =fish <args[0]>
       default:
-      case `fish`:
-      case `catch`:
-      if(now - user.ts_mine < 5 * 60 * 1000) {
+      case `mine`:
+      case `hit`:
+      if(now - user.ts_mine < 3 * 60 * 1000) {
         message.delete();
-        return message.reply(`Please wait another **${fishing_timer}** before going mining again.`).then(msg => msg.delete(5000));
+        return message.reply(`Please wait another **${mining_timer}** before going mining again.`).then(msg => msg.delete(5000));
       } else {
         go_mining(client, user, message);
       }
@@ -455,12 +438,12 @@ exports.run = function(client, message, args, user, guild){
             default:
               fishing_sell_help(client, user, message);
               break;
-            case `small`:
-            case `medium`:
-            case `large`:
-            case `super`:
-            case `legendary`:
-            case `magikarp`: // =fish sell magikarp
+            case `copper`:
+            case `nickel`:
+            case `lead`:
+            case `amethyst`:
+            case `gold`:
+            case `uranium`: // =fish sell magikarp
             case `all`: // =fish sell all
               sell_ore(client, user, message, args[1].toLowerCase());
               break;
@@ -486,7 +469,7 @@ exports.run = function(client, message, args, user, guild){
       case `halp`:
       case `info`:
       case `imstuck`:
-        fishing_help(client, user, message);
+        mining_help(client, user, message);
         break;
     }
   }
@@ -494,7 +477,7 @@ exports.run = function(client, message, args, user, guild){
   if(now - user.ts_commands > 60 * 1000){
     let sql_update_command_counter = `UPDATE users SET counter_commands = ${user.counter_commands+1}, ts_commands = ${now} WHERE user_discord = ${user.user_discord}`;
     client.db.run(sql_update_command_counter, (err) => {
-      if(err) return console.error(`profile.js sql_update_command_counter ${err.message}`);
+      if(err) return console.error(`mine.js sql_update_command_counter ${err.message}`);
     })
   }
 
